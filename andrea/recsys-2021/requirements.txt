@@ -16,3 +16,4 @@ scikit-learn
 seaborn
 xgboost
 pyarrow
+python-snappy
