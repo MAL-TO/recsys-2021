@@ -18,7 +18,7 @@ def main(input_filepath, output_filepath):
     logger.info('making final data set from raw data')
     
     def load_dataframe(file_name):
-        all_features = ["text_ tokens", "hashtags", "tweet_id", "present_media", "present_links", "present_domains",\
+        all_features = ["text_tokens", "hashtags", "tweet_id", "present_media", "present_links", "present_domains",\
                     "tweet_type","language", "tweet_timestamp", "engaged_with_user_id", "engaged_with_user_follower_count",\
                     "engaged_with_user_following_count", "engaged_with_user_is_verified", "engaged_with_user_account_creation",\
                     "engaging_user_id", "engaging_user_follower_count", "engaging_user_following_count", "engaging_user_is_verified",\
@@ -34,14 +34,14 @@ def main(input_filepath, output_filepath):
             header=None,
             names=(list(all_features_to_idx.keys()) + list(labels_to_idx.keys())),
             dtype={
-            "text_ tokens": str,
-            "hashtags": str,
+            "text_tokens": object,
+            "hashtags": object,
             "tweet_id": str,
             "present_media": str,
             "present_links": str,
             "present_domains": str,
             "tweet_type": "category",
-            "language": str,
+            "language": "category",
             "tweet_timestamp": str,
 
             "engaged_with_user_id": str,
@@ -55,6 +55,7 @@ def main(input_filepath, output_filepath):
             "enaging_user_following_count": int,
             "enaging_user_is_verified": bool,
             "enaging_user_account_creation": str,
+
             "engagee_follows_engager": bool,
 
             "reply_timestamp": str,
@@ -64,19 +65,28 @@ def main(input_filepath, output_filepath):
             },
             parse_dates=False,
         )
-        for col in ['text_ tokens', 'hashtags', 'present_media', 'present_links',
-                  'present_domains']:
+        
+        df.drop('text_tokens', axis=1, inplace=True)
+        df.drop('tweet_id', axis=1, inplace=True)
+        
+        for col in ['hashtags', 'present_media', 'present_links', 'present_domains']:
             df[col] = df[col].str.split()
 
-        for col in [
-            "tweet_timestamp", "reply_timestamp", "retweet_timestamp",
-            "retweet_with_comment_timestamp", "like_timestamp",
-            "engaged_with_user_account_creation", "engaging_user_account_creation"]:
+        for col in ["tweet_timestamp", "engaged_with_user_account_creation", "engaging_user_account_creation"]:
             df[col] = pd.to_datetime(df[col], unit='s')
-
+        
+        target_columns = ['reply_timestamp', 'retweet_timestamp','retweet_with_comment_timestamp', 'like_timestamp']
+        new_target_columns = ['TARGET_reply', 'TARGET_retweet','TARGET_retweet_with_comment', 'TARGET_like']
+        for col, new_col in zip(target_columns, new_target_columns):
+            df[new_col] = df[col].notnull().astype(np.uint32)
+    
+        df.drop(target_columns, axis=1, inplace=True)
+        
         return df
-
+    
+    logger.info('loading raw data')
     df = load_dataframe(input_filepath)
+    logger.info('saving processed data')
     df.to_parquet(output_filepath)
 
 
