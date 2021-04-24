@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+koalas = "*"
+pyspark = "==2.4.0"
+pandas = "*"
+numpy = "*"
+h2o = "*"
+
+[dev-packages]
+notebook = "*"
+
+[requires]
+python_version = "3.7.9"
