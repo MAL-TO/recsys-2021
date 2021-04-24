@@ -1,3 +1,11 @@
+# VSCode
+.vscode
+
+# Ignore stuff inside data/
+data/preds/
+data/preprocessed/
+data/raw/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
