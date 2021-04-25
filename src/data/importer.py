@@ -55,41 +55,22 @@ timestamp_cols = [
 ]
 
 
-def import_data_cluster(path):
-    pass
-    
-
-def import_data_local_sampled(path):
-    pass
-
-
-def import_data_local_sampled_small(path):
+def read_csv(path):
     data = ks.read_csv(path, sep='\x01', names=features+list(labels_idx))
-    
     return data
 
 
 def import_data(dataset_name, path):
-    """[summary]
-
-    Args:
-        dataset_name ([type]): [description]
-        path ([type]): [description]
-
-    Returns:
-        [type]: [description]
-    """
-    
     if dataset_name == "cluster_complete":
-        raw_data = import_data_cluster(path)
+        raw_data = read_csv(path)
     
     if dataset_name == "cluster_sampled":
-        raw_data = import_data_cluster(path)
+        raw_data = read_csv(path)
     
     if dataset_name == "local_sampled":
-        pass
+        raw_data = read_csv(path)
     
     if dataset_name == "local_sampled_small":
-        raw_data = import_data_local_sampled_small(path)
+        raw_data = read_csv(path)
     
     return raw_data
