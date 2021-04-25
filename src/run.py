@@ -12,7 +12,8 @@ from data.splitter import train_valid_test_split_bounds
 from preprocessor.config import FeatureConfig
 from preprocessor.features import extract_features
 
-from model.h2o_xgboost_baseline import H2OXGBoostBaseline
+# TODO(Andrea): should this depend on a command line argument?
+from model.native_xgboost_baseline import Model
 
 # Files and paths
 RAW_DATA_INPUT_PATH = {
@@ -58,26 +59,13 @@ def main(dataset_name):
     valid_df = features_union_df.iloc[valid_bounds['start']:valid_bounds['end']]
     test_df = features_union_df.iloc[test_bounds['start']:test_bounds['end']]
     
-    hyperparams = {
-        "ntrees" : 10,
-        "max_depth" : 20,
-        "learn_rate" : 0.1,
-        "sample_rate" : 0.7,
-        "col_sample_rate_per_tree" : 0.9,
-        "min_rows" : 5,
-        "seed": 42,
-        "score_tree_interval": 100
-    }
-    
     print("Fitting model")
-    xgboost = H2OXGBoostBaseline()
-    xgboost.fit(train_df, valid_df, hyperparams)
+    hyperparams = {}
+    model = Model()
+    model.fit(train_df, valid_df, hyperparams)
     
     print("Evaluating model")
-    # test trained model
-    metrics = xgboost.evaluate(test_df,
-                               save_to_logs=False)
-
+    print(model.evaluate(test_df))
 
 if __name__ == "__main__":
     # run.py [data predefined path or custom path] [model name] 
