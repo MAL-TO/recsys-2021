@@ -11,14 +11,25 @@ https://recsys-twitter.com/
 - Pipenv
     - `pip install pipenv`
 
+#### How to
 1. Pull/clone `recsys-2021` on your system
-2. `cd` to the cloned folder
+2. `cd` to the repository
 3. `pipenv shell` (this should install all required packages and start the shell)
 4. `cd src`
-5. `python run.py`
+5. Make sure that `dataset_name` is set to the corresponding path in `RAW_DATA_INPUT_PATH`, and that the corresponding path is correct.
+6. `python run.py`
 
 ### On the cluster
-...
+#### Requirements
+- Koalas
+    - `pip install koalas`
+
+#### How to
+1. Pull/clone `recsys-2021` on your system
+2. `cd` to the repository
+3. `cd src`
+4. Make sure that `dataset_name` is set to the corresponding path in `RAW_DATA_INPUT_PATH`, and that the corresponding path is correct.
+5. `spark-submit --master yarn --deploy-mode cluster run.py` 
 
 ## Add a custom feature
 To create a new custom feature extractor:
