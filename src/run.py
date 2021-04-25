@@ -17,7 +17,8 @@ from model.h2o_xgboost_baseline import H2OXGBoostBaseline
 # Files and paths
 RAW_DATA_INPUT_PATH = {
     "cluster_complete": "hdfs://BigDataHA/user/s277309/recsys_data/",
-    "cluster_sampled": "hdfs://BigDataHA/user/s277309/recsys_data_sample/one_hund/",
+    "cluster_sample_one_hund": "hdfs://BigDataHA/user/s277309/recsys_data_sample/one_hund/",
+    "cluster_sample_200k": "hdfs://BigDataHA/user/s277309/recsys_data_sample/local/sample200k",
     "local_sampled": "../data/raw/sample_0.0134_noid_notext_notimestamp.parquet",
     "local_sampled_small": "../data/raw/sample200k",
 }

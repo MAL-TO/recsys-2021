@@ -61,16 +61,5 @@ def read_csv(path):
 
 
 def import_data(dataset_name, path):
-    if dataset_name == "cluster_complete":
-        raw_data = read_csv(path)
-    
-    if dataset_name == "cluster_sampled":
-        raw_data = read_csv(path)
-    
-    if dataset_name == "local_sampled":
-        raw_data = read_csv(path)
-    
-    if dataset_name == "local_sampled_small":
-        raw_data = read_csv(path)
-    
+    raw_data = read_csv(path)
     return raw_data
