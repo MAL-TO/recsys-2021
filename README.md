@@ -29,7 +29,7 @@ https://recsys-twitter.com/
 2. `cd` to the repository
 3. `cd src`
 4. Make sure that `dataset_name` is set to the corresponding path in `RAW_DATA_INPUT_PATH`, and that the corresponding path is correct.
-5. `spark-submit --master yarn --deploy-mode cluster run.py` 
+5. `spark-submit --master yarn --deploy-mode cluster run.py` or (if the former does not work) `spark-submit --master local --deploy-mode client run.py`
 
 ## Add a custom feature
 To create a new custom feature extractor:
