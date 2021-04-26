@@ -9,6 +9,8 @@ pyspark = "==2.4.0"
 pandas = "*"
 numpy = "*"
 h2o = "*"
+xgboost = "*"
+scikit-learn = "*"
 
 [dev-packages]
 notebook = "*"
