@@ -1,9 +1,25 @@
+import pandas as pd
+import numpy as np
+import databricks.koalas as ks
+from pyspark.sql import SparkSession
+
 import h2o
 from h2o.estimators import H2OXGBoostEstimator
 
-# from metrics import...
-
 from model.interface import ModelInterface
+
+
+# Warning: this class only works with *small*-ish datasets, as it casts Spark
+# dataframes to Pandas dataframes (H2O natively does not work with Spark).
+# Make sure you have enough memory on your machine.
+
+# Tested with the following features enabled:
+# "engaged_with_user_follower_count"
+# "engaged_with_user_following_count"
+# "engaging_user_follower_count"
+# "engaging_user_following_count"
+# all targets
+
 
 class H2OXGBoostBaseline(ModelInterface):
     def __init__(self):
@@ -22,9 +38,24 @@ class H2OXGBoostBaseline(ModelInterface):
             "like_timestamp"
         ]
     
+    @staticmethod
+    def timestamp_to_bool(entry) -> np.int32:
+        """Transform targets into either 1 or 0, based on whether
+        a timestamp is present or not"""
+        if entry > 0:
+            return 1
+        else:
+            return 0
+    
     def fit(self, train_data, valid_data, hyperparams):
         """Fit model to given training data and validate it.
         Returns the best model found in validation."""
+        
+        # Transform labels to 1/0s
+        train_data[self.labels] = train_data[self.labels].applymap(self.timestamp_to_bool)
+        valid_data[self.labels] = valid_data[self.labels].applymap(self.timestamp_to_bool)
+        
+        # Cast to h2o frames
         train_frame = h2o.H2OFrame(train_data.to_pandas())
         valid_frame = h2o.H2OFrame(valid_data.to_pandas())
         
@@ -53,11 +84,13 @@ class H2OXGBoostBaseline(ModelInterface):
     def predict(self, test_data):
         """Predict test data. Returns predictions."""
         
+        # Transform labels to 1/0s
+        test_data[self.labels] = test_data[self.labels].applymap(self.timestamp_to_bool)
+        
         test_frame = h2o.H2OFrame(test_data.to_pandas())
         
         predictions = dict()
         for label in self.labels:
-            # TODO: as_data_frame() will probably crash on the cluster dataset
             predictions[label] = self.model[label].predict(test_frame).as_data_frame().values.tolist()
             
         return predictions
