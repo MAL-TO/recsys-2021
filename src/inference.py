@@ -23,6 +23,7 @@ RAW_DATA_INPUT_PATH = {
     "cluster_sample_200k": "hdfs://BigDataHA/user/s277309/recsys_data_sample/local/sample200k",
     "local_sampled": "../data/raw/sample_0.0134_noid_notext_notimestamp.parquet",
     "local_sampled_small": os.path.join(ROOT_DIR, "../data/raw/sample200k"),
+    "test": os.path.join(ROOT_DIR, "../test"),
 }
 
 FEATURE_CONFIG_FILE = os.path.join(ROOT_DIR, "preprocessor", "config.json")
@@ -66,8 +67,4 @@ def main(dataset_name):
     ].to_csv('results.csv', mode='a', header=False, index=False)
 
 if __name__ == "__main__":
-    # run.py [data predefined path or custom path] [model name]
-
-    dataset_name = "local_sampled_small"
-
-    main(dataset_name)
+    main("test")
