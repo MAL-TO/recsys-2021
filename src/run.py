@@ -33,9 +33,6 @@ def main(dataset_name):
     print("Importing data")
     raw_data = import_data(dataset_name,
                            path=RAW_DATA_INPUT_PATH[dataset_name])
-    
-    # TODO [feature store]: only extract features that do not
-    # already exist in data/preprocessed
 
     print("Extracting features")
     extracted_features = extract_features(raw_data, feature_config)
@@ -47,7 +44,6 @@ def main(dataset_name):
     # Merge all into a single dataframe with index
     features_union_df = ks.concat([raw_data] + list(extracted_features.values()), axis=1)
     
-    # TODO [feature store]: store non-available features
     
     # Train-valid-test split
     # TODO (manuele): .iloc with arrays is extremely slow on koalas.
