@@ -9,8 +9,7 @@
 # in your zip.
 # results.csv should also be written to /home/{submission_identifier}/results.csv
 
-# `docker build -t malto-submission-image . && docker run --name smol-boi --rm --mount type=bind,source="$(pwd)"/data,destination=/data,readonly malto-submission-image:latest python run.py`
-
+# docker build -t malto-submission-image . && docker run --name smol-boi --rm --mount type=bind,source="$(pwd)",destination=/home/cafebabe,readonly --workdir="/home/cafebabe" malto-submission-image:latest pwd
 
 ################################################################################
 FROM python:3.7-slim as base
@@ -52,11 +51,5 @@ ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 # Copy virtual env from python-deps stage
 COPY --from=python-deps /.venv /.venv
 ENV PATH="/.venv/bin:$PATH"
-
-# Install application into container
-COPY . .
-
-# Run the application
-WORKDIR /src
 
 # No ENTRYPOINT and no CMD
