@@ -57,9 +57,33 @@ timestamp_cols = [
 
 def read_csv(path):
     data = ks.read_csv(path, sep='\x01', names=features+list(labels_idx))
+
+    # Compatible with "".parquet". Remember to update whenever text_tokens are needed
+    remove_cols = ["text_tokens", "tweet_id"]
+    data_cols = list(data.columns)
+    for col in remove_cols:
+        if col in data_cols:
+            data = data.drop(col)
+
     return data
 
 
-def import_data(dataset_name, path):
-    raw_data = read_csv(path)
+def read_parquet(path):
+    remove_cols = ["text_tokens", "tweet_id"]
+    parquet_features = list(set(features) - set(remove_cols))
+    data = ks.read_parquet(path, columns=parquet_features+list(labels_idx))
+    return data
+
+
+# TODO: make uniform file extension or remove controls
+def import_data(path):
+    extension = path.split('.').pop()
+
+    if extension == 'csv':
+        raw_data = read_csv(path)
+    elif extension == 'parquet':
+        raw_data = read_parquet(path)
+    else:
+        raise RuntimeError ("File format not specified! Please use a valid extension")
+
     return raw_data

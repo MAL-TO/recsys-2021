@@ -11,14 +11,11 @@ class Model(ModelInterface):
         self.models = {}
         self.target_columns = ["reply", "retweet", "retweet_with_comment", "like"]
         
-        # TODO(Andrea): is there a better way to have this? Instead of a single
-        # config.json have each model tell us which self.features to use
-        self.features = [
-            "engaged_with_user_follower_count",
-            "engaged_with_user_following_count",
-            "engaging_user_follower_count",
-            "engaging_user_following_count",
-        ]
+        self.features = {"default": ["engaged_with_user_follower_count",
+                                    "engaged_with_user_following_count",
+                                    "engaging_user_follower_count",
+                                    "engaging_user_following_count"],
+                        "custom": ['is_positive']}
 
     def fit(self, train_ksdf, valid_ksdf, _hyperparameters):
         ###############################################################################

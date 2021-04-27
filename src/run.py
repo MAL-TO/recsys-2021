@@ -9,7 +9,7 @@ from pyspark.sql import SparkSession
 from data.importer import import_data
 from data.splitter import train_valid_test_split_bounds
 
-from preprocessor.config import FeatureConfig
+from preprocessor.features_store import FeatureStore
 from preprocessor.features import extract_features
 
 # TODO(Andrea): should this depend on a command line argument?
@@ -22,28 +22,30 @@ RAW_DATA_INPUT_PATH = {
     "cluster_sample_200k": "hdfs://BigDataHA/user/s277309/recsys_data_sample/local/sample200k",
     "local_sampled": "../data/raw/sample_0.0134_noid_notext_notimestamp.parquet",
     "local_sampled_small": "../data/raw/sample200k",
+    "local_custom_sample": "./data/raw/sample_0.0000.parquet"
 }
 
 FEATURE_CONFIG_FILE = os.path.join("preprocessor", "config.json")
+PATH_PREPROCESSED = 'data/preprocessed'
 
 
 def main(dataset_name):
-    feature_config = FeatureConfig(FEATURE_CONFIG_FILE)
-    
-    print("Importing data")
-    raw_data = import_data(dataset_name,
-                           path=RAW_DATA_INPUT_PATH[dataset_name])
 
-    print("Extracting features")
-    extracted_features = extract_features(raw_data, feature_config)
+    print("Initializing model...", end = " ")
+    model = Model()
+    enabled_features = model.features
+    print("Done")
     
-    # Drop raw_data features not enabled in config.json
-    enabled_default_features = feature_config.get_enabled_default_features_list()
-    raw_data = raw_data[enabled_default_features]
-    
-    # Merge all into a single dataframe with index
-    features_union_df = ks.concat([raw_data] + list(extracted_features.values()), axis=1)
-    
+    print("Importing data...", end=" ")
+    raw_data = import_data(dataset_name,
+                           path=RAW_DATA_INPUT_PATH[dataset_name])  
+    print("Done")
+
+    print("Assembling dataset...")
+    store = FeatureStore(PATH_PREPROCESSED, enabled_features, raw_data)
+    features_union_df = store.get_dataset()
+    print("Dataset ready")
+
     
     # Train-valid-test split
     # TODO (manuele): .iloc with arrays is extremely slow on koalas.
@@ -57,7 +59,6 @@ def main(dataset_name):
     
     print("Fitting model")
     hyperparams = {}
-    model = Model()
     model.fit(train_df, valid_df, hyperparams)
     
     print("Evaluating model")
@@ -66,6 +67,6 @@ def main(dataset_name):
 if __name__ == "__main__":
     # run.py [data predefined path or custom path] [model name] 
     
-    dataset_name = "local_sampled_small"
+    dataset_name = "local_custom_sample"
     
     main(dataset_name)
