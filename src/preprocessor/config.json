@@ -2,7 +2,7 @@
     "default": {
         "text_tokens": false,
         "hashtags": true,
-        "tweet_id": false,
+        "tweet_id": true,
         "present_media": true,
         "present_links": true,
         "present_domains": true,
