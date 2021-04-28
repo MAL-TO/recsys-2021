@@ -10,7 +10,6 @@ from data.importer import import_data
 from data.splitter import train_valid_test_split_bounds
 
 from preprocessor.features_store import FeatureStore
-from preprocessor.features import extract_features
 
 # TODO(Andrea): should this depend on a command line argument?
 from model.native_xgboost_baseline import Model
@@ -22,27 +21,26 @@ RAW_DATA_INPUT_PATH = {
     "cluster_sample_200k": "hdfs://BigDataHA/user/s277309/recsys_data_sample/local/sample200k",
     "local_sampled": "../data/raw/sample_0.0134_noid_notext_notimestamp.parquet",
     "local_sampled_small": "../data/raw/sample200k",
-    "local_custom_sample": "./data/raw/sample_0.0000.parquet"
+    "local_custom_sample": "./data/raw/sample200.csv"
 }
 
-FEATURE_CONFIG_FILE = os.path.join("preprocessor", "config.json")
 PATH_PREPROCESSED = 'data/preprocessed'
+CLUSTER = False # TODO(Francesco) Command line argument - handles number of partitions in ks.to_csv
 
 
 def main(dataset_name):
 
     print("Initializing model...", end = " ")
     model = Model()
-    enabled_features = model.features
+    enabled_features = model.enabled_features
     print("Done")
     
     print("Importing data...", end=" ")
-    raw_data = import_data(dataset_name,
-                           path=RAW_DATA_INPUT_PATH[dataset_name])  
+    raw_data = import_data(path=RAW_DATA_INPUT_PATH[dataset_name])  
     print("Done")
 
     print("Assembling dataset...")
-    store = FeatureStore(PATH_PREPROCESSED, enabled_features, raw_data)
+    store = FeatureStore(PATH_PREPROCESSED, enabled_features, raw_data, CLUSTER)
     features_union_df = store.get_dataset()
     print("Dataset ready")
 

@@ -9,13 +9,34 @@ from metrics import compute_score
 class Model(ModelInterface):
     def __init__(self):
         self.models = {}
-        self.target_columns = ["reply", "retweet", "retweet_with_comment", "like"]
+        self.target_columns = [
+            "reply", 
+            "retweet", 
+            "retweet_with_comment",
+            "like"
+        ]
+        self.old_target_columns = [
+            "reply_timestamp",
+            "retweet_timestamp",
+            "retweet_with_comment_timestamp",
+            "like_timestamp",
+        ]
+        default = [
+            "engaged_with_user_follower_count",
+            "engaged_with_user_following_count",
+            "engaging_user_follower_count",
+            "engaging_user_following_count"
+        ]
+        custom = [
+            "is_positive"
+        ]
         
-        self.features = {"default": ["engaged_with_user_follower_count",
-                                    "engaged_with_user_following_count",
-                                    "engaging_user_follower_count",
-                                    "engaging_user_following_count"],
-                        "custom": ['is_positive']}
+        # For feature store
+        self.enabled_features = {"custom": custom, "default":  default + self.old_target_columns}
+
+        # For training and inference
+        self.features = custom + default + self.old_target_columns
+
 
     def fit(self, train_ksdf, valid_ksdf, _hyperparameters):
         ###############################################################################
@@ -26,15 +47,9 @@ class Model(ModelInterface):
         ###############################################################################
         # Convert timestamp labels to binary labels (TODO(Andrea): this should be done
         # on import imho)
-        old_target_columns = [
-            "reply_timestamp",
-            "retweet_timestamp",
-            "retweet_with_comment_timestamp",
-            "like_timestamp",
-        ]
         
         for df in [train_df, valid_df]:
-            for old_col, new_col in zip(old_target_columns, self.target_columns):
+            for old_col, new_col in zip(self.old_target_columns, self.target_columns):
                     df[new_col] = df[old_col].notnull()
         
         ###############################################################################
@@ -68,15 +83,9 @@ class Model(ModelInterface):
     
         # Convert timestamp labels to binary labels (TODO(Andrea): this should be done
         # on import imho)
-        old_target_columns = [
-            "reply_timestamp",
-            "retweet_timestamp",
-            "retweet_with_comment_timestamp",
-            "like_timestamp",
-        ]
-        new_target_columns = ["reply", "retweet", "retweet_with_comment", "like"]
+
         for df in [test_ksdf]:
-            for old_col, new_col in zip(old_target_columns, new_target_columns):
+            for old_col, new_col in zip(self.old_target_columns, self.target_columns):
                     df[new_col] = df[old_col].notnull()
 
         ###############################################################################

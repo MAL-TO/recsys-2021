@@ -56,9 +56,9 @@ timestamp_cols = [
 
 
 def read_csv(path):
-    data = ks.read_csv(path, sep='\x01', names=features+list(labels_idx))
+    data = ks.read_csv(path, sep='\x01', names = features+list(labels_idx))
 
-    # Compatible with "".parquet". Remember to update whenever text_tokens are needed
+    # Make ".csv" columns compatible with ".parquet". Remember to update whenever text_tokens are needed
     remove_cols = ["text_tokens", "tweet_id"]
     data_cols = list(data.columns)
     for col in remove_cols:
@@ -67,7 +67,7 @@ def read_csv(path):
 
     return data
 
-
+# TODO(Francesco): test this function
 def read_parquet(path):
     remove_cols = ["text_tokens", "tweet_id"]
     parquet_features = list(set(features) - set(remove_cols))
@@ -75,7 +75,7 @@ def read_parquet(path):
     return data
 
 
-# TODO: make uniform file extension or remove controls
+# TODO(Francesco): make uniform file extension or remove control
 def import_data(path):
     extension = path.split('.').pop()
 
