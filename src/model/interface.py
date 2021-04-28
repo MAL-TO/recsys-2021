@@ -1,5 +1,7 @@
 import abc
 
+from metrics import compute_score
+
 class ModelInterface(metaclass=abc.ABCMeta):
     @classmethod
     def __subclasshook__(cls, subclass):
@@ -26,11 +28,18 @@ class ModelInterface(metaclass=abc.ABCMeta):
         """Predict test data. Returns predictions."""
         raise NotImplementedError
 
-    @abc.abstractmethod
-    def evaluate(self, test_data):
+    def evaluate(self, test_ksdf):
         """Predict test data and evaluate the model on metrics.
         Returns the metrics."""
-        raise NotImplementedError
+        predictions_df = self.predict(test_ksdf)
+
+        results = {}
+        for column in predictions_df.columns:
+            AP, RCE = compute_score(test_ksdf[column].to_numpy(), predictions_df[column].to_numpy())
+            results[f'{column}_AP'] = AP
+            results[f'{column}_RCE'] = RCE
+
+        return results
 
     @abc.abstractmethod
     def load_pretrained(self):
