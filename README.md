@@ -71,3 +71,20 @@ A single custom feature extractor can extract more than one feature. If you want
 ```
 
 **Please make sure that your custom feature extractor returns one row for each input dataset row.**
+
+## Docker
+#### Building the Docker image and training the model inside it
+
+```shell
+# The first command must be run in the recsys-2021 folder
+
+# Build a new docker image, called malto-submission-image, using the Dockerfile stored in the current folder
+docker build -t malto-submission-image .
+
+# Run a new docker container, letting it access the data folder, then running run.py to train
+docker run \
+    --name smol-boi \
+    --rm \
+    --mount type=bind,source="$(pwd)"/data,destination=/data,readonly \
+    malto-submission-image:latest python run.py
+```
