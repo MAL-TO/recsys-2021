@@ -16,6 +16,7 @@ from preprocessor.features import extract_features
 from model.native_xgboost_baseline import Model
 
 from constants import ROOT_DIR
+from util import pretty_evaluation
 
 # Files and paths
 RAW_DATA_INPUT_PATH = {
@@ -66,7 +67,7 @@ def main(dataset_name):
     model.fit(train_df, valid_df, hyperparams)
 
     print("Evaluating model")
-    print(model.evaluate(test_df))
+    print(pretty_evaluation(model.evaluate(test_df)))
 
 if __name__ == "__main__":
     # run.py [data predefined path or custom path] [model name]
