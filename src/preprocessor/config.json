@@ -1,32 +1,32 @@
 {
     "default": {
         "text_tokens": false,
-        "hashtags": true,
-        "tweet_id": true,
-        "present_media": true,
-        "present_links": true,
-        "present_domains": true,
+        "hashtags": false,
+        "tweet_id": false,
+        "present_media": false,
+        "present_links": false,
+        "present_domains": false,
         "tweet_type": true,
         "language": true,
         "tweet_timestamp": true,
-        "engaged_with_user_id": true,
+        "engaged_with_user_id": false,
         "engaged_with_user_follower_count": true,
         "engaged_with_user_following_count": true,
         "engaged_with_user_is_verified": true,
         "engaged_with_user_account_creation": true,
-        "engaging_user_id": true,
+        "engaging_user_id": false,
         "engaging_user_follower_count": true,
         "engaging_user_following_count": true,
         "engaging_user_is_verified": true,
         "engaging_user_account_creation": true,
         "engagee_follows_engager": true,
-        "reply_timestamp": true,
-        "retweet_timestamp": true,
-        "retweet_with_comment_timestamp": true,
-        "like_timestamp": true
+        "reply_timestamp": false,
+        "retweet_timestamp": false,
+        "retweet_with_comment_timestamp": false,
+        "like_timestamp": false
     },
     "custom": {
-        "is_positive": true,
+        "is_positive": false,
         "binarize_timestamps": true
     }
 }
