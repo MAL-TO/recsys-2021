@@ -26,6 +26,7 @@
         "like_timestamp": true
     },
     "custom": {
-        "is_positive": true
+        "is_positive": true,
+        "binarize_timestamps": true
     }
 }
