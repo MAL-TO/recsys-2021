@@ -6,7 +6,7 @@ from databricks.koalas.config import set_option, reset_option
 
 # Example of custom features import
 from preprocessor.targets.is_positive import is_positive
-
+from preprocessor.targets.binarize_timestamps import binarize_timestamps
 
 class FeatureStore():
     """Handle feature configuration"""
@@ -64,14 +64,24 @@ class FeatureStore():
                 
                 if isinstance(extracted, Mapping):  # more than one feature extracted
                     feature_dict.update(extracted)
+                    
+                    # Store the new features
+                    # TODO(Francesco): ks.concat is slow and not adviced.
+                    # ks.DataFrame(extraced) does not work with koalas, only with pandas - to_pandas() adviced only for small dataframes
+                    features_df = ks.concat(list(extracted.values()), axis=1)
+                    if self.is_cluster:
+                        features_df.to_csv(feature_path, index_col = ['sorting_index'], header = list(extracted.keys()))
+                    else:
+                        features_df.to_csv(feature_path, index_col = ['sorting_index'], header = list(extracted.keys()), num_files=1)
+
                 else:
                     feature_dict[feature_name] = extracted
 
-                # Store the new feature
-                if self.is_cluster:
-                    extracted.to_csv(feature_path, index_col = ['sorting_index'], header = [feature_name])
-                else:
-                    extracted.to_csv(feature_path, index_col = ['sorting_index'], header = [feature_name], num_files=1)
+                    # Store the new feature
+                    if self.is_cluster:
+                        extracted.to_csv(feature_path, index_col = ['sorting_index'], header = [feature_name])
+                    else:
+                        extracted.to_csv(feature_path, index_col = ['sorting_index'], header = [feature_name], num_files=1)
 
                 print("Feature added to " + feature_path)
                 

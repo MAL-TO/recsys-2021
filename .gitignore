@@ -6,6 +6,9 @@ data/preds/
 data/preprocessed/
 data/raw/
 
+# Submission zip file
+submission.zip
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

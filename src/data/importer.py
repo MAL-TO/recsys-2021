@@ -54,7 +54,7 @@ timestamp_cols = [
     "like_timestamp"
 ]
 
-# TODO (Francesco): update when we decide a standard format for our raw datasets (.csv and .parquet)
+# TODO (Francesco): update when we decide a standard format (columns) for our raw datasets (.csv and .parquet)
 def read_csv(path):
     data = ks.read_csv(path, sep='\x01', header=None)
     columns = features+list(labels_idx)
@@ -69,6 +69,7 @@ def read_csv(path):
 
     return data
 
+
 # TODO(Francesco): test this function
 def read_parquet(path):
     remove_cols = ["text_tokens", "tweet_id"]
@@ -77,7 +78,6 @@ def read_parquet(path):
     return data
 
 
-# TODO(Francesco): make uniform file extension or remove control
 def import_data(path):
     extension = path.split('.').pop()
 
@@ -85,7 +85,11 @@ def import_data(path):
         raw_data = read_csv(path)
     elif extension == 'parquet':
         raw_data = read_parquet(path)
+
+    # TODO(Francesco): use file extensions uniformly or remove control
     else:
-        raise RuntimeError ("File format not specified! Please use a valid extension")
+        raw_data = read_csv(path)
+    # else:
+    #     raise RuntimeError ("File format not specified! Please use a valid extension")
 
     return raw_data
