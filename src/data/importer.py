@@ -54,16 +54,18 @@ timestamp_cols = [
     "like_timestamp"
 ]
 
-
+# TODO (Francesco): update when we decide a standard format for our raw datasets (.csv and .parquet)
 def read_csv(path):
-    data = ks.read_csv(path, sep='\x01', names = features+list(labels_idx))
-
-    # Make ".csv" columns compatible with ".parquet". Remember to update whenever text_tokens are needed
-    remove_cols = ["text_tokens", "tweet_id"]
-    data_cols = list(data.columns)
-    for col in remove_cols:
-        if col in data_cols:
-            data = data.drop(col)
+    data = ks.read_csv(path, sep='\x01', header=None)
+    columns = features+list(labels_idx)
+    if len(data.columns) == len(columns):
+        data.columns = columns
+        # Make ".csv" columns compatible with ".parquet". Remember to update whenever text_tokens are needed
+        remove_cols = ["text_tokens", "tweet_id"]
+        data = data.drop(remove_cols)
+    
+    else:
+        data.columns = list(set(columns) - set(remove_cols))
 
     return data
 

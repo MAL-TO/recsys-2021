@@ -6,9 +6,9 @@ def calculate_ctr(gt):
     return ctr
 
 def relative_cross_entropy_score(gt, pred):
-    cross_entropy = log_loss(gt, pred)
+    cross_entropy = log_loss(gt, pred, labels=['True', 'False'])
     data_ctr = calculate_ctr(gt)
-    strawman_cross_entropy = log_loss(gt, [data_ctr for _ in range(len(gt))])
+    strawman_cross_entropy = log_loss(gt, [data_ctr for _ in range(len(gt))], labels=['True', 'False'])
     return (1.0 - cross_entropy/strawman_cross_entropy)*100.0
 
 def compute_score(y_true, y_score):
