@@ -14,10 +14,11 @@ https://recsys-twitter.com/
 #### How to
 1. Pull/clone `recsys-2021` on your system
 2. `cd` to the repository
-3. `pipenv shell` (this should install all required packages and start the shell)
-4. `cd src`
-5. Make sure that `dataset_name` is set to the corresponding path in `RAW_DATA_INPUT_PATH`, and that the corresponding path is correct.
-6. `python run.py`
+3. `pipenv install -d` (install both develop and default packages from Pipfile)
+4. `pipenv shell` (start the shell for the environment associated to the repository)
+5. `cd src`
+6. Make sure that `dataset_name` is set to the corresponding path in `RAW_DATA_INPUT_PATH`, and that the corresponding path is correct.
+7. `python run.py`
 
 ### On the cluster
 #### Requirements
