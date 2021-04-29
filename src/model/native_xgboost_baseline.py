@@ -11,25 +11,26 @@ class Model(ModelInterface):
     def __init__(self):
         self.models = {}
 
-        self.target_columns = ["reply", "retweet", "retweet_with_comment", "like"]
-
-        default = [
+        self.features =[
             "engaged_with_user_follower_count",
             "engaged_with_user_following_count",
             "engaging_user_follower_count",
-            "engaging_user_following_count"
+            "engaging_user_following_count",
+            "is_positive"
         ]
+
+        # Must be coherent with columns in custom_targets!
+        self.target_columns = ["reply", "retweet", "retweet_with_comment", "like"]
+
+        # Custom features used as target
         custom_targets = [
             "binarize_timestamps"
         ]
 
-        custom_features = []
-        
         # For feature store
-        self.enabled_features = {"default":  default, "custom": custom_features + custom_targets}
+        self.enabled_features = self.features + custom_targets
 
-        # For training and inference. ERROR here
-        self.features = default + custom_features
+        print(self.features)
 
 
     @staticmethod

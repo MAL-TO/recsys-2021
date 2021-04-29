@@ -20,9 +20,15 @@ class FeatureStore():
             raw_data (ks.Dataframe): reference to raw data Dataframe instance
         """
         self.path_preprocessed = path_preprocessed
-        self.enabled_features = enabled_features
         self.raw_data = raw_data
         self.is_cluster = is_cluster # True if working on cluster, False if working on local machine  
+
+        self.enabled_features = {"default": [], "custom": []}
+        for feature in enabled_features:
+            if feature in self.raw_data.columns:
+                self.enabled_features["default"].append(feature)
+            else:
+                self.enabled_features["custom"].append(feature)
 
 
     def extract_features(self):
@@ -68,7 +74,7 @@ class FeatureStore():
                     # Store the new features
                     # TODO(Francesco): ks.concat is slow and not adviced.
                     # ks.DataFrame(extraced) does not work with koalas, only with pandas - to_pandas() adviced only for small dataframes
-                    features_df = ks.concat(list(extracted.values()), axis=1)
+                    features_df = ks.concat(list(extracted.values()), axis=1, join = 'inner')
                     if self.is_cluster:
                         features_df.to_csv(feature_path, index_col = ['sorting_index'], header = list(extracted.keys()))
                     else:
@@ -99,14 +105,14 @@ class FeatureStore():
         Returns:
             dataset (ks.DataFrame): the union of self.raw_data and the extracted features
         """ 
+        # Explicitly allow join on different dataframes. Please refer to https://docs.databricks.com/_static/notebooks/pandas-to-koalas-in-10-minutes.html for details
+        set_option("compute.ops_on_diff_frames", True)
 
         # {'feature_name': Series, ...}
         feature_dict = self.extract_features()
         sliced_raw_data = self.raw_data.loc[:, self.enabled_features["default"]]
 
-        # Explicitly allow join on different dataframes. Please refer to https://docs.databricks.com/_static/notebooks/pandas-to-koalas-in-10-minutes.html for details
-        set_option("compute.ops_on_diff_frames", True)
-        features_dataset = ks.concat([sliced_raw_data] + list(feature_dict.values()), axis=1)
+        features_dataset = ks.concat([sliced_raw_data] + list(feature_dict.values()), axis=1, join='inner')
 
         # Reset to default to avoid potential expensive operation in the future
         reset_option("compute.ops_on_diff_frames")
