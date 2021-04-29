@@ -47,8 +47,6 @@ def main(dataset_name):
     store = FeatureStore(PATH_PREPROCESSED, enabled_features, raw_data, CLUSTER)
     features_union_df = store.get_dataset()
     print("Dataset ready")
-    print(features_union_df)
-    print(features_union_df.info())
 
     
     # Train-valid-test split

@@ -70,7 +70,6 @@ def read_csv(path):
     return data
 
 
-# TODO(Francesco): test this function
 def read_parquet(path):
     remove_cols = ["text_tokens", "tweet_id"]
     parquet_features = list(set(features) - set(remove_cols))

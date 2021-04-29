@@ -110,7 +110,7 @@ class FeatureStore():
 
         # {'feature_name': Series, ...}
         feature_dict = self.extract_features()
-        sliced_raw_data = self.raw_data.loc[:, self.enabled_features["default"]]
+        sliced_raw_data = self.raw_data[self.enabled_features["default"]]
 
         features_dataset = ks.concat([sliced_raw_data] + list(feature_dict.values()), axis=1, join='inner')
 

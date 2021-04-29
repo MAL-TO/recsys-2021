@@ -11,12 +11,12 @@ class Model(ModelInterface):
     def __init__(self):
         self.models = {}
 
+        # Default and custom
         self.features =[
             "engaged_with_user_follower_count",
             "engaged_with_user_following_count",
             "engaging_user_follower_count",
-            "engaging_user_following_count",
-            "is_positive"
+            "engaging_user_following_count"
         ]
 
         # Must be coherent with columns in custom_targets!
@@ -29,8 +29,6 @@ class Model(ModelInterface):
 
         # For feature store
         self.enabled_features = self.features + custom_targets
-
-        print(self.features)
 
 
     @staticmethod
