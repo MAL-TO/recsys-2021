@@ -34,7 +34,7 @@ class Model(ModelInterface):
     @staticmethod
     def serialized_model_path_for_target(target: str) -> str:
         p = Path(ROOT_DIR) / '../serialized_models' / f'native_xgboost_basline_{target}.model'
-        return p.resolve()
+        return str(p.resolve())
 
     def fit(self, train_ksdf, valid_ksdf, _hyperparameters):
         ###############################################################################

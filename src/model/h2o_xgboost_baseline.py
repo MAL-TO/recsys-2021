@@ -8,7 +8,6 @@ from h2o.estimators import H2OXGBoostEstimator
 
 from model.interface import ModelInterface
 
-
 # Warning: this class only works with *small*-ish datasets, as it casts Spark
 # dataframes to Pandas dataframes (H2O natively does not work with Spark).
 # Make sure you have enough memory on your machine.
@@ -20,6 +19,8 @@ from model.interface import ModelInterface
 # "engaging_user_following_count"
 # all targets
 
+from pathlib import Path
+from constants import ROOT_DIR
 
 class Model(ModelInterface):
     def __init__(self):
@@ -37,6 +38,32 @@ class Model(ModelInterface):
             "retweet_with_comment",
             "like"
         ]
+        self.enabled_features = [
+            # Tweet features
+            "tweet_type",       # String        Tweet type, can be either Retweet, Quote, Reply, or Toplevel
+            "language",         # String        Identifier corresponding to the inferred language of the Tweet
+            "tweet_timestamp",  # Long          Unix timestamp, in sec of the creation time of the Tweet
+
+            # Engaged-with User (i.e., Engagee) Features
+            "engaged_with_user_follower_count",     # Long      Number of followers of the user
+            "engaged_with_user_following_count",    # Long      Number of accounts the user is following
+            "engaged_with_user_is_verified",        # Bool      Is the account verified?
+            "engaged_with_user_account_creation",   # Long      Unix timestamp, in seconds, of the creation time of the account
+
+            # Engaging User (i.e., Engager) Features
+            "engaging_user_follower_count",         # Long      Number of followers of the user
+            "engaging_user_following_count",        # Long      Number of accounts the user is following
+            "engaging_user_is_verified",            # Bool      Is the account verified?
+            "engaging_user_account_creation",       # Long      Unix timestamp, in seconds, of the creation time of the account
+
+            # Engagement features
+            "engagee_follows_engager"   # Bool  Does the account of the engaged-with tweet author follow the account that has made the engagement?
+        ] + ["binarize_timestamps"]
+
+    @staticmethod
+    def serialized_model_path_for_target(target: str) -> str:
+        p = Path(ROOT_DIR) / '../serialized_models' / f'h2o_xgboost_baseline_{target}.model'
+        return str(p.resolve())
 
     def fit(self, train_data, valid_data, hyperparams):
         """Fit model to given training data and validate it.
@@ -61,6 +88,7 @@ class Model(ModelInterface):
                         ignored_columns=list(ignored),
                         training_frame=train_frame,
                         validation_frame=valid_frame)
+            model.save_mojo(self.serialized_model_path_for_target(label))
             models[label] = model
 
         # Save (best on valid) trained model
@@ -80,7 +108,11 @@ class Model(ModelInterface):
         return predictions
 
     def load_pretrained(self):
-        raise NotImplementedError
+        self.model = {}
+        for label in self.labels:
+            # Select the first model in the directory
+            p = str(next(Path(self.serialized_model_path_for_target(label)).iterdir()).resolve())
+            self.model[label] = h2o.import_mojo(p)
 
     def save_to_logs(self, metrics):
         """Save the results of the latest test performed to logs."""
