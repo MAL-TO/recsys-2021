@@ -54,41 +54,23 @@ timestamp_cols = [
     "like_timestamp"
 ]
 
-# TODO (Francesco): update when we decide a standard format (columns) for our raw datasets (.csv and .parquet)
-def read_csv(path):
-    data = ks.read_csv(path, sep='\x01', header=None)
-    columns = features+list(labels_idx)
-    if len(data.columns) == len(columns):
-        data.columns = columns
-        # Make ".csv" columns compatible with ".parquet". Remember to update whenever text_tokens are needed
-        remove_cols = ["text_tokens", "tweet_id"]
-        data = data.drop(remove_cols)
-    
-    else:
-        data.columns = list(set(columns) - set(remove_cols))
 
+def read_csv(path):
+    data = ks.read_csv(path, sep='\x01', names=features+list(labels_idx))
     return data
 
 
 def read_parquet(path):
-    remove_cols = ["text_tokens", "tweet_id"]
-    parquet_features = list(set(features) - set(remove_cols))
-    data = ks.read_parquet(path, columns=parquet_features+list(labels_idx))
+    data = ks.read_parquet(path, columns=features+list(labels_idx))
     return data
 
 
 def import_data(path):
     extension = path.split('.').pop()
 
-    if extension == 'csv':
+    if extension == 'parquet':
         raw_data = read_csv(path)
-    elif extension == 'parquet':
-        raw_data = read_parquet(path)
-
-    # TODO(Francesco): use file extensions uniformly or remove control
     else:
         raw_data = read_csv(path)
-    # else:
-    #     raise RuntimeError ("File format not specified! Please use a valid extension")
 
     return raw_data
