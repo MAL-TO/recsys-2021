@@ -10,16 +10,26 @@ from constants import ROOT_DIR
 class Model(ModelInterface):
     def __init__(self):
         self.models = {}
-        self.target_columns = ["reply", "retweet", "retweet_with_comment", "like"]
 
-        # TODO(Andrea): is there a better way to have this? Instead of a single
-        # config.json have each model tell us which self.features to use
-        self.features = [
+        # Default and custom
+        self.features =[
             "engaged_with_user_follower_count",
             "engaged_with_user_following_count",
             "engaging_user_follower_count",
-            "engaging_user_following_count",
+            "engaging_user_following_count"
         ]
+
+        # Must be coherent with columns in custom_targets!
+        self.target_columns = ["reply", "retweet", "retweet_with_comment", "like"]
+
+        # Custom features used as target
+        custom_targets = [
+            "binarize_timestamps"
+        ]
+
+        # For feature store
+        self.enabled_features = self.features + custom_targets
+
 
     @staticmethod
     def serialized_model_path_for_target(target: str) -> str:
@@ -31,7 +41,6 @@ class Model(ModelInterface):
         # Convert to koalas dataframes to pandas
         train_df = train_ksdf.to_pandas()
         valid_df = valid_ksdf.to_pandas()
-
         ###############################################################################
         # Train and save models
         xgb_parameters = {"objective": "binary:logistic", "eval_metric": "logloss"}

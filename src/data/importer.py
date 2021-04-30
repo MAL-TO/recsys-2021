@@ -60,6 +60,17 @@ def read_csv(path):
     return data
 
 
-def import_data(dataset_name, path):
-    raw_data = read_csv(path)
+def read_parquet(path):
+    data = ks.read_parquet(path, columns=features+list(labels_idx))
+    return data
+
+
+def import_data(path):
+    extension = path.split('.').pop()
+
+    if extension == 'parquet':
+        raw_data = read_csv(path)
+    else:
+        raw_data = read_csv(path)
+
     return raw_data
