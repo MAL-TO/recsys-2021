@@ -6,6 +6,9 @@ data/preds/
 data/preprocessed/
 data/raw/
 
+# Serialized models
+serialized_models
+
 # Submission zip file
 submission.zip
 
