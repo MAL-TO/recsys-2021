@@ -1,5 +1,6 @@
-# VSCode
+# IDEs
 .vscode
+.idea
 
 # Ignore stuff inside data/
 data/preds/
