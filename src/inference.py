@@ -1,18 +1,9 @@
 import os
 
-import pandas as pd
-import numpy as np
-import databricks.koalas as ks
-from pyspark.sql import SparkSession
-
 from constants import ROOT_DIR
-
 from data.importer import import_data
-from data.splitter import train_valid_test_split_bounds
-
 from preprocessor.features_store import FeatureStore
-
-from model.h2o_xgboost_baseline import Model
+from model.native_xgboost_baseline import Model
 
 PATH_PREPROCESSED = os.path.join(ROOT_DIR, '../data/preprocessed')
 
@@ -26,13 +17,14 @@ def main():
     raw_data = import_data(os.path.join(ROOT_DIR, '../test'))
     print("Done")
 
-    print("Assembling dataset...")
+    print("Assembling dataset...", end=" ")
     store = FeatureStore(PATH_PREPROCESSED, model.enabled_features, raw_data, is_cluster=False)
     features_union_df = store.get_dataset()
     print("Dataset ready")
 
-    print('Computing predictions')
+    print('Computing predictions...', end=" ")
     predictions_df = model.predict(features_union_df)
+    print("Done")
 
     assert len(features_union_df) == len(predictions_df), \
         "features and predictions must have the same length"

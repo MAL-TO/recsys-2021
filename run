@@ -1,2 +1,2 @@
 #!/bin/bash
-python src/inference.py
+ARROW_PRE_0_15_IPC_FORMAT=0 PYARROW_IGNORE_TIMEZONE=1 SPARK_LOCAL_IP=127.0.0.1 python src/inference.py
