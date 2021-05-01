@@ -69,7 +69,7 @@ def import_data(path):
     extension = path.split('.').pop()
 
     if extension == 'parquet':
-        raw_data = read_csv(path)
+        raw_data = read_parquet(path)
     else:
         raw_data = read_csv(path)
 
