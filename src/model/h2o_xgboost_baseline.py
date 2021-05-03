@@ -1,7 +1,6 @@
 import pandas as pd
-import numpy as np
-import databricks.koalas as ks
-from pyspark.sql import SparkSession
+import os
+import contextlib
 
 import h2o
 from h2o.estimators import H2OXGBoostEstimator
@@ -22,9 +21,13 @@ from model.interface import ModelInterface
 from pathlib import Path
 from constants import ROOT_DIR
 
+
 class Model(ModelInterface):
     def __init__(self, include_targets=True):
-        h2o.init()
+        with open(os.devnull, "w") as devnull:
+            with contextlib.redirect_stdout(devnull):
+                h2o.init()
+                h2o.no_progress()
 
         is_xgboost_available = H2OXGBoostEstimator.available()
 
@@ -32,39 +35,35 @@ class Model(ModelInterface):
             raise RuntimeError("H2OXGBoostEstimator is not available!")
 
         self.model = None
-        self.labels = [
-            "reply",
-            "retweet",
-            "retweet_with_comment",
-            "like"
-        ]
+        self.labels = ["reply", "retweet", "retweet_with_comment", "like"]
         self.enabled_features = [
             # Tweet features
-            "tweet_type",       # String        Tweet type, can be either Retweet, Quote, Reply, or Toplevel
-            "language",         # String        Identifier corresponding to the inferred language of the Tweet
-            "tweet_timestamp",  # Long          Unix timestamp, in sec of the creation time of the Tweet
-
+            "tweet_type",
+            "language",
+            "tweet_timestamp",
             # Engaged-with User (i.e., Engagee) Features
-            "engaged_with_user_follower_count",     # Long      Number of followers of the user
-            "engaged_with_user_following_count",    # Long      Number of accounts the user is following
-            "engaged_with_user_is_verified",        # Bool      Is the account verified?
-            "engaged_with_user_account_creation",   # Long      Unix timestamp, in seconds, of the creation time of the account
-
+            "engaged_with_user_follower_count",
+            "engaged_with_user_following_count",
+            "engaged_with_user_is_verified",
+            "engaged_with_user_account_creation",
             # Engaging User (i.e., Engager) Features
-            "engaging_user_follower_count",         # Long      Number of followers of the user
-            "engaging_user_following_count",        # Long      Number of accounts the user is following
-            "engaging_user_is_verified",            # Bool      Is the account verified?
-            "engaging_user_account_creation",       # Long      Unix timestamp, in seconds, of the creation time of the account
-
+            "engaging_user_follower_count",
+            "engaging_user_following_count",
+            "engaging_user_is_verified",
+            "engaging_user_account_creation",
             # Engagement features
-            "engagee_follows_engager"   # Bool  Does the account of the engaged-with tweet author follow the account that has made the engagement?
+            "engagee_follows_engager",
         ]
-        if include_targets: self.enabled_features += "binarize_timestamps"
-
+        if include_targets:
+            self.enabled_features += "binarize_timestamps"
 
     @staticmethod
     def serialized_model_path_for_target(target: str) -> str:
-        p = Path(ROOT_DIR) / '../serialized_models' / f'h2o_xgboost_baseline_{target}.model'
+        p = (
+            Path(ROOT_DIR)
+            / "../serialized_models"
+            / f"h2o_xgboost_baseline_{target}.model"
+        )
         return str(p.resolve())
 
     def fit(self, train_data, valid_data, hyperparams):
@@ -86,10 +85,12 @@ class Model(ModelInterface):
             # TODO: handle unbalancement (up/down sampling, other?)
             ignored = set(self.labels) - set(label)
             model = H2OXGBoostEstimator(**hyperparams)
-            model.train(y=label,
-                        ignored_columns=list(ignored),
-                        training_frame=train_frame,
-                        validation_frame=valid_frame)
+            model.train(
+                y=label,
+                ignored_columns=list(ignored),
+                training_frame=train_frame,
+                validation_frame=valid_frame,
+            )
             model.save_mojo(self.serialized_model_path_for_target(label))
             models[label] = model
 
@@ -105,7 +106,12 @@ class Model(ModelInterface):
 
         predictions = pd.DataFrame()
         for label in self.labels:
-            predictions[label] = self.model[label].predict(test_frame).as_data_frame()['True'].values
+            predictions[label] = (
+                self.model[label]
+                .predict(test_frame)
+                .as_data_frame()["True"]
+                .values
+            )
 
         return predictions
 
@@ -113,8 +119,16 @@ class Model(ModelInterface):
         self.model = {}
         for label in self.labels:
             # Select the first model in the directory
-            p = str(next(Path(self.serialized_model_path_for_target(label)).iterdir()).resolve())
-            self.model[label] = h2o.import_mojo(p)
+            p = str(
+                next(
+                    Path(
+                        self.serialized_model_path_for_target(label)
+                    ).iterdir()
+                ).resolve()
+            )
+            with open(os.devnull, "w") as devnull:
+                with contextlib.redirect_stdout(devnull):
+                    self.model[label] = h2o.import_mojo(p)
 
     def save_to_logs(self, metrics):
         """Save the results of the latest test performed to logs."""
