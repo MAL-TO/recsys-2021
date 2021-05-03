@@ -8,7 +8,7 @@ from pathlib import Path
 from constants import ROOT_DIR
 
 class Model(ModelInterface):
-    def __init__(self):
+    def __init__(self, include_targets=True):
         self.models = {}
 
         # Default and custom
@@ -28,7 +28,8 @@ class Model(ModelInterface):
         ]
 
         # For feature store
-        self.enabled_features = self.features + custom_targets
+        self.enabled_features = self.features
+        if include_targets: self.enabled_features += custom_targets
 
 
     @staticmethod

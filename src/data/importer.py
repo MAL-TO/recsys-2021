@@ -15,21 +15,21 @@ features = [
     "tweet_type",       # String        Tweet type, can be either Retweet, Quote, Reply, or Toplevel
     "language",         # String        Identifier corresponding to the inferred language of the Tweet
     "tweet_timestamp",  # Long          Unix timestamp, in sec of the creation time of the Tweet
-    
+
     # Engaged-with User (i.e., Engagee) Features
     "engaged_with_user_id",                 # String    User identifier
     "engaged_with_user_follower_count",     # Long      Number of followers of the user
     "engaged_with_user_following_count",    # Long      Number of accounts the user is following
     "engaged_with_user_is_verified",        # Bool      Is the account verified?
     "engaged_with_user_account_creation",   # Long      Unix timestamp, in seconds, of the creation time of the account
-    
+
     # Engaging User (i.e., Engager) Features
-    "engaging_user_id",                     # String    User identifier   
+    "engaging_user_id",                     # String    User identifier
     "engaging_user_follower_count",         # Long      Number of followers of the user
     "engaging_user_following_count",        # Long      Number of accounts the user is following
     "engaging_user_is_verified",            # Bool      Is the account verified?
     "engaging_user_account_creation",       # Long      Unix timestamp, in seconds, of the creation time of the account
-    
+
     # Engagement features
     "engagee_follows_engager"   # Bool  Does the account of the engaged-with tweet author follow the account that has made the engagement?
 ]
@@ -55,22 +55,26 @@ timestamp_cols = [
 ]
 
 
-def read_csv(path):
-    data = ks.read_csv(path, sep='\x01', names=features+list(labels_idx))
+def read_csv(path, include_targets):
+    names = features
+    if include_targets: names += list(labels_idx)
+    data = ks.read_csv(path, sep='\x01', names=names)
     return data
 
 
-def read_parquet(path):
-    data = ks.read_parquet(path, columns=features+list(labels_idx))
+def read_parquet(path, include_targets):
+    names = features
+    if include_targets: names += list(labels_idx)
+    data = ks.read_parquet(path, columns=names)
     return data
 
 
-def import_data(path):
+def import_data(path, include_targets=True):
     extension = path.split('.').pop()
 
     if extension == 'parquet':
-        raw_data = read_parquet(path)
+        raw_data = read_parquet(path, include_targets)
     else:
-        raw_data = read_csv(path)
+        raw_data = read_csv(path, include_targets)
 
     return raw_data

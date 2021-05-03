@@ -3,18 +3,18 @@ import os
 from constants import ROOT_DIR
 from data.importer import import_data
 from preprocessor.features_store import FeatureStore
-from model.native_xgboost_baseline import Model
+from model.h2o_xgboost_baseline import Model
 
 PATH_PREPROCESSED = os.path.join(ROOT_DIR, '../data/preprocessed')
 
 def main():
     print("Initializing model...", end = " ")
-    model = Model()
+    model = Model(include_targets=False)
     model.load_pretrained()
     print("Done")
 
     print("Importing data...", end=" ")
-    raw_data = import_data(os.path.join(ROOT_DIR, '../test'))
+    raw_data = import_data(os.path.join(ROOT_DIR, '../test'), include_targets=False)
     print("Done")
 
     print("Assembling dataset...", end=" ")

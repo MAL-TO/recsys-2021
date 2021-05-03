@@ -23,7 +23,7 @@ from pathlib import Path
 from constants import ROOT_DIR
 
 class Model(ModelInterface):
-    def __init__(self):
+    def __init__(self, include_targets=True):
         h2o.init()
 
         is_xgboost_available = H2OXGBoostEstimator.available()
@@ -58,7 +58,9 @@ class Model(ModelInterface):
 
             # Engagement features
             "engagee_follows_engager"   # Bool  Does the account of the engaged-with tweet author follow the account that has made the engagement?
-        ] + ["binarize_timestamps"]
+        ]
+        if include_targets: self.enabled_features += "binarize_timestamps"
+
 
     @staticmethod
     def serialized_model_path_for_target(target: str) -> str:
