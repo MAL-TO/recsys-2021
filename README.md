@@ -77,6 +77,11 @@ A single custom feature extractor can extract more than one feature. If you want
 
 #### Testing the inference script without Docker
 
+Remember to run `pipenv shell` first.
+
+This requires that you have `data/raw/test` with some `*part*` files inside.
+I suggest testing with ~1-10GB of data to check if memory is wasted somewhere
+
 ```shell
 # Delete the old results_folder, a to_csv artifact
 rm -rf results_folder && \
