@@ -1,18 +1,20 @@
-import json
 import os
 import databricks.koalas as ks
-from collections.abc import Mapping
-from databricks.koalas.config import set_option, reset_option
 from typing import Dict
 
 # Example of custom features import
-from preprocessor.targets.is_positive import is_positive
-from preprocessor.targets.binarize_timestamps import binarize_timestamps
+from preprocessor.targets.is_positive import is_positive  # noqa: F401
+from preprocessor.targets.binarize_timestamps import (  # noqa: F401
+    binarize_timestamps,
+)
 
-class FeatureStore():
+
+class FeatureStore:
     """Handle feature configuration"""
 
-    def __init__(self, path_preprocessed, enabled_features, raw_data, is_cluster):
+    def __init__(
+        self, path_preprocessed, enabled_features, raw_data, is_cluster
+    ):
         """
 
         Args:
@@ -22,7 +24,8 @@ class FeatureStore():
         """
         self.path_preprocessed = path_preprocessed
         self.raw_data = raw_data
-        self.is_cluster = is_cluster # True if working on cluster, False if working on local machine
+        # True if working on cluster, False if working on local machine
+        self.is_cluster = is_cluster
 
         self.enabled_features = {"default": [], "custom": []}
         for feature in enabled_features:
@@ -30,7 +33,6 @@ class FeatureStore():
                 self.enabled_features["default"].append(feature)
             else:
                 self.enabled_features["custom"].append(feature)
-
 
     def extract_features(self):
         feature_dict: Dict[str, ks.Series] = {}
@@ -41,7 +43,9 @@ class FeatureStore():
             # If feature already materialized
             if os.path.exists(feature_path):
                 print("### Reading cached " + feature_name + "...")
-                ks_feature = ks.read_csv(feature_path, header = 0, index_col = 'sorting_index')
+                ks_feature = ks.read_csv(
+                    feature_path, header=0, index_col="sorting_index"
+                )
 
                 assert len(ks_feature) == len(self.raw_data)
 
@@ -59,37 +63,65 @@ class FeatureStore():
                 elif isinstance(ks_feature, ks.Series):
                     feature_dict[feature_name] = ks_feature
                 else:
-                    raise TypeError(f"ks_feature must be a Koalas DataFrame or Series, got {type(ks_feature)}")
+                    raise TypeError(
+                        f"ks_feature must be a Koalas DataFrame or Series, got {type(ks_feature)}"
+                    )
 
             else:
                 print("### Extracting " + feature_name + "...")
                 feature_extractor = globals()[feature_name]
                 extracted = feature_extractor(self.raw_data, feature_dict)
 
-                if isinstance(extracted, dict):  # more than one feature extracted
+                if isinstance(
+                    extracted, dict
+                ):  # more than one feature extracted
                     for column in extracted:
                         assert isinstance(extracted[column], ks.Series)
                         feature_dict[column] = extracted[column]
 
                     # Store the new features
                     # TODO(Francesco): ks.concat is slow and not adviced.
-                    # ks.DataFrame(extraced) does not work with koalas, only with pandas - to_pandas() adviced only for small dataframes
-                    features_df = ks.concat(list(extracted.values()), axis=1, join = 'inner')
+                    # ks.DataFrame(extraced) does not work with koalas, only
+                    # with pandas - to_pandas() adviced only for small
+                    # dataframes
+                    features_df = ks.concat(
+                        list(extracted.values()), axis=1, join="inner"
+                    )
                     if self.is_cluster:
-                        features_df.to_csv(feature_path, index_col = ['sorting_index'], header = list(extracted.keys()))
+                        features_df.to_csv(
+                            feature_path,
+                            index_col=["sorting_index"],
+                            header=list(extracted.keys()),
+                        )
                     else:
-                        features_df.to_csv(feature_path, index_col = ['sorting_index'], header = list(extracted.keys()), num_files=1)
+                        features_df.to_csv(
+                            feature_path,
+                            index_col=["sorting_index"],
+                            header=list(extracted.keys()),
+                            num_files=1,
+                        )
 
                 elif isinstance(extracted, ks.Series):
                     feature_dict[feature_name] = extracted
 
                     # Store the new feature
                     if self.is_cluster:
-                        extracted.to_csv(feature_path, index_col = ['sorting_index'], header = [feature_name])
+                        extracted.to_csv(
+                            feature_path,
+                            index_col=["sorting_index"],
+                            header=[feature_name],
+                        )
                     else:
-                        extracted.to_csv(feature_path, index_col = ['sorting_index'], header = [feature_name], num_files=1)
+                        extracted.to_csv(
+                            feature_path,
+                            index_col=["sorting_index"],
+                            header=[feature_name],
+                            num_files=1,
+                        )
                 else:
-                    raise TypeError(f"extracted must be a Koalas DataFrame or Series, got {type(extracted)}")
+                    raise TypeError(
+                        f"extracted must be a Koalas DataFrame or Series, got {type(extracted)}"
+                    )
 
                 print("Feature added to " + feature_path)
 
@@ -99,23 +131,17 @@ class FeatureStore():
 
         return feature_dict
 
-    # TODO(Francesco): when working on distributed environment, koalas.read_csv() loses the order of the row.
-    # Option1: keep the index and use .join with index as key
-    # Option2: keep the index, sort by index, use .concat()
     def get_dataset(self):
         feature_dict = self.extract_features()
-        sliced_raw_data = self.raw_data[self.enabled_features["default"]].spark.local_checkpoint()
+        sliced_raw_data: ks.DataFrame = self.raw_data[
+            self.enabled_features["default"]
+        ]
+        features_dataset = sliced_raw_data
 
-        features_dataset = sliced_raw_data.cache()
-
-        ks.set_option('compute.ops_on_diff_frames', True)
+        # TODO(Andrea): check that it works given the new indexing strategy
+        ks.set_option("compute.ops_on_diff_frames", True)
         for feature_name, feature_series in feature_dict.items():
-            assert len(sliced_raw_data) == len(feature_series)
             features_dataset[feature_name] = feature_series
-        ks.set_option('compute.ops_on_diff_frames', False)
-
-        assert len(features_dataset) == len(sliced_raw_data)
-        for _, feature in feature_dict.items():
-            assert len(features_dataset) == len(feature)
+        ks.set_option("compute.ops_on_diff_frames", False)
 
         return features_dataset
