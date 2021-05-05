@@ -64,10 +64,8 @@ class Model(ModelInterface):
         return str(p.resolve())
 
     def fit(self, train_ksdf, valid_ksdf, _hyperparameters):
-        ###############################################################################
         # Convert to koalas dataframes to pandas
         train_df = train_ksdf.to_pandas()
-        ###############################################################################
         # Train and save models
         xgb_parameters = {
             "objective": "binary:logistic",
@@ -96,25 +94,24 @@ class Model(ModelInterface):
             print("len:", features_sdf.count())
             print("#partitions: ", features_sdf.rdd.getNumPartitions())
 
-        # TODO(Andrea): see
-        # https://blog.munhou.com/2020/03/01/ML-Prediction-with-XGBoost-and-PySpark/
-
         with Stage("UDF?"):
             features_with_partition_id_sdf = features_sdf.withColumn(
                 "partition_id", spark_partition_id()
             )
 
             schema = StructType(
-                [StructField("tweet_id", StringType(), False)]
-                + [StructField("engaging_user_id", StringType(), False)]
-                + [StructField("reply", FloatType(), False)]
-                + [StructField("retweet", FloatType(), False)]
-                + [StructField("retweet_with_comment", FloatType(), False)]
-                + [StructField("like", FloatType(), False)]
+                [
+                    StructField("tweet_id", StringType(), False),
+                    StructField("engaging_user_id", StringType(), False),
+                    StructField("reply", FloatType(), False),
+                    StructField("retweet", FloatType(), False),
+                    StructField("retweet_with_comment", FloatType(), False),
+                    StructField("like", FloatType(), False),
+                ]
             )
 
             # TODO(Andrea): oh god, oh god is this ugly. Fix executor's
-            # pythonpath instead. And also check memory usage
+            # pythonpath instead.
             @pandas_udf(
                 schema,
                 PandasUDFType.GROUPED_MAP,
@@ -155,6 +152,7 @@ class Model(ModelInterface):
                     ["tweet_id", "engaging_user_id"] + target_columns
                 ]
 
+        # TODO(Andrea): should we use withColumn instead?
         return features_with_partition_id_sdf.groupBy("partition_id").apply(
             predict_udf
         )
