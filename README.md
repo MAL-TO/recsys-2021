@@ -74,18 +74,14 @@ A single custom feature extractor can extract more than one feature. If you want
 **Please make sure that your custom feature extractor returns one row for each input dataset row.**
 
 ## Docker
-#### Building the Docker image and training the model inside it
+
+#### Testing the inference script without Docker
 
 ```shell
-# The first command must be run in the recsys-2021 folder
-
-# Build a new docker image, called malto-submission-image, using the Dockerfile stored in the current folder
-docker build -t malto-submission-image .
-
-# Run a new docker container, letting it access the data folder, then running run.py to train
-docker run \
-    --name smol-boi \
-    --rm \
-    --mount type=bind,source="$(pwd)"/data,destination=/data,readonly \
-    malto-submission-image:latest python run.py
+# Delete the old results_folder, a to_csv artifact
+rm -rf results_folder && \
+# Clear the terminal (optional)
+tput reset && \
+# Launch inference.py with the environment variables needed by Apache Arrow
+ARROW_PRE_0_15_IPC_FORMAT=1 PYARROW_IGNORE_TIMEZONE=1 python src/inference.py
 ```
