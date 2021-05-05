@@ -6,6 +6,7 @@
 data/preds/
 data/preprocessed/
 data/raw/
+results_folder/
 
 # Serialized models
 serialized_models

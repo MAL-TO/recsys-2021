@@ -1,60 +1,84 @@
 import os
+import gc
+
+from pyspark import SparkConf, SparkContext
+import databricks.koalas as ks
 
 from constants import ROOT_DIR
 from data.importer import import_data
 from preprocessor.features_store import FeatureStore
-from model.h2o_xgboost_baseline import Model
+from model.native_xgboost_baseline import Model
+from util import Stage
 
 PATH_PREPROCESSED = os.path.join(ROOT_DIR, "../data/preprocessed")
+# TEST_DIR = "../data/raw/test"
+TEST_DIR = "../test"
 
 
 def main():
-    print("Initializing model...", end=" ")
-    model = Model(include_targets=False)
-    model.load_pretrained()
-    print("Done")
+    with Stage("Initializing model..."):
+        model = Model(include_targets=False)
+        model.load_pretrained()
 
     part_files = [
-        os.path.join(ROOT_DIR, "../data/raw/test/", f)
-        for f in os.listdir(os.path.join(ROOT_DIR, "../data/raw/test"))
+        os.path.join(ROOT_DIR, TEST_DIR, f)
+        for f in os.listdir(os.path.join(ROOT_DIR, TEST_DIR))
         if "part" in f
     ]
+
+    with Stage("Creating Spark context..."):
+        # https://spark.apache.org/docs/latest/configuration.html
+        conf = SparkConf()
+        conf.set("spark.driver.memory", "4g")
+        conf.set("spark.driver.maxResultSize", "4g")
+
+        conf.set("spark.executor.memory", "3g")
+
+        conf.set("spark.sql.execution.arrow.pyspark.enabled", "true")
+        conf.set("spark.sql.execution.arrow.enabled", "true")
+        conf.set("spark.sql.execution.arrow.pyspark.fallback.enabled", "false")
+
+        conf.setMaster("local[*]")
+        conf.setAppName("Recsys-2021")
+
+        SparkContext(conf=conf).setLogLevel("WARN")
+
+        ks.set_option("compute.default_index_type", "distributed")
+
     for part_file in part_files:
-        print("Importing data...", end=" ")
-        raw_data = import_data(part_file, include_targets=False)
-        print("Done")
+        print(f"Processing '{part_file}'")
 
-        print("Assembling dataset...", end=" ")
-        store = FeatureStore(
-            PATH_PREPROCESSED,
-            model.enabled_features,
-            raw_data,
-            is_cluster=False,
-        )
-        features_union_df = store.get_dataset()
-        print("Dataset ready")
+        with Stage("Importing data..."):
+            raw_data = import_data(part_file, include_targets=False)
 
-        print("Computing predictions...", end=" ")
-        predictions_df = model.predict(features_union_df)
-        print("Done")
+        with Stage("Assembling dataset..."):
+            store = FeatureStore(
+                PATH_PREPROCESSED,
+                model.enabled_features,
+                raw_data,
+                is_cluster=False,
+            )
+            features_union_df = store.get_dataset()
 
-        assert len(features_union_df) == len(
-            predictions_df
-        ), "features and predictions must have the same length"
+        with Stage("Computing predictions..."):
+            predictions_df = model.predict(features_union_df).to_koalas(
+                index_col=["tweet_id", "engaging_user_id"]
+            )
 
-        predictions_df["tweet_id"] = raw_data["tweet_id"].to_numpy()
-        predictions_df["user_id"] = raw_data["engaging_user_id"].to_numpy()
+        with Stage("Verifying length"):
+            assert len(features_union_df) == len(
+                predictions_df
+            ), "features and predictions must have the same length"
 
-        predictions_df[
-            [
-                "tweet_id",
-                "user_id",
-                "reply",
-                "retweet",
-                "retweet_with_comment",
-                "like",
-            ]
-        ].to_csv("results.csv", mode="a", header=False, index=False)
+        with Stage("Saving results.csv"):
+            predictions_df.to_csv(
+                path="results_folder",
+                num_files=1,
+                header=False,
+                index_col=["tweet_id", "engaging_user_id"],
+            )
+
+        gc.collect()
 
 
 if __name__ == "__main__":
