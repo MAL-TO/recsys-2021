@@ -20,22 +20,10 @@ class Model(ModelInterface):
 
         # Default and custom
         self.features = [
-            # Tweet features
-            "tweet_type",
-            "language",
-            "tweet_timestamp",
-            # Engaged-with User (i.e., Engagee) Features
             "engaged_with_user_follower_count",
             "engaged_with_user_following_count",
-            "engaged_with_user_is_verified",
-            "engaged_with_user_account_creation",
-            # Engaging User (i.e., Engager) Features
             "engaging_user_follower_count",
             "engaging_user_following_count",
-            "engaging_user_is_verified",
-            "engaging_user_account_creation",
-            # Engagement features
-            "engagee_follows_engager",
         ]
 
         # Must be coherent with columns in custom_targets!
@@ -50,9 +38,9 @@ class Model(ModelInterface):
         custom_targets = ["binarize_timestamps"]
 
         # For feature store
-        self.enabled_features = self.features
-        if include_targets:
-            self.enabled_features += custom_targets
+        self.enabled_features = self.features + (
+            custom_targets if include_targets else []
+        )
 
     @staticmethod
     def serialized_model_path_for_target(target: str) -> str:
@@ -63,21 +51,20 @@ class Model(ModelInterface):
         )
         return str(p.resolve())
 
-    def fit(self, train_ksdf, valid_ksdf, _hyperparameters):
-        # Convert to koalas dataframes to pandas
-        train_df = train_ksdf.to_pandas()
-        # Train and save models
+    def fit(self, train_kdf, _valid_kdf, _hyperparameters):
+        train_pdf = train_kdf.to_pandas()
+
         xgb_parameters = {
             "objective": "binary:logistic",
             "eval_metric": "logloss",
         }
         for target in self.target_columns:
-            dtrain = xgb.DMatrix(data=train_df[self.features], label=train_df[target])
+            dtrain = xgb.DMatrix(data=train_pdf[self.features], label=train_pdf[target])
             model = xgb.train(xgb_parameters, dtrain=dtrain)
             model.save_model(self.serialized_model_path_for_target(target))
             self.models[target] = model
 
-    def predict(self, features_kdf) -> pd.DataFrame:
+    def predict(self, features_kdf):
         # Schema for the UDF
         schema = StructType(
             [
