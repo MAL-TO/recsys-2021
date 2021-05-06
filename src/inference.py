@@ -1,18 +1,16 @@
 import os
 import gc
 
-from pyspark import SparkConf, SparkContext
-import databricks.koalas as ks
-
 from constants import ROOT_DIR
 from data.importer import import_data
 from preprocessor.features_store import FeatureStore
 from model.native_xgboost_baseline import Model
 from util import Stage
+from create_spark_context import create_spark_context
 
 PATH_PREPROCESSED = os.path.join(ROOT_DIR, "../data/preprocessed")
-# TEST_DIR = "../data/raw/test"
-TEST_DIR = "../test"
+TEST_DIR = "../data/raw/test-12M"
+# TEST_DIR = "../test"
 
 
 def main():
@@ -27,23 +25,7 @@ def main():
     ]
 
     with Stage("Creating Spark context..."):
-        # https://spark.apache.org/docs/latest/configuration.html
-        conf = SparkConf()
-        conf.set("spark.driver.memory", "4g")
-        conf.set("spark.driver.maxResultSize", "4g")
-
-        conf.set("spark.executor.memory", "3g")
-
-        conf.set("spark.sql.execution.arrow.pyspark.enabled", "true")
-        conf.set("spark.sql.execution.arrow.enabled", "true")
-        conf.set("spark.sql.execution.arrow.pyspark.fallback.enabled", "false")
-
-        conf.setMaster("local[*]")
-        conf.setAppName("Recsys-2021")
-
-        SparkContext(conf=conf).setLogLevel("WARN")
-
-        ks.set_option("compute.default_index_type", "distributed")
+        create_spark_context()
 
     for part_file in part_files:
         print(f"Processing '{part_file}'")
