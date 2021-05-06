@@ -77,9 +77,19 @@ A single custom feature extractor can extract more than one feature. If you want
 
 #### Testing the run (training) script without Docker
 
+If you want to clean up all preprocessed columns
+
 ```shell
 tput reset && \
-rm -rf data/preprocessed/binarize_timestamps && \
+rm -rf data/preprocessed/* && \
+time ARROW_PRE_0_15_IPC_FORMAT=1 PYARROW_IGNORE_TIMEZONE=1 python src/run.py \
+    data/raw/sample_200k_rows native_xgboost_baseline false
+```
+
+If you want to keep all preprocessed columns
+
+```shell
+tput reset && \
 time ARROW_PRE_0_15_IPC_FORMAT=1 PYARROW_IGNORE_TIMEZONE=1 python src/run.py \
     data/raw/sample_200k_rows native_xgboost_baseline false
 ```
