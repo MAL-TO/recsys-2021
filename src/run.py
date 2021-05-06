@@ -29,9 +29,7 @@ def main(dataset_path, model_name, is_cluster):
         raw_data = import_data(dataset_path)
 
     with Stage("Assembling dataset..."):
-        store = FeatureStore(
-            PATH_PREPROCESSED, enabled_features, raw_data, is_cluster, model_name
-        )
+        store = FeatureStore(PATH_PREPROCESSED, enabled_features, raw_data, is_cluster)
         features_union_df = store.get_dataset()
 
     with Stage("Split dataset"):
