@@ -73,19 +73,39 @@ A single custom feature extractor can extract more than one feature. If you want
 
 **Please make sure that your custom feature extractor returns one row for each input dataset row.**
 
-## Docker
-#### Building the Docker image and training the model inside it
+## Useful Commands
+
+#### Testing the run (training) script without Docker
+
+If you want to clean up all preprocessed columns
 
 ```shell
-# The first command must be run in the recsys-2021 folder
+tput reset && \
+rm -rf data/preprocessed/* && \
+time ARROW_PRE_0_15_IPC_FORMAT=1 PYARROW_IGNORE_TIMEZONE=1 python src/run.py \
+    data/raw/sample_200k_rows native_xgboost_baseline false
+```
 
-# Build a new docker image, called malto-submission-image, using the Dockerfile stored in the current folder
-docker build -t malto-submission-image .
+If you want to keep all preprocessed columns
 
-# Run a new docker container, letting it access the data folder, then running run.py to train
-docker run \
-    --name smol-boi \
-    --rm \
-    --mount type=bind,source="$(pwd)"/data,destination=/data,readonly \
-    malto-submission-image:latest python run.py
+```shell
+tput reset && \
+time ARROW_PRE_0_15_IPC_FORMAT=1 PYARROW_IGNORE_TIMEZONE=1 python src/run.py \
+    data/raw/sample_200k_rows native_xgboost_baseline false
+```
+
+#### Testing the inference script without Docker
+
+Remember to run `pipenv shell` first.
+
+This requires that you have `data/raw/test` with some `*part*` files inside.
+I suggest testing with ~1-10GB of data to check if memory is wasted somewhere
+
+```shell
+# Delete the old results_folder, a to_csv artifact
+rm -rf results_folder && \
+# Clear the terminal (optional)
+tput reset && \
+# Launch inference.py with the environment variables needed by Apache Arrow
+ARROW_PRE_0_15_IPC_FORMAT=1 PYARROW_IGNORE_TIMEZONE=1 python src/inference.py
 ```
