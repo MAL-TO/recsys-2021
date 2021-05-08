@@ -15,6 +15,9 @@ scikit-learn = "*"
 [dev-packages]
 notebook = "*"
 matplotlib = "*"
+seaborn = "*"
+shap = "*"
+category-encoders = "*"
 
 [requires]
 python_version = "3.7"
