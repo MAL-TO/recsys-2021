@@ -39,4 +39,26 @@ def cross_validate(train_df, transformer):
         cv_models.append(models)
         cv_results.append(results)
 
-    return models, results
+    return cv_models, cv_results
+
+
+def cv_metrics(cv_results):
+    mAPs = []
+    mRCEs = []
+    for result in cv_results:
+        mAP = (
+            result['retweet_AP']
+            +result['reply_AP']
+            +result['like_AP']
+            +result['retweet_with_comment_AP']
+        ) / 4
+        mAPs.append(mAP)
+        mRCE = (
+            result['retweet_RCE']
+            +result['reply_RCE']
+            +result['like_RCE']
+            +result['retweet_with_comment_RCE']
+        ) / 4
+        mRCEs.append(mRCE)
+    
+    return mAPs, mRCEs
