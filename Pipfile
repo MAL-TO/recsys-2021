@@ -20,6 +20,7 @@ shap = "*"
 category-encoders = "*"
 jupyterlab = "*"
 jupyterlab-lsp = "*"
+jedi-language-server = "*"
 
 [requires]
 python_version = "3.7"
