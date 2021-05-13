@@ -3,14 +3,20 @@ import os
 
 from data.importer import import_data
 from data.splitter import train_valid_test_split_bounds
-from preprocessor.features_store import FeatureStore
 from constants import ROOT_DIR
 from util import pretty_evaluation, Stage, str2bool
+from create_spark_context import create_spark_context
 
 PATH_PREPROCESSED = os.path.join(ROOT_DIR, "../data/preprocessed")
 
 
 def main(dataset_path, model_name, is_cluster):
+    with Stage("Creating Spark context..."):
+        create_spark_context(set_memory_conf=False)
+
+    # graphframes module is only available after creating Spark context
+    from preprocessor.features_store import FeatureStore
+
     with Stage("Initializing model..."):
         model = None
         if model_name == "native_xgboost_baseline":
