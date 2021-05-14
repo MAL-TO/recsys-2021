@@ -5,11 +5,12 @@ from metrics import compute_score
 from import_data import targets
 
 
-def cross_validate(train_df, transformer):
+def cross_validate(train_df, transformer, params, num_boost_round):
     tscv = TimeSeriesSplit(n_splits=5)
 
     cv_models = []
-    cv_results = []
+    cv_results_train = []
+    cv_results_test = []
 
     for train_ixs, test_ixs in tscv.split(train_df):
         train_split_df = train_df.iloc[train_ixs]
@@ -20,26 +21,30 @@ def cross_validate(train_df, transformer):
 
         # train model
         dtest = xgb.DMatrix(test_features_df)
-        results = {}
+        results_train = {}
+        results_test = {}
         models = {}
         for target in targets:
             dtrain = xgb.DMatrix(train_features_df, train_split_df[target])
-            models[target] = model = xgb.train(params={
-                'tree_method': 'gpu_hist',
-                'objective': 'binary:logistic',
-                'eval_metric': 'auc',
-                },
+            models[target] = model = xgb.train(
+                params=params,
+                num_boost_round=num_boost_round,
                 dtrain=dtrain,
-                verbose_eval=False,
+                verbose_eval=False
             )
+            AP, RCE = compute_score(train_split_df[target], model.predict(dtrain))
+            results_train[f"{target}_AP"] = AP
+            results_train[f"{target}_RCE"] = RCE
+
             AP, RCE = compute_score(test_split_df[target], model.predict(dtest))
-            results[f"{target}_AP"] = AP
-            results[f"{target}_RCE"] = RCE
+            results_test[f"{target}_AP"] = AP
+            results_test[f"{target}_RCE"] = RCE
 
         cv_models.append(models)
-        cv_results.append(results)
+        cv_results_train.append(results_train)
+        cv_results_test.append(results_test)
 
-    return cv_models, cv_results
+    return cv_models, cv_results_train, cv_results_test
 
 
 def cv_metrics(cv_results):
