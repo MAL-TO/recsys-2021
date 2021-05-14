@@ -1,6 +1,6 @@
 import time
 
-def day_of_week(raw_data, features):
+def day_of_week(raw_data, features = None):
     """
     Extract day of the week (categorical) from tweet_timestamp. UTC time zone
 
