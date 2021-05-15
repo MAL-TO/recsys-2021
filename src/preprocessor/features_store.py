@@ -4,22 +4,30 @@ from typing import Dict
 
 from preprocessor.targets.binarize_timestamps import binarize_timestamps  # noqa: F401
 
+from preprocessor.graph.auxiliary_engagement_graph import auxiliary_engagement_graph  # noqa: F401
+
 
 class FeatureStore:
     """Handle feature configuration"""
 
-    def __init__(self, path_preprocessed, enabled_features, raw_data, is_cluster):
+    def __init__(self, path_preprocessed, enabled_features, path_auxiliaries, enabled_auxiliaries, raw_data, is_cluster):
         """
 
         Args:
-            preprocessed_path (str): materialized features files location
+            path_preprocessed (str): materialized features files location
             enabled_features (list): list of the enabled features
+            path_auxiliaries (str): materialized auxiliary data location
+            enabled_auxiliaries (list): list of enabled auxiliary sources
             raw_data (ks.Dataframe): reference to raw data Dataframe instance
+            is_cluster (bool): True if working on cluster, False if working on
+                local machine
         """
         self.path_preprocessed = path_preprocessed
+        self.path_auxiliaries = path_auxiliaries
         self.raw_data = raw_data
-        # True if working on cluster, False if working on local machine
         self.is_cluster = is_cluster
+
+        self.enabled_auxiliaries = enabled_auxiliaries
 
         self.enabled_features = {"default": [], "custom": []}
         for feature in enabled_features:
@@ -28,7 +36,79 @@ class FeatureStore:
             else:
                 self.enabled_features["custom"].append(feature)
 
+    def extract_auxiliaries(self):
+        """
+        Rationale: some features require additional data to be materialized.
+        For instance, social network-related features require a graph
+        representation of engagements, i.e., an additional DataFrame besides
+        raw data and previously extracted features.
+
+        Auxiliary data does not necessarily follow 1:1 correspondence between
+        its rows and raw data rows.
+
+        The same auxiliary data source may be exploited to extract multiple
+        features.
+
+        It is possible to use auxiliary data sources, pre-built on the training
+        set, also at inference time, given that the auxiliary data source is not
+        excessively large (still need to define what "too large" means, though
+        we have ~20GB at our disposal on the test VM).
+        """
+
+        auxiliary_dict: Dict[str, ks.DataFrame] = {}
+
+        for auxiliary_name in self.enabled_auxiliaries:
+            auxiliary_path = os.path.join(self.path_auxiliaries, auxiliary_name)
+
+            # If auxiliary data is already materialized
+            if os.path.exists(auxiliary_path):
+                print("### Reading cached auxiliary data " + auxiliary_name + "...")
+
+                auxiliary_list = self.get_subdir_list(auxiliary_path)
+
+                for key in auxiliary_list:
+                    ks_auxiliary = ks.read_csv(
+                        os.path.join(auxiliary_path, key), header=0
+                    )
+                    if isinstance(ks_auxiliary, ks.DataFrame):
+                        auxiliary_dict[key] = ks_auxiliary
+                    else:
+                        raise TypeError(
+                            f"ks_auxiliary must be a Koalas DataFrame, got {type(ks_auxiliary)}"
+                        )
+
+            else:
+                print("### Extracting auxiliary data " + auxiliary_name + "...")
+                auxiliary_extractor = globals()[auxiliary_name]
+                auxiliary_extracted = auxiliary_extractor(self.raw_data)
+
+                os.mkdir(auxiliary_path)
+                if isinstance(auxiliary_extracted, dict):
+                    for key in auxiliary_extracted:
+                        assert isinstance(auxiliary_extracted[key], ks.DataFrame)
+                        auxiliary_dict[key] = auxiliary_extracted[key]
+
+                        auxiliary_extracted_path = os.path.join(auxiliary_path, key)
+
+                        # Store the current auxiliary dataframe
+                        auxiliary_extracted[key].to_csv(
+                            auxiliary_extracted_path,
+                            index_col=None, # TODO (Manuele) how to handle index_col?
+                            header=list(auxiliary_extracted[key].columns),
+                            num_files=(None if self.is_cluster else 1)
+                        )
+                else:
+                    raise TypeError(
+                        f"auxiliary_extracted must be a dict, got {type(auxiliary_extracted)}"
+                    )
+
+                print("Auxiliary data added to " + auxiliary_path)
+
+        return auxiliary_dict
+
     def extract_features(self):
+        auxiliary_dict = self.extract_auxiliaries()
+
         feature_dict: Dict[str, ks.Series] = {}
 
         for feature_name in self.enabled_features["custom"]:
@@ -57,7 +137,7 @@ class FeatureStore:
             else:
                 print("### Extracting " + feature_name + "...")
                 feature_extractor = globals()[feature_name]
-                extracted = feature_extractor(self.raw_data, feature_dict)
+                extracted = feature_extractor(self.raw_data, feature_dict, auxiliary_dict)
 
                 if isinstance(extracted, dict):  # more than one feature extracted
                     for column in extracted:
@@ -115,3 +195,13 @@ class FeatureStore:
         # order is the same regardless of how we joined. This allows for better
         # reproducibility and mental health.
         return features_dataset.sort_index()
+
+    @staticmethod
+    def get_subdir_list(path):
+        subdirs = []
+        for root, dirs, _ in os.walk(path):
+            for dir_ in dirs:
+                subdirs.append(dir_)
+            break
+
+        return subdirs

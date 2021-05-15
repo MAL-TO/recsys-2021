@@ -3,6 +3,7 @@
 .idea
 
 # Ignore stuff inside data/
+data/auxiliary/
 data/preds/
 data/preprocessed/
 data/raw/
