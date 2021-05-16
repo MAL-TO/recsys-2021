@@ -34,6 +34,7 @@ column_dtypes = {
 categorical_features = [
     'language',
     'tweet_type',
+    'present_media',
 ]
 
 timestamp_features = ['tweet_timestamp', 'engaged_with_user_account_creation', 'engaging_user_account_creation']
@@ -55,15 +56,19 @@ def import_data(path):
         'text_tokens',
         'hashtags',
 
-        'present_media',
         'present_links',
         'present_domains',
+        
+        'engaged_with_user_id',
+        'engaging_user_id',
 
         'reply_timestamp',
         'retweet_timestamp',
         'retweet_with_comment_timestamp',
         'like_timestamp'
     ], axis=1)
+    
+    df['present_media'] = df['present_media'].fillna(value="None")
     
     for f in timestamp_features:
         df[f] = pd.to_datetime(df[f], origin='unix', unit='s')
