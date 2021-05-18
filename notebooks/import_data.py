@@ -37,7 +37,16 @@ categorical_features = [
     'present_media',
 ]
 
-timestamp_features = ['tweet_timestamp', 'engaged_with_user_account_creation', 'engaging_user_account_creation']
+timestamp_features = [
+    'tweet_timestamp',
+    'engaged_with_user_account_creation',
+    'engaging_user_account_creation',
+                     
+    'reply_timestamp',
+    'retweet_timestamp',
+    'retweet_with_comment_timestamp',
+    'like_timestamp',
+ ]
 
 targets = ["reply", "retweet", "retweet_with_comment", "like"]
 
@@ -61,11 +70,6 @@ def import_data(path):
         
         'engaged_with_user_id',
         'engaging_user_id',
-
-        'reply_timestamp',
-        'retweet_timestamp',
-        'retweet_with_comment_timestamp',
-        'like_timestamp'
     ], axis=1)
     
     df['present_media'] = df['present_media'].fillna(value="None")
@@ -78,6 +82,6 @@ def import_data(path):
     
     df = df.set_index('tweet_timestamp', drop=False).sort_index()
 
-    assert df.notna().all().all(), "the data must not contain NAs"
+#     assert df.notna().all().all(), "the data must not contain NAs"
     
     return df
