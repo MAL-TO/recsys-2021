@@ -62,6 +62,8 @@ def import_data(path):
         "retweet_with_comment": df["retweet_with_comment_timestamp"].notna(),
         "like": df["like_timestamp"].notna()
     }).drop([
+        'tweet_id',
+        
         'text_tokens',
         'hashtags',
 
