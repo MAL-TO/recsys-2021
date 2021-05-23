@@ -3,6 +3,7 @@ import databricks.koalas as ks
 from typing import Dict
 
 from preprocessor.targets.binarize_timestamps import binarize_timestamps  # noqa: F401
+from preprocessor.graph.engaging_user_degree import engaging_user_degree
 
 from preprocessor.graph.auxiliary_engagement_graph import auxiliary_engagement_graph  # noqa: F401
 
@@ -10,27 +11,29 @@ from preprocessor.graph.auxiliary_engagement_graph import auxiliary_engagement_g
 class FeatureStore:
     """Handle feature configuration"""
 
-    def __init__(self, path_preprocessed, enabled_features, path_auxiliaries, enabled_auxiliaries, raw_data, is_cluster):
+    def __init__(self, path_preprocessed, enabled_extractors, path_auxiliaries, enabled_auxiliaries, raw_data, is_cluster, is_inference):
         """
 
         Args:
             path_preprocessed (str): materialized features files location
-            enabled_features (list): list of the enabled features
+            enabled_extractors (list): list of the enabled feature extractors
             path_auxiliaries (str): materialized auxiliary data location
             enabled_auxiliaries (list): list of enabled auxiliary sources
             raw_data (ks.Dataframe): reference to raw data Dataframe instance
             is_cluster (bool): True if working on cluster, False if working on
                 local machine
+            is_inference (bool): True if inference time, False if training time
         """
         self.path_preprocessed = path_preprocessed
         self.path_auxiliaries = path_auxiliaries
         self.raw_data = raw_data
         self.is_cluster = is_cluster
+        self.is_inference = is_inference
 
         self.enabled_auxiliaries = enabled_auxiliaries
 
         self.enabled_features = {"default": [], "custom": []}
-        for feature in enabled_features:
+        for feature in enabled_extractors:
             if feature in self.raw_data.columns:
                 self.enabled_features["default"].append(feature)
             else:
@@ -63,7 +66,6 @@ class FeatureStore:
             # If auxiliary data is already materialized
             if os.path.exists(auxiliary_path):
                 print("### Reading cached auxiliary data " + auxiliary_name + "...")
-
                 auxiliary_list = self.get_subdir_list(auxiliary_path)
 
                 for key in auxiliary_list:
@@ -75,6 +77,22 @@ class FeatureStore:
                     else:
                         raise TypeError(
                             f"ks_auxiliary must be a Koalas DataFrame, got {type(ks_auxiliary)}"
+                        )
+
+                # If inference time, and auxiliary data exists, it must be
+                # extended with test data
+                if self.is_inference:
+                    print("### Integrating auxiliary data with test set " + auxiliary_name + "...")
+                    auxiliary_extractor = globals()[auxiliary_name]
+                    auxiliary_extracted = auxiliary_extractor(self.raw_data, auxiliary_train=auxiliary_dict)
+
+                    if isinstance(auxiliary_extracted, dict):
+                        for key in auxiliary_extracted:
+                            assert isinstance(auxiliary_extracted[key], ks.DataFrame)
+                            auxiliary_dict[key] = auxiliary_extracted[key]
+                    else:
+                        raise TypeError(
+                            f"auxiliary_extracted must be a dict, got {type(auxiliary_extracted)}"
                         )
 
             else:
@@ -177,13 +195,14 @@ class FeatureStore:
         return feature_dict
 
     def get_dataset(self):
+        ks.set_option("compute.ops_on_diff_frames", True)
+
         feature_dict = self.extract_features()
         sliced_raw_data: ks.DataFrame = self.raw_data[self.enabled_features["default"]]
         features_dataset = sliced_raw_data
 
         # NOTE: I suppose this could be done in one pass, with a multiple inner join.
         # IDK if it would be faster
-        ks.set_option("compute.ops_on_diff_frames", True)
         for feature_name, feature_series in feature_dict.items():
             features_dataset = features_dataset.join(
                 right=feature_series, on=["tweet_id", "engaging_user_id"], how="inner"

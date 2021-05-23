@@ -30,14 +30,14 @@ def main(dataset_path, model_name, is_cluster):
             model = Model()
 
         assert model is not None, f"cannot find a model with name: {model_name}"
-        enabled_features = model.enabled_features
+        enabled_extractors = model.enabled_extractors
         enabled_auxiliaries = model.enabled_auxiliaries
 
     with Stage("Importing data..."):
         raw_data = import_data(dataset_path)
 
     with Stage("Assembling dataset..."):
-        store = FeatureStore(PATH_PREPROCESSED, enabled_features, PATH_AUXILIARIES, enabled_auxiliaries, raw_data, is_cluster)
+        store = FeatureStore(PATH_PREPROCESSED, enabled_extractors, PATH_AUXILIARIES, enabled_auxiliaries, raw_data, is_cluster, is_inference=False)
         features_union_df = store.get_dataset()
 
     with Stage("Split dataset"):
