@@ -5,13 +5,24 @@ from typing import Dict
 from preprocessor.targets.binarize_timestamps import binarize_timestamps  # noqa: F401
 from preprocessor.graph.engaging_user_degree import engaging_user_degree
 
-from preprocessor.graph.auxiliary_engagement_graph import auxiliary_engagement_graph  # noqa: F401
+from preprocessor.graph.auxiliary_engagement_graph import (
+    auxiliary_engagement_graph,
+)  # noqa: F401
 
 
 class FeatureStore:
     """Handle feature configuration"""
 
-    def __init__(self, path_preprocessed, enabled_extractors, path_auxiliaries, enabled_auxiliaries, raw_data, is_cluster, is_inference):
+    def __init__(
+        self,
+        path_preprocessed,
+        enabled_extractors,
+        path_auxiliaries,
+        enabled_auxiliaries,
+        raw_data,
+        is_cluster,
+        is_inference,
+    ):
         """
 
         Args:
@@ -82,9 +93,15 @@ class FeatureStore:
                 # If inference time, and auxiliary data exists, it must be
                 # extended with test data
                 if self.is_inference:
-                    print("### Integrating auxiliary data with test set " + auxiliary_name + "...")
+                    print(
+                        "### Integrating auxiliary data with test set "
+                        + auxiliary_name
+                        + "..."
+                    )
                     auxiliary_extractor = globals()[auxiliary_name]
-                    auxiliary_extracted = auxiliary_extractor(self.raw_data, auxiliary_train=auxiliary_dict)
+                    auxiliary_extracted = auxiliary_extractor(
+                        self.raw_data, auxiliary_train=auxiliary_dict
+                    )
 
                     if isinstance(auxiliary_extracted, dict):
                         for key in auxiliary_extracted:
@@ -111,9 +128,9 @@ class FeatureStore:
                         # Store the current auxiliary dataframe
                         auxiliary_extracted[key].to_csv(
                             auxiliary_extracted_path,
-                            index_col=None, # TODO (Manuele) how to handle index_col?
+                            index_col=None,  # TODO (Manuele) how to handle index_col?
                             header=list(auxiliary_extracted[key].columns),
-                            num_files=(None if self.is_cluster else 1)
+                            num_files=(None if self.is_cluster else 1),
                         )
                 else:
                     raise TypeError(
@@ -155,7 +172,9 @@ class FeatureStore:
             else:
                 print("### Extracting " + feature_name + "...")
                 feature_extractor = globals()[feature_name]
-                extracted = feature_extractor(self.raw_data, feature_dict, auxiliary_dict)
+                extracted = feature_extractor(
+                    self.raw_data, feature_dict, auxiliary_dict
+                )
 
                 if isinstance(extracted, dict):  # more than one feature extracted
                     for column in extracted:

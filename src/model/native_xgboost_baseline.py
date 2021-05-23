@@ -51,7 +51,7 @@ class Model(ModelInterface):
             "engaged_with_user_following_count",
             "engaging_user_follower_count",
             "engaging_user_following_count",
-            "binarize_timestamps"
+            "binarize_timestamps",
         ]
 
     @staticmethod
@@ -102,7 +102,7 @@ class Model(ModelInterface):
             "engaged_with_user_follower_count",
             "engaged_with_user_following_count",
             "engaging_user_follower_count",
-            "engaging_user_following_count"
+            "engaging_user_following_count",
         ]
 
         @pandas_udf(schema, PandasUDFType.GROUPED_MAP)

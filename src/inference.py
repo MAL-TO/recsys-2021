@@ -43,7 +43,7 @@ def main():
                 model.enabled_auxiliaries,
                 raw_data,
                 is_cluster=False,
-                is_inference=True
+                is_inference=True,
             )
             features_union_df = store.get_dataset()
 

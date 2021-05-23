@@ -1,6 +1,7 @@
 import databricks.koalas as ks
 from pyspark.sql.functions import lit
 
+
 def auxiliary_engagement_graph(raw_data, auxiliary_train=None):
     """
     The engagement graph is a multigraph where:
@@ -57,7 +58,7 @@ def auxiliary_engagement_graph(raw_data, auxiliary_train=None):
             "engaged_with_user_follower_count AS follower_count",
             "engaged_with_user_following_count AS following_count",
             "engaged_with_user_is_verified AS is_verified",
-            "engaged_with_user_account_creation AS account_creation"
+            "engaged_with_user_account_creation AS account_creation",
         )
 
         sdf_engaging_users = sdf_positives.selectExpr(
@@ -65,11 +66,11 @@ def auxiliary_engagement_graph(raw_data, auxiliary_train=None):
             "engaging_user_follower_count AS follower_count",
             "engaging_user_following_count AS following_count",
             "engaging_user_is_verified AS is_verified",
-            "engaging_user_account_creation AS account_creation"
+            "engaging_user_account_creation AS account_creation",
         )
 
         sdf_union_users = sdf_engaged_with_users.union(sdf_engaging_users)
-        sdf_users = sdf_union_users.dropDuplicates(['id'])
+        sdf_users = sdf_union_users.dropDuplicates(["id"])
 
         # Extract engagements (edges) DataFrame
         engagements_attributes = [
@@ -83,23 +84,38 @@ def auxiliary_engagement_graph(raw_data, auxiliary_train=None):
             "reply_timestamp": 1,
             "retweet_timestamp": 2,
             "retweet_with_comment_timestamp": 3,
-            "like_timestamp": 4
+            "like_timestamp": 4,
         }
 
-        sdf_reply_interactions = sdf_positives.selectExpr(
-            *engagements_attributes
-        ).where("LENGTH(reply_timestamp) > 0").withColumn("interaction_type", lit(interaction_types["reply_timestamp"]))
-        sdf_retweet_interactions = sdf_positives.selectExpr(
-            *engagements_attributes
-        ).where("LENGTH(retweet_timestamp) > 0").withColumn("interaction_type", lit(interaction_types["retweet_timestamp"]))
-        sdf_retweet_with_comment_interactions = sdf_positives.selectExpr(
-            *engagements_attributes
-        ).where("LENGTH(retweet_with_comment_timestamp) > 0").withColumn("interaction_type", lit(interaction_types["retweet_with_comment_timestamp"]))
-        sdf_like_interactions = sdf_positives.selectExpr(
-            *engagements_attributes
-        ).where("LENGTH(like_timestamp) > 0").withColumn("interaction_type", lit(interaction_types["like_timestamp"]))
+        sdf_reply_interactions = (
+            sdf_positives.selectExpr(*engagements_attributes)
+            .where("LENGTH(reply_timestamp) > 0")
+            .withColumn("interaction_type", lit(interaction_types["reply_timestamp"]))
+        )
+        sdf_retweet_interactions = (
+            sdf_positives.selectExpr(*engagements_attributes)
+            .where("LENGTH(retweet_timestamp) > 0")
+            .withColumn("interaction_type", lit(interaction_types["retweet_timestamp"]))
+        )
+        sdf_retweet_with_comment_interactions = (
+            sdf_positives.selectExpr(*engagements_attributes)
+            .where("LENGTH(retweet_with_comment_timestamp) > 0")
+            .withColumn(
+                "interaction_type",
+                lit(interaction_types["retweet_with_comment_timestamp"]),
+            )
+        )
+        sdf_like_interactions = (
+            sdf_positives.selectExpr(*engagements_attributes)
+            .where("LENGTH(like_timestamp) > 0")
+            .withColumn("interaction_type", lit(interaction_types["like_timestamp"]))
+        )
 
-        sdf_engagements = sdf_reply_interactions.union(sdf_retweet_interactions).union(sdf_retweet_with_comment_interactions).union(sdf_like_interactions)
+        sdf_engagements = (
+            sdf_reply_interactions.union(sdf_retweet_interactions)
+            .union(sdf_retweet_with_comment_interactions)
+            .union(sdf_like_interactions)
+        )
 
         # Convert to koalas DataFrame
         ks_users = sdf_users.to_koalas()
@@ -116,5 +132,5 @@ def auxiliary_engagement_graph(raw_data, auxiliary_train=None):
 
     return {
         "engagement_graph_users": ks_users,
-        "engagement_graph_engagements": ks_engagements
+        "engagement_graph_engagements": ks_engagements,
     }
