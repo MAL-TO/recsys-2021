@@ -17,6 +17,7 @@ def main():
     with Stage("Creating Spark context..."):
         create_spark_context()
 
+    # graphframes module is only available after creating Spark context
     from preprocessor.features_store import FeatureStore
 
     with Stage("Initializing model..."):
