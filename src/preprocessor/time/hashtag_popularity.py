@@ -1,6 +1,7 @@
-import koalas as ks
+import databricks.koalas as ks
 import pickle as pkl
 from collections import defaultdict
+import time
 
 def hashtag_popularity(raw_data, features = None):
     """
@@ -10,66 +11,76 @@ def hashtag_popularity(raw_data, features = None):
         new_feature (ks.DataFrame): DataFrame where for each input sample, we have the corresponding hashtag counter.
     """
     
-    WINDOW_SIZE = 7200 # counter refers to last 7200 seconds = 2 hours
-    OUTPUT_PATH = 'hashtag_window_counter.pkl' # path to store window counter. Will be used for inference
+    WINDOW_SIZE = 7200 # 2 hours time window
+    OUTPUT_PATH = 'hashtag_window_counter.pkl'
     
     # Use loc to pass a view instead of a copy
-    hash_time_df = raw_data.loc[:, ('hashtags', 'tweet_timestamp')]
-    hash_time_df.sort_values(by='tweet_timestamp', inplace = True)
+    raw_data.sort_values(by='tweet_timestamp', inplace = True)
+
+    # TODO: verify that order is preserved!
+    # Compare 10^6 samples required time, with 10k samples, which is about 6 seconds
+    # Conversion to numpy is done since dataframe indexing is complicated and unfeasibly slow (many hours vs few seconds...)
+    indices = raw_data.index.to_numpy()
+    hashtags = raw_data['hashtags'].to_numpy()
+    timestamps = raw_data['tweet_timestamp'].to_numpy()
+
+    print(time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(timestamps[0])))
+    print(time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(timestamps[-1])))
+
     
-    # Add initialization for existing dictionary at inference time
-    # Same for training if we drop first chunk of data
-    window_counter = defaultdict(lambda : 0) # initialize to 0 if key is not present
-    
-    # number of active hashtags, needed for normalization
-    # do we want to normalize? I would not, in order to actually detect hot hashtag,
-    # and this is contained in absolute count, not relative
-    active_counter = 0 
+    # Initialize with existing dict at inference time (same for training without first chunck of data)
+    window_counter = defaultdict(lambda : 0)
     
     # pointer to reduce counter when timestamp < now - WINDOW_SIZE
     j = 0
     
-    # new column container
     new_col = []
-    for index, row in hash_time_df.iterrows():
-        hashtags = row['hashtags'].split('\t') # list of hashtags whose counter must be incremented
-        now = int(row['tweet_timestamp']) # last tweet timestamp
+    for idx, hash, timestamp in zip(indices, hashtags, timestamps): # RUNTIME: O(N)
+        hashtags = hash.split('\t') # list of hashtags whose counter must be incremented
+        now = timestamp # last tweet timestamp
         
-        # Remove hashtags out of the 2 hours time window form now
-        while int(hash_time_df.iloc[j, -1]) < (now - WINDOW_SIZE):
-            row_to_delete = hash_time_df.iloc[j]
-            hashtags_to_decrement = row_to_delete['hashtags']
+        # Remove hashtags out of the 2 hours time window from now
+        while timestamps[j] < (now - WINDOW_SIZE):
+            hashtags_to_decrement = hashtags[j]
             for h in hashtags_to_decrement:
                 window_counter[h] -= 1
                 if window_counter[h] <= 0:
                     del window_counter[h]
-                active_counter -= 1
                 
             j += 1
         
+        
         # I have more than one hashtag for each record, but i need only one counter
-        # Need to make a summary of the hashtags ==> max of window_counter?                
-        most_popular = 0
-        for h in hashtags:
-            if h:  # h not empty string ''
+        # Need to make a summary of the hashtags ==> max of window_counter?           
+        if hashtags[0]:
+            most_popular = 0
+            for h in hashtags:
+                window_counter[h] += 1
                 if window_counter[h] > most_popular:
                     most_popular = window_counter[h]
                 
                 # Increment corresponding hashtag counter
-                window_counter[h] += 1
-                active_counter += 1
+                # window_counter[h] += 1
 
-        # Index is tuple for multiIndex. Ulima cosa da fare questo!
-        new_col.append({
-            'tweet_id': index[0],
-            'engaging_user_id': index[1],
-            'counter': most_popular
-        })
-            
-    new_feature = ks.DataFrame(new_col).set_index(['tweet_id', 'engaging_user_id'])
+            # Index is tuple for multiIndex. Ulima cosa da fare questo!
+            new_col.append({
+                'tweet_id': idx[0],
+                'engaging_user_id': idx[1],
+                'counter': most_popular
+            })
+        
+        else:
+            # How to represent missing hashtag?
+            new_col.append({
+                'tweet_id': idx[0],
+                'engaging_user_id': idx[1],
+                'counter': -1
+            })
+    
+    new_feature = ks.DataFrame(new_col).set_index(['tweet_id', 'engaging_user_id']).squeeze()
     
     # store current window_counter, since this will be the initial counter at inference time
-    with open(OUTPUT_PATH, 'wb') as f:
-        pkl.dump(dict(window_counter), f, protocol=pkl.HIGHEST_PROTOCOL)
+    # with open(OUTPUT_PATH, 'wb') as f:
+    #     pkl.dump(dict(window_counter), f, protocol=pkl.HIGHEST_PROTOCOL)
 
     return new_feature

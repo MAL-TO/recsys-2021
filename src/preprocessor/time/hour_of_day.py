@@ -1,7 +1,13 @@
 import time
+import databricks.koalas as ks
 
-def day_of_week(raw_data, features = None):
+# Hour of day is not meaningful due to time zones
+# What can be useful instead is hour_of_day targed encoded with language
+
+def hour_of_day(raw_data, features = None):
     """
     Extract hour of the day (numerical) from tweet_timestamp. UTC timezone
     """
-    return ks["tweet_timestamp"].apply(lambda x: time.strftime("%H", x))
+    result = raw_data["tweet_timestamp"].apply(lambda x: time.strftime("%H", time.localtime(int(x)))).astype('int8')
+    print(result.describe())
+    return raw_data["tweet_timestamp"].apply(lambda x: time.strftime("%H", time.localtime(int(x)))).astype('int8')
