@@ -64,6 +64,39 @@ A single custom feature extractor can extract more than one feature. If you want
 
 **Please make sure that your custom feature extractor returns one row for each input dataset row.**
 
+## Add and use an auxiliary dataset extractor
+
+Auxiliary datasets are DataFrames which may be extracted from raw data (e.g., a tabular representation of an engagement graph). These DataFrames are not used directly as features in the model: instead, they can be used by feature extractors as an auxiliary pre-compiled data source.
+
+Auxiliary DataFrames may be extracted with means of a function (see for example `src/preprocessor/graph/auxiliary_engagement_graph.py`). Once extracted, one or more DataFrames are returned under the form of a Python dict. The return format is the following (even if you want to return only one DataFrame):
+``` python
+return {
+    "auxiliary_df_1": ks.DataFrame,
+    "auxiliary_df_2": ks.DataFrame,
+    ...
+}
+```
+
+`auxiliary_df_1`, `auxiliary_df_2`, ..., will be available to *all* feature extractors as keys of the Python dict `auxiliaries`, which is passed as an argument to feature extractors. This means that any feature extractor's function must be defined with an additional argument `auxiliaries`, even if they don't use any auxiliary DataFrame. For instance:
+```python
+def feature_extractor(raw_data, features, auxiliaries):
+    ...
+```
+
+The auxiliary dataset extractor function must be defined with two arguments, `raw_data` (which may be either training or test data) and `auxiliary_train`, which defaults to `None`.
+
+This is because, at inference time (when running `inference.py`), the materialized auxiliary datasets, i.e., auxiliary DataFrames pre-computed on training data at training time and saved in `data/auxiliary`, may be integrated with additional data available in the test set, if one implements the additional logic required to do that.
+
+If this is the case, one should check if `auxiliary_train` is not None. If so, we are at *inference time*. In this case, `raw_data` is the test data, and `auxiliary_train` is the pre-compiled auxiliary dataset which must be appended (or integrated in some other way) to the newly extracted auxiliary data coming from `raw_data`, i.e., test data.
+
+Please note that this is not mandatory: you can decide not to run any further integration from test data. If this is the case, put all your train extractor code under an if clause such as `if auxiliary_train is None: ...` and, under `else: ...` (i.e., at inference time), return the keys of `auxiliary_train` corresponding to the auxiliary dataframes of interest.
+
+**Important note**: if you decide to upload a submission with an auxiliary data extractor that you choose to extend at inference time, you *must* also upload the auxiliary dataframe from training time to be extended at test time.
+
+To use an auxiliary dataset extractor in a model, add the auxiliary dataset extractor function to `self.enabled_auxiliaries` in the model constructor.
+
+Check `src/preprocessor/graph/auxiliary_engagement_graph.py` to see a working example.
+
 ## Useful Commands
 
 #### Testing the run (training) script without Docker
