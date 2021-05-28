@@ -20,12 +20,13 @@ def user_activity(raw_data, features = None):
         # Remove user if its counters are all 0
         if reduce(lambda a, b: a+b, window_counter[user].values()) == 0:
             del window_counter[user]
-
+    
+    OUTPUT_PATH = 'user_activity_window_counter.pkl'
         
     # Time windows in seconds
     WINDOWS = np.array([5, 60, 240, 480, 1440])*60
     j = {k:0 for k in WINDOWS} # Clean up window_counter dictionary when a sample is out of window
-    window_counter = defaultdict(lambda x: counter_initialization(WINDOWS)) # Counter of appearences for each user, for each time window. Dict[Dict]
+    window_counter = defaultdict(lambda : counter_initialization(WINDOWS)) # Counter of appearences for each user, for each time window. Dict[Dict]
     new_features = [] # container for the new features
     
     # Sort by timestamp
@@ -41,33 +42,39 @@ def user_activity(raw_data, features = None):
         tweet_id = idx[0]
         engaging = idx[1]
         
-        # Remove outdates counts from windows_counter
         for time_win in WINDOWS:
+            # Remove outdated counts from windows_counter
             while timestamps[j[time_win]] < (now - time_win):
-                user_a = engaging_users[j[time_win]]
+                user_a = index_col[j[time_win]][1]
                 user_b = engaged_users[j[time_win]]
                 
-                window_counter[user_a][time_win] -= 1
-                window_counter[user_b][time_win] -= 1
+                if window_counter[user_a][time_win] > 0:
+                    window_counter[user_a][time_win] -= 1
+                if window_counter[user_b][time_win] > 0:
+                    window_counter[user_b][time_win] -= 1
                 
-                # Remove a user ifall of its counter are 0
+                # Remove a user if all of its counter are 0
                 clean_window_counter(window_counter, user_a)
                 clean_window_counter(window_counter, user_b)
                 
                 j[time_win] += 1
-        
-        # Generate new features for current row, and increment window counter by 1
-        for time_win in WINDOWS:
-            new_fetures[time_win].append({
+                
+            # Generate new features for current row, and increment window counter by 1
+            new_features[time_win].append({
                 'tweet_id': tweet_id,
                 'engaging_user_id': engaging,
                 f'interactions_{time_win}': window_counter[engaging][time_win]
             })
-            
             window_counter[engaging][time_win] += 1
+            window_counter[engaged][time_win] += 1
             
-        # Convert each list of dict to a series
-        for key in new_features.keys():
-            new_features[key] = ks.DataFrame(new_features[key]).set_index(['tweet_id', 'engaging_user_id']).squeeze()
-            
-        return new_features
+    # store current window_counter, since this will be the initial counter at inference time
+    with open(OUTPUT_PATH, 'wb') as f:
+        pkl.dump(dict(window_counter), f, protocol=pkl.HIGHEST_PROTOCOL)
+       
+    # Convert each list of dict to a series
+    for key in new_features.keys():
+        new_features[key] = ks.DataFrame(new_features[key]).set_index(['tweet_id', 'engaging_user_id']).squeeze()
+
+    #TODO: store window_counter of active users for inference
+    return new_features
