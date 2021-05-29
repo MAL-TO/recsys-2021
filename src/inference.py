@@ -3,17 +3,23 @@ import gc
 
 from constants import ROOT_DIR
 from data.importer import import_data
-from preprocessor.features_store import FeatureStore
 from model.native_xgboost_baseline import Model
 from util import Stage
 from create_spark_context import create_spark_context
 
 PATH_PREPROCESSED = os.path.join(ROOT_DIR, "../data/preprocessed")
-TEST_DIR = "../data/raw/test-12M"
+PATH_AUXILIARIES = os.path.join(ROOT_DIR, "../data/auxiliary")
+TEST_DIR = "../data/raw/test"
 # TEST_DIR = "../test"
 
 
 def main():
+    with Stage("Creating Spark context..."):
+        create_spark_context()
+
+    # graphframes module is only available after creating Spark context
+    from preprocessor.features_store import FeatureStore
+
     with Stage("Initializing model..."):
         model = Model(include_targets=False)
         model.load_pretrained()
@@ -24,9 +30,6 @@ def main():
         if "part" in f
     ]
 
-    with Stage("Creating Spark context..."):
-        create_spark_context()
-
     for part_file in part_files:
         print(f"Processing '{part_file}'")
 
@@ -36,9 +39,12 @@ def main():
         with Stage("Assembling dataset..."):
             store = FeatureStore(
                 PATH_PREPROCESSED,
-                model.enabled_features,
+                model.enabled_extractors,
+                PATH_AUXILIARIES,
+                model.enabled_auxiliaries,
                 raw_data,
                 is_cluster=False,
+                is_inference=True,
             )
             features_union_df = store.get_dataset()
 

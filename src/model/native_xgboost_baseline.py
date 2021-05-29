@@ -18,7 +18,8 @@ class Model(ModelInterface):
     def __init__(self, include_targets=True):
         self.models = {}
 
-        # Default and custom
+        # Specify default and custom features to use in the model
+        # Note: you should copy this list manually into self.predict
         self.features = [
             "engaged_with_user_follower_count",
             "engaged_with_user_following_count",
@@ -42,12 +43,23 @@ class Model(ModelInterface):
             custom_targets if include_targets else []
         )
 
+        # Specify extractors and auxiliaries required by the enabled features
+        self.enabled_auxiliaries = []
+
+        self.enabled_extractors = [
+            "engaged_with_user_follower_count",
+            "engaged_with_user_following_count",
+            "engaging_user_follower_count",
+            "engaging_user_following_count",
+            "binarize_timestamps",
+        ]
+
     @staticmethod
     def serialized_model_path_for_target(target: str) -> str:
         p = (
             Path(ROOT_DIR)
             / "../serialized_models"
-            / f"native_xgboost_basline_{target}.model"
+            / f"native_xgboost_baseline_{target}.model"
         )
         return str(p.resolve())
 

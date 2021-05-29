@@ -25,4 +25,3 @@ def create_spark_context(set_memory_conf=True):
     SparkContext(conf=conf).setLogLevel("WARN")
 
     ks.set_option("compute.default_index_type", "distributed")
-
