@@ -5,7 +5,7 @@ import numpy as np
 from collections import defaultdict
 from functools import reduce
 
-def user_activity(raw_data, features = None):
+def user_activity(raw_data, features = None, auxiliary_dict = None, auxiliary_path = None):
     """
     Args:
         raw_data (ks.DataFrame): dataset to process for feature extraction
@@ -21,13 +21,20 @@ def user_activity(raw_data, features = None):
         if reduce(lambda a, b: a+b, window_counter[user].values()) == 0:
             del window_counter[user]
     
-    OUTPUT_PATH = 'user_activity_window_counter.pkl'
+    output_path = os.path.join(self.path_auxiliaries, 'hashtag_window_counter.pkl')
         
     # Time windows in seconds
     WINDOWS = np.array([5, 60, 240, 480, 1440])*60
-    j = {k:0 for k in WINDOWS} # Clean up window_counter dictionary when a sample is out of window
-    window_counter = defaultdict(lambda : counter_initialization(WINDOWS)) # Counter of appearences for each user, for each time window. Dict[Dict]
-    new_features = [] # container for the new features
+    j = {k:0 for k in WINDOWS} # Indices to clean up window_counter dictionary when a sample is out of window
+    
+    if os.exists(output_path):
+        with open(OUTPUT_PATH, 'rb') as f:
+            initial_dictionary = pkl.load(f)
+        window_counter = defaultdict(lambda : counter_initialization(WINDOWS), initial_dictionary)
+    
+    # Else if training
+    else:
+        window_counter = defaultdict(lambda : counter_initialization(WINDOWS))
     
     # Sort by timestamp
     raw_data.sort_values(by='tweet_timestamp', inplace = True)
@@ -76,5 +83,8 @@ def user_activity(raw_data, features = None):
     for key in new_features.keys():
         new_features[key] = ks.DataFrame(new_features[key]).set_index(['tweet_id', 'engaging_user_id']).squeeze()
 
-    #TODO: store window_counter of active users for inference
+    # store current window_counter, since this will be the initial counter at inference time
+    with open(output_path, 'wb') as f:
+        pkl.dump(dict(window_counter), f, protocol=pkl.HIGHEST_PROTOCOL)
+        
     return new_features

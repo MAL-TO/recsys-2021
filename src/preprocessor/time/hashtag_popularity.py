@@ -3,7 +3,7 @@ import pickle as pkl
 from collections import defaultdict
 import time
 
-def hashtag_popularity(raw_data, features = None):
+def hashtag_popularity(raw_data, features = None, auxiliary_dict = None, auxiliary_path):
     """
     Args:
         raw_data (ks.DataFrame): dataset to process for feature extraction
@@ -12,7 +12,7 @@ def hashtag_popularity(raw_data, features = None):
     """
     
     WINDOW_SIZE = 7200 # 2 hours time window
-    OUTPUT_PATH = 'hashtag_window_counter.pkl'
+    output_path = os.path.join(self.path_auxiliaries, 'hashtag_window_counter.pkl')
     
     # Use loc to pass a view instead of a copy
     raw_data.sort_values(by='tweet_timestamp', inplace = True)
@@ -29,7 +29,14 @@ def hashtag_popularity(raw_data, features = None):
 
     
     # Initialize with existing dict at inference time (same for training without first chunck of data)
-    window_counter = defaultdict(lambda : 0)
+    if os.exists(output_path):
+        with open(OUTPUT_PATH, 'rb') as f:
+            initial_dictionary = pkl.load(f)
+        window_counter = defaultdict(lambda : 0, initial_dictionary)
+    
+    # Else if training
+    else:
+        window_counter = defaultdict(lambda : 0)
     
     # pointer to reduce counter when timestamp < now - WINDOW_SIZE
     j = 0
@@ -80,7 +87,7 @@ def hashtag_popularity(raw_data, features = None):
     new_feature = ks.DataFrame(new_col).set_index(['tweet_id', 'engaging_user_id']).squeeze()
     
     # store current window_counter, since this will be the initial counter at inference time
-    # with open(OUTPUT_PATH, 'wb') as f:
-    #     pkl.dump(dict(window_counter), f, protocol=pkl.HIGHEST_PROTOCOL)
+    with open(output_path, 'wb') as f:
+        pkl.dump(dict(window_counter), f, protocol=pkl.HIGHEST_PROTOCOL)
 
     return new_feature
