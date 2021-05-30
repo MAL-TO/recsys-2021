@@ -1,9 +1,12 @@
+import time
 import databricks.koalas as ks
 import pickle as pkl
 from collections import defaultdict
-import time
+from constants import ROOT_DIR
 
-def hashtag_popularity(raw_data, features = None, auxiliary_dict = None, auxiliary_path):
+PATH_AUXILIARIES = os.path.join(ROOT_DIR, "../data/auxiliary")
+
+def hashtag_popularity(raw_data, features = None, auxiliary_dict = None):
     """
     Args:
         raw_data (ks.DataFrame): dataset to process for feature extraction

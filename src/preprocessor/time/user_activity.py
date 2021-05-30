@@ -1,11 +1,14 @@
+import time
 import databricks.koalas as ks
 import pickle as pkl
-import time
 import numpy as np
 from collections import defaultdict
 from functools import reduce
+from constants import ROOT_DIR
 
-def user_activity(raw_data, features = None, auxiliary_dict = None, auxiliary_path = None):
+PATH_AUXILIARIES = os.path.join(ROOT_DIR, "../data/auxiliary")
+
+def user_activity(raw_data, features = None, auxiliary_dict = None):
     """
     Args:
         raw_data (ks.DataFrame): dataset to process for feature extraction

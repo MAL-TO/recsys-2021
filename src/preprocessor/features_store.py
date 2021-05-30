@@ -172,9 +172,8 @@ class FeatureStore:
             else:
                 print("### Extracting " + feature_name + "...")
                 feature_extractor = globals()[feature_name]
-                # TODO(Francesco): add path argument to all feature extractor
                 extracted = feature_extractor(
-                    self.raw_data, feature_dict, auxiliary_dict, self.path_auxiliaries
+                    self.raw_data, feature_dict, auxiliary_dict
                 )
 
                 if isinstance(extracted, dict):  # more than one feature extracted
