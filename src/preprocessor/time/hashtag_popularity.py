@@ -30,7 +30,7 @@ def hashtag_popularity(raw_data, features = None, auxiliary_dict = None):
     
     # Initialize with existing dict at inference time (same for training without first chunck of data)
     if os.path.exists(output_path):
-        with open(OUTPUT_PATH, 'rb') as f:
+        with open(output_path, 'rb') as f:
             initial_dictionary = pkl.load(f)
         window_counter = defaultdict(lambda : 0, initial_dictionary)
     
