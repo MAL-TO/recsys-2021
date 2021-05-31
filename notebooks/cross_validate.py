@@ -1,6 +1,8 @@
 # TODO(Francesco): DO NOT COMMIT; Andrea's made its own one, I am just copying it on this branch
-import xgboost as xgb
 import time
+import h2o
+import xgboost as xgb
+from h2o.estimators import H2OXGBoostEstimator
 from sklearn.model_selection import TimeSeriesSplit
 
 from metrics import compute_score
@@ -25,8 +27,11 @@ Please, keep a baseline of the results without additional features for immediate
 TODO: set up the logging
 """
 
-class BasicModel:
-    def __init__(self, name, train_kdf):
+# # Class to select and handle a model between Native and H2O
+# class BasicModel:
+#     def __init__(self, name, train_kdf):
+#         if name == 'h2o':
+#             model = H2OXGBoostEstimator
         
 
 def cross_validate(train_kdf, params, num_boost_round):
@@ -44,8 +49,6 @@ def cross_validate(train_kdf, params, num_boost_round):
         start = time.time()
         X_train = train_split_df.iloc[:, 0:-4]
         X_test = test_split_df.iloc[:, 0:-4]
-        print(f".iloc execution time (feature extraction): {time.time() - start}")
-        print("")
 
         # train model
         dtest = xgb.DMatrix(X_test)

@@ -27,13 +27,9 @@ def hashtag_popularity(raw_data, features = None, auxiliary_dict = None):
     indices = raw_data.index.to_numpy()
     hashtags = raw_data['hashtags'].to_numpy()
     timestamps = raw_data['tweet_timestamp'].to_numpy()
-
-    print(time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(timestamps[0])))
-    print(time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(timestamps[-1])))
-
     
     # Initialize with existing dict at inference time (same for training without first chunck of data)
-    if os.exists(output_path):
+    if os.path.exists(output_path):
         with open(OUTPUT_PATH, 'rb') as f:
             initial_dictionary = pkl.load(f)
         window_counter = defaultdict(lambda : 0, initial_dictionary)
@@ -46,8 +42,8 @@ def hashtag_popularity(raw_data, features = None, auxiliary_dict = None):
     j = 0
     
     new_col = []
-    for idx, hash, timestamp in zip(indices, hashtags, timestamps): # RUNTIME: O(N)
-        hashtags = hash.split('\t') # list of hashtags whose counter must be incremented
+    for idx, sample_hashtags, timestamp in zip(indices, hashtags, timestamps): # RUNTIME: O(N)
+        split_hashtags = sample_hashtags.split('\t') # list of hashtags whose counter must be incremented
         now = timestamp # last tweet timestamp
         
         # Remove hashtags out of the 2 hours time window from now
@@ -63,9 +59,9 @@ def hashtag_popularity(raw_data, features = None, auxiliary_dict = None):
         
         # I have more than one hashtag for each record, but i need only one counter
         # Need to make a summary of the hashtags ==> max of window_counter?           
-        if hashtags[0]:
+        if split_hashtags[0]:
             most_popular = 0
-            for h in hashtags:
+            for h in split_hashtags:
                 window_counter[h] += 1
                 if window_counter[h] > most_popular:
                     most_popular = window_counter[h]
