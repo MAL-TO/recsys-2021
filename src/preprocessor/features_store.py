@@ -2,12 +2,14 @@ import os
 import databricks.koalas as ks
 from typing import Dict
 
-from preprocessor.targets.binarize_timestamps import binarize_timestamps  # noqa: F401
-from preprocessor.graph.engaging_user_degree import engaging_user_degree
+from preprocessor.time.hashtag_popularity import hashtag_popularity
 
-from preprocessor.graph.auxiliary_engagement_graph import (
-    auxiliary_engagement_graph,
-)  # noqa: F401
+from preprocessor.targets.binarize_timestamps import binarize_timestamps  # noqa: F401
+# from preprocessor.graph.engaging_user_degree import engaging_user_degree
+
+# from preprocessor.graph.auxiliary_engagement_graph import (
+#     auxiliary_engagement_graph,
+# )  # noqa: F401
 
 
 class FeatureStore:
@@ -189,8 +191,7 @@ class FeatureStore:
                     features_df.to_csv(
                         feature_path,
                         index_col=["tweet_id", "engaging_user_id"],
-                        header=list(extracted.keys()),
-                        num_files=(None if self.is_cluster else 1),
+                        header=list(extracted.keys())
                     )
                 elif isinstance(extracted, ks.Series):
                     feature_dict[feature_name] = extracted

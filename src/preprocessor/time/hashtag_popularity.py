@@ -1,4 +1,5 @@
 import time
+import os
 import databricks.koalas as ks
 import pickle as pkl
 from collections import defaultdict
@@ -15,7 +16,7 @@ def hashtag_popularity(raw_data, features = None, auxiliary_dict = None):
     """
     
     WINDOW_SIZE = 7200 # 2 hours time window
-    output_path = os.path.join(self.path_auxiliaries, 'hashtag_window_counter.pkl')
+    output_path = os.path.join(PATH_AUXILIARIES, 'hashtag_window_counter.pkl')
     
     # Use loc to pass a view instead of a copy
     raw_data.sort_values(by='tweet_timestamp', inplace = True)
