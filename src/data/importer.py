@@ -86,24 +86,24 @@ timestamp_cols = [
 
 
 def read_csv(path, include_targets):
-    names = features
+    targets = []
     if include_targets:
-        names += list(labels_idx)
+        targets = list(labels_idx)
     data = ks.read_csv(
         path,
         sep="\x01",
-        names=names,
+        names=features+targets,
         index_col=["tweet_id", "engaging_user_id"],
     )
     return data
 
 
 def read_parquet(path, include_targets):
-    names = features
+    targets = []
     if include_targets:
-        names += list(labels_idx)
+        targets = list(labels_idx)
     data = ks.read_parquet(
-        path, columns=names, index_col=["tweet_id", "engaging_user_id"]
+        path, columns=features+targets, index_col=["tweet_id", "engaging_user_id"]
     )
     return data
 
