@@ -13,10 +13,11 @@ PATH_PREPROCESSED = os.path.join(ROOT_DIR, "../data/preprocessed")
 PATH_AUXILIARIES = os.path.join(ROOT_DIR, "../data/auxiliary")
 
 DATA_DIR = "../data/raw/"
+
+# List of Python dicts, each dict represents a fold with train and test set
+# filenames inside `DATA_DIR`
 DATA_PATHS = [
-    {"train": "sample1", "test": "sample1_test"},
-    {"train": "sample2", "test": "sample2_test"},
-    {"train": "sample3", "test": "sample3_test"},
+    {"train": "", "test": ""},
 ]
 
 
