@@ -28,7 +28,7 @@ def user_activity(raw_data, features = None, auxiliary_dict = None):
     output_path = os.path.join(PATH_AUXILIARIES, 'hashtag_window_counter.pkl')
         
     # Time windows in seconds
-    WINDOWS = [x*60 for x in [5, 60, 240, 480, 1440]]
+    WINDOWS = [(x*60) for x in [5, 60, 240, 480, 1440]]
     j = {k:0 for k in WINDOWS} # Indices to clean up window_counter dictionary when a sample is out of window
     
     window_counter = defaultdict(lambda : counter_initialization(WINDOWS))
@@ -52,7 +52,7 @@ def user_activity(raw_data, features = None, auxiliary_dict = None):
     engaged_users = raw_data['engaged_with_user_id'].to_numpy()
     timestamps = raw_data['tweet_timestamp'].to_numpy()
     
-    new_features = {k:[] for k in WINDOWS}
+    new_features = {f'interactions_{time_win}':[] for time_win in WINDOWS}
     for idx, engaged, now in zip(index_col, engaged_users, timestamps):
         tweet_id = idx[0]
         engaging = idx[1]
@@ -75,10 +75,10 @@ def user_activity(raw_data, features = None, auxiliary_dict = None):
                 j[time_win] += 1
                 
             # Generate new features for current row, and increment window counter by 1
-            new_features[time_win].append({
+            new_features[f'interactions_{time_win}'].append({
                 'tweet_id': tweet_id,
                 'engaging_user_id': engaging,
-                f'interactions_{time_win}': window_counter[engaging][time_win]
+                f'{time_win}': window_counter[engaging][time_win]
             })
             window_counter[engaging][time_win] += 1
             window_counter[engaged][time_win] += 1

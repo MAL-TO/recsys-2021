@@ -16,7 +16,7 @@ from preprocessor.features_store import FeatureStore
 
 
 # Arguments
-DATASET_PATH = "../data/raw/time_sample3M.csv"
+DATASET_PATH = "../data/raw/time_sample200k.parquet"
 PATH_PREPROCESSED = "../data/preprocessed"
 PATH_AUXILIARIES = "../data/auxiliary"
 IS_CLUSTER = False
@@ -25,7 +25,7 @@ ENABLED_FEATURES = [
     "engaged_with_user_following_count",
     "engaging_user_follower_count",
     "engaging_user_following_count",
-    "hashtag_popularity",
+    "word_count",
     
     "binarize_timestamps"
 ]
@@ -71,6 +71,7 @@ def main():
         metric_lst = np.array(metric_lst)
         print(f"LB {(metric_lst.mean() - metric_lst.std()):+.4f} to UB {(metric_lst.mean() + metric_lst.std()):+.4f} (± 1σ)")
 
+    print(ENABLED_FEATURES)
     print(params)
 
     # fig, axes = plt.subplots(4, 2, figsize=(40, 24))
