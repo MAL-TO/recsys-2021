@@ -16,15 +16,16 @@ from preprocessor.features_store import FeatureStore
 
 
 # Arguments
-DATASET_PATH = "../data/raw/time_sample10k.parquet"
+DATASET_PATH = "../data/raw/time_sample3M.csv"
 PATH_PREPROCESSED = "../data/preprocessed"
 PATH_AUXILIARIES = "../data/auxiliary"
+IS_CLUSTER = False
 ENABLED_FEATURES = [
     "engaged_with_user_follower_count",
     "engaged_with_user_following_count",
     "engaging_user_follower_count",
     "engaging_user_following_count",
-    # "hashtag_popularity",
+    "hashtag_popularity",
     
     "binarize_timestamps"
 ]
@@ -35,15 +36,15 @@ ENABLED_AUXILIARY = []
 def main():
     with Stage("Importing data..."):
         raw_data = import_data(DATASET_PATH)
-
+        
     with Stage("Assembling dataset..."):
         store = FeatureStore(
             PATH_PREPROCESSED,
             ENABLED_FEATURES,
             PATH_AUXILIARIES,
             ENABLED_AUXILIARY,
-            raw_data.iloc[:10000],
-            is_cluster=False,
+            raw_data,
+            is_cluster=IS_CLUSTER,
             is_inference=False,
         )
         features_union_df = store.get_dataset()

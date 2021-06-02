@@ -1,4 +1,5 @@
 import time
+import os
 import databricks.koalas as ks
 import pickle as pkl
 import numpy as np
@@ -24,14 +25,14 @@ def user_activity(raw_data, features = None, auxiliary_dict = None):
         if reduce(lambda a, b: a+b, window_counter[user].values()) == 0:
             del window_counter[user]
     
-    output_path = os.path.join(self.path_auxiliaries, 'hashtag_window_counter.pkl')
+    output_path = os.path.join(PATH_AUXILIARIES, 'hashtag_window_counter.pkl')
         
     # Time windows in seconds
-    WINDOWS = np.array([5, 60, 240, 480, 1440])*60
+    WINDOWS = [x*60 for x in [5, 60, 240, 480, 1440]]
     j = {k:0 for k in WINDOWS} # Indices to clean up window_counter dictionary when a sample is out of window
     
-    if os.exists(output_path):
-        with open(OUTPUT_PATH, 'rb') as f:
+    if os.path.exists(output_path):
+        with open(output_path, 'rb') as f:
             initial_dictionary = pkl.load(f)
         window_counter = defaultdict(lambda : counter_initialization(WINDOWS), initial_dictionary)
     
@@ -79,7 +80,7 @@ def user_activity(raw_data, features = None, auxiliary_dict = None):
             window_counter[engaged][time_win] += 1
             
     # store current window_counter, since this will be the initial counter at inference time
-    with open(OUTPUT_PATH, 'wb') as f:
+    with open(output_path, 'wb') as f:
         pkl.dump(dict(window_counter), f, protocol=pkl.HIGHEST_PROTOCOL)
        
     # Convert each list of dict to a series

@@ -26,13 +26,6 @@ Please, keep a baseline of the results without additional features for immediate
 TODO(Francesco): set up the logging of features, model, scores
 """
 
-# # Class to select and handle a model between Native and H2O
-# class BasicModel:
-#     def __init__(self, name, train_kdf):
-#         if name == 'h2o':
-#             model = H2OXGBoostEstimator
-        
-
 def cross_validate(train_kdf, params, num_boost_round):
     train_df  = train_kdf.to_pandas()
     tscv = TimeSeriesSplit(n_splits=5)
