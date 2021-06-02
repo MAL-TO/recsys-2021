@@ -87,8 +87,12 @@ def user_activity(raw_data, features = None, auxiliary_dict = None):
     for key in new_features.keys():
         new_features[key] = ks.DataFrame(new_features[key]).set_index(['tweet_id', 'engaging_user_id']).squeeze()
 
-    # store current window_counter, since this will be the initial counter at inference time
-    with open(output_path, 'wb') as f:
-        pkl.dump(dict(window_counter), f, protocol=pkl.HIGHEST_PROTOCOL)
+#     # store current window_counter, since this will be the initial counter at inference time
+#     with open(output_path, 'wb') as f:
+#         pkl.dump(dict(window_counter), f, protocol=pkl.HIGHEST_PROTOCOL)
+
+    for key in new_features.keys():
+        print(type(new_features[key]))
+        print(len(new_features[key]))
         
     return new_features

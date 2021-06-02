@@ -3,6 +3,7 @@ import databricks.koalas as ks
 from typing import Dict
 
 from preprocessor.time.hashtag_popularity import hashtag_popularity
+from preprocessor.time.user_activity import user_activity
 
 from preprocessor.targets.binarize_timestamps import binarize_timestamps  # noqa: F401
 # from preprocessor.graph.engaging_user_degree import engaging_user_degree
@@ -11,6 +12,7 @@ from preprocessor.targets.binarize_timestamps import binarize_timestamps  # noqa
 #     auxiliary_engagement_graph,
 # )  # noqa: F401
 
+CUMULATIVE = ['hashtag_popularity', 'user_activity']
 
 class FeatureStore:
     """Handle feature configuration"""
@@ -174,9 +176,14 @@ class FeatureStore:
             else:
                 print("### Extracting " + feature_name + "...")
                 feature_extractor = globals()[feature_name]
-                extracted = feature_extractor(
-                    self.raw_data, feature_dict, auxiliary_dict
-                )
+                if feature_name in CUMULATIVE:
+                    extracted = feature_extractor(
+                        self.raw_data.spark.coalesce(1), feature_dict, auxiliary_dict
+                    )
+                else:
+                    extracted = feature_extractor(
+                        self.raw_data, feature_dict, auxiliary_dict
+                    )
 
                 if isinstance(extracted, dict):  # more than one feature extracted
                     for column in extracted:
@@ -187,12 +194,15 @@ class FeatureStore:
                     features_df = ks.concat(
                         list(extracted.values()), axis=1, join="inner"
                     )
+                    print(list(extracted.keys()))
+                          
                     assert len(features_df) == len(list(extracted.values())[0])
                     features_df.to_csv(
                         feature_path,
                         index_col=["tweet_id", "engaging_user_id"],
                         header=list(extracted.keys())
                     )
+                    
                 elif isinstance(extracted, ks.Series):
                     feature_dict[feature_name] = extracted
                     extracted.to_csv(
