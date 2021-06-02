@@ -25,9 +25,9 @@ ENABLED_FEATURES = [
     "engaged_with_user_following_count",
     "engaging_user_follower_count",
     "engaging_user_following_count",
-    "word_count",
-    
-    "binarize_timestamps"
+    "hour_of_day",
+    "binarize_timestamps",
+    "te_language_hour",
 ]
 
 ENABLED_AUXILIARY = []
