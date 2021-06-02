@@ -28,15 +28,17 @@ def hashtag_popularity(raw_data, features = None, auxiliary_dict = None):
     hashtags = raw_data['hashtags'].to_numpy()
     timestamps = raw_data['tweet_timestamp'].to_numpy()
     
-    # Initialize with existing dict at inference time (same for training without first chunck of data)
-    if os.path.exists(output_path):
-        with open(output_path, 'rb') as f:
-            initial_dictionary = pkl.load(f)
-        window_counter = defaultdict(lambda : 0, initial_dictionary)
+    window_counter = defaultdict(lambda : 0)
     
-    # Else if training
-    else:
-        window_counter = defaultdict(lambda : 0)
+    # Remove comment for inference when doing real submission
+#     if os.path.exists(output_path):
+#         with open(output_path, 'rb') as f:
+#             initial_dictionary = pkl.load(f)
+#         window_counter = defaultdict(lambda : 0, initial_dictionary)
+    
+#     # Else if training
+#     else:
+#         window_counter = defaultdict(lambda : 0)
     
     # pointer to reduce counter when timestamp < now - WINDOW_SIZE
     j = 0
@@ -87,7 +89,7 @@ def hashtag_popularity(raw_data, features = None, auxiliary_dict = None):
     new_feature = ks.DataFrame(new_col).set_index(['tweet_id', 'engaging_user_id']).squeeze()
     
     # store current window_counter, since this will be the initial counter at inference time
-    with open(output_path, 'wb') as f:
+    with open(output_path, 'wb+') as f:
         pkl.dump(dict(window_counter), f, protocol=pkl.HIGHEST_PROTOCOL)
 
     return new_feature

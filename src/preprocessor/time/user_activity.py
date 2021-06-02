@@ -31,14 +31,18 @@ def user_activity(raw_data, features = None, auxiliary_dict = None):
     WINDOWS = [x*60 for x in [5, 60, 240, 480, 1440]]
     j = {k:0 for k in WINDOWS} # Indices to clean up window_counter dictionary when a sample is out of window
     
-    if os.path.exists(output_path):
-        with open(output_path, 'rb') as f:
-            initial_dictionary = pkl.load(f)
-        window_counter = defaultdict(lambda : counter_initialization(WINDOWS), initial_dictionary)
+    window_counter = defaultdict(lambda : counter_initialization(WINDOWS))
     
-    # Else if training
-    else:
-        window_counter = defaultdict(lambda : counter_initialization(WINDOWS))
+    # Remove comment for real submisison
+#     if os.path.exists(output_path):
+#         print("Initializing with existing path")
+#         with open(output_path, 'rb') as f:
+#             initial_dictionary = pkl.load(f)
+#         window_counter = defaultdict(lambda : counter_initialization(WINDOWS), initial_dictionary)
+    
+#     # Else if training
+#     else:
+#         window_counter = defaultdict(lambda : counter_initialization(WINDOWS))
     
     # Sort by timestamp
     raw_data.sort_values(by='tweet_timestamp', inplace = True)
@@ -87,12 +91,8 @@ def user_activity(raw_data, features = None, auxiliary_dict = None):
     for key in new_features.keys():
         new_features[key] = ks.DataFrame(new_features[key]).set_index(['tweet_id', 'engaging_user_id']).squeeze()
 
-#     # store current window_counter, since this will be the initial counter at inference time
-#     with open(output_path, 'wb') as f:
-#         pkl.dump(dict(window_counter), f, protocol=pkl.HIGHEST_PROTOCOL)
-
-    for key in new_features.keys():
-        print(type(new_features[key]))
-        print(len(new_features[key]))
+    # store current window_counter, since this will be the initial counter at inference time
+    with open(output_path, 'wb+') as f:
+        pkl.dump(dict(window_counter), f, protocol=pkl.HIGHEST_PROTOCOL)
         
     return new_features
