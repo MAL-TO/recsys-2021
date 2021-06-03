@@ -9,7 +9,7 @@ PATH_PREPROCESSED_CLUSTER = os.path.join(ROOT_DIR_CLUSTER, "data/preprocessed")
 PATH_AUXILIARIES = os.path.join(ROOT_DIR, "../data/auxiliary")
 PATH_AUXILIARIES_CLUSTER = os.path.join(ROOT_DIR_CLUSTER, "data/auxiliary")
 
-MODEL_SEED = 42
+MODEL_SEED = None
 
 # List of Python dicts, each dict represents a fold with train and test set
 # filenames inside `PATH_DATA`
