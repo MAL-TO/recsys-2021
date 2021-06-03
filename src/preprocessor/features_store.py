@@ -182,7 +182,6 @@ class FeatureStore:
                 )
 
                 if isinstance(extracted, dict):  # more than one feature extracted
-                    print(list(extracted.keys()))
                     for column in extracted:
                         assert isinstance(extracted[column], ks.Series)
                         feature_dict[column] = extracted[column]

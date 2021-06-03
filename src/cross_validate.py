@@ -30,16 +30,24 @@ def cross_validate(train_kdf, params, num_boost_round):
     train_df  = train_kdf.to_pandas()
     tscv = TimeSeriesSplit(n_splits=5)
 
+    targets = [
+            "reply",
+            "retweet",
+            "retweet_with_comment",
+            "like",
+    ]
+
+    features = list(set(train_df.columns) - set(targets))
+
     cv_models = []
     cv_results_train = []
     cv_results_test = []
-    targets = train_df.columns[-4:]
     for train_ixs, test_ixs in tscv.split(train_df):
         train_split_df = train_df.iloc[train_ixs]
         test_split_df = train_df.iloc[test_ixs]
         
-        X_train = train_split_df.iloc[:, 0:-4]
-        X_test = test_split_df.iloc[:, 0:-4]
+        X_train = train_split_df.loc[:, features]
+        X_test = test_split_df.loc[:, features]
 
         # train model
         dtest = xgb.DMatrix(X_test)
