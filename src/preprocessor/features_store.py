@@ -5,23 +5,23 @@ from typing import Dict
 from preprocessor.targets.binarize_timestamps import binarize_timestamps  # noqa: F401
 from preprocessor.graph.engaging_user_degree import engaging_user_degree
 
-from preprocessor.graph.auxiliary_engagement_graph import (
-    auxiliary_engagement_graph,
-)  # noqa: F401
+from preprocessor.graph.auxiliary_engagement_graph import auxiliary_engagement_graph  # noqa: F401
 
 
 class FeatureStore:
     """Handle feature configuration"""
 
     def __init__(
-        self,
-        path_preprocessed,
-        enabled_extractors,
-        path_auxiliaries,
-        enabled_auxiliaries,
-        raw_data,
-        is_cluster,
-        is_inference,
+            self,
+            path_preprocessed,
+            path_preprocessed_cluster,
+            enabled_extractors,
+            path_auxiliaries,
+            path_auxiliaries_cluster,
+            enabled_auxiliaries,
+            raw_data,
+            is_cluster,
+            is_inference,
     ):
         """
 
@@ -40,6 +40,13 @@ class FeatureStore:
         self.raw_data = raw_data
         self.is_cluster = is_cluster
         self.is_inference = is_inference
+
+        if self.is_cluster:
+            self.path_preprocessed_rw = path_preprocessed_cluster
+            self.path_auxiliaries_rw = path_auxiliaries_cluster
+        else:
+            self.path_preprocessed_rw = self.path_preprocessed
+            self.path_auxiliaries_rw = self.path_auxiliaries
 
         self.enabled_auxiliaries = enabled_auxiliaries
 
@@ -73,6 +80,7 @@ class FeatureStore:
 
         for auxiliary_name in self.enabled_auxiliaries:
             auxiliary_path = os.path.join(self.path_auxiliaries, auxiliary_name)
+            auxiliary_path_rw = os.path.join(self.path_auxiliaries_rw, auxiliary_name)
 
             # If auxiliary data is already materialized
             if os.path.exists(auxiliary_path):
@@ -81,7 +89,7 @@ class FeatureStore:
 
                 for key in auxiliary_list:
                     ks_auxiliary = ks.read_csv(
-                        os.path.join(auxiliary_path, key), header=0
+                        os.path.join(auxiliary_path_rw, key), header=0
                     )
                     if isinstance(ks_auxiliary, ks.DataFrame):
                         auxiliary_dict[key] = ks_auxiliary
@@ -123,14 +131,14 @@ class FeatureStore:
                         assert isinstance(auxiliary_extracted[key], ks.DataFrame)
                         auxiliary_dict[key] = auxiliary_extracted[key]
 
-                        auxiliary_extracted_path = os.path.join(auxiliary_path, key)
+                        auxiliary_extracted_path = os.path.join(auxiliary_path_rw, key)
 
                         # Store the current auxiliary dataframe
                         auxiliary_extracted[key].to_csv(
                             auxiliary_extracted_path,
                             index_col=None,  # TODO (Manuele) how to handle index_col?
                             header=list(auxiliary_extracted[key].columns),
-                            num_files=(None if self.is_cluster else 1),
+                            num_files=1,
                         )
                 else:
                     raise TypeError(
@@ -148,12 +156,13 @@ class FeatureStore:
 
         for feature_name in self.enabled_features["custom"]:
             feature_path = os.path.join(self.path_preprocessed, feature_name)
+            feature_path_rw = os.path.join(self.path_preprocessed_rw, feature_name)
 
             # If feature already materialized
             if os.path.exists(feature_path):
                 print("### Reading cached " + feature_name + "...")
                 ks_feature = ks.read_csv(
-                    feature_path, header=0, index_col=["tweet_id", "engaging_user_id"]
+                    feature_path_rw, header=0, index_col=["tweet_id", "engaging_user_id"]
                 )
 
                 assert len(ks_feature) == len(self.raw_data)
@@ -187,18 +196,18 @@ class FeatureStore:
                     )
                     assert len(features_df) == len(list(extracted.values())[0])
                     features_df.to_csv(
-                        feature_path,
+                        feature_path_rw,
                         index_col=["tweet_id", "engaging_user_id"],
                         header=list(extracted.keys()),
-                        num_files=(None if self.is_cluster else 1),
+                        num_files=1,
                     )
                 elif isinstance(extracted, ks.Series):
                     feature_dict[feature_name] = extracted
                     extracted.to_csv(
-                        feature_path,
+                        feature_path_rw,
                         index_col=["tweet_id", "engaging_user_id"],
                         header=[feature_name],
-                        num_files=(None if self.is_cluster else 1),
+                        num_files=1,
                     )
                 else:
                     raise TypeError(
