@@ -5,23 +5,25 @@ from typing import Dict
 from preprocessor.targets.binarize_timestamps import binarize_timestamps  # noqa: F401
 from preprocessor.graph.engaging_user_degree import engaging_user_degree
 
-from preprocessor.graph.auxiliary_engagement_graph import auxiliary_engagement_graph  # noqa: F401
+from preprocessor.graph.auxiliary_engagement_graph import (
+    auxiliary_engagement_graph,
+)  # noqa: F401
 
 
 class FeatureStore:
     """Handle feature configuration"""
 
     def __init__(
-            self,
-            path_preprocessed,
-            path_preprocessed_cluster,
-            enabled_extractors,
-            path_auxiliaries,
-            path_auxiliaries_cluster,
-            enabled_auxiliaries,
-            raw_data,
-            is_cluster,
-            is_inference,
+        self,
+        path_preprocessed,
+        path_preprocessed_cluster,
+        enabled_extractors,
+        path_auxiliaries,
+        path_auxiliaries_cluster,
+        enabled_auxiliaries,
+        raw_data,
+        is_cluster,
+        is_inference,
     ):
         """
 
@@ -162,7 +164,9 @@ class FeatureStore:
             if os.path.exists(feature_path):
                 print("### Reading cached " + feature_name + "...")
                 ks_feature = ks.read_csv(
-                    feature_path_rw, header=0, index_col=["tweet_id", "engaging_user_id"]
+                    feature_path_rw,
+                    header=0,
+                    index_col=["tweet_id", "engaging_user_id"],
                 )
 
                 assert len(ks_feature) == len(self.raw_data)

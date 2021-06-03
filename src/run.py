@@ -2,7 +2,13 @@ import argparse
 import os
 
 from data.importer import import_data
-from constants import PATH_PREPROCESSED, PATH_PREPROCESSED_CLUSTER, PATH_AUXILIARIES, PATH_AUXILIARIES_CLUSTER, MODEL_SEED
+from constants import (
+    PATH_PREPROCESSED,
+    PATH_PREPROCESSED_CLUSTER,
+    PATH_AUXILIARIES,
+    PATH_AUXILIARIES_CLUSTER,
+    MODEL_SEED,
+)
 from util import Stage, str2bool
 from create_spark_context import create_spark_context
 

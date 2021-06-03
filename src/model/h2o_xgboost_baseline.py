@@ -54,17 +54,10 @@ class Model(ModelInterface):
             "engaging_user_following_count",
         ]
 
-        self.labels = [
-            "reply",
-            "retweet",
-            "retweet_with_comment",
-            "like"
-        ]
+        self.labels = ["reply", "retweet", "retweet_with_comment", "like"]
 
         # Specify extractors and auxiliaries required by the enabled features
-        self.enabled_auxiliaries = [
-
-        ]
+        self.enabled_auxiliaries = []
         self.enabled_extractors = [
             "engaged_with_user_follower_count",
             "engaged_with_user_following_count",
@@ -78,9 +71,9 @@ class Model(ModelInterface):
     @staticmethod
     def serialized_model_path_for_target(target: str) -> str:
         p = (
-                Path(ROOT_DIR)
-                / "../serialized_models"
-                / f"h2o_xgboost_baseline_{target}.model"
+            Path(ROOT_DIR)
+            / "../serialized_models"
+            / f"h2o_xgboost_baseline_{target}.model"
         )
         return str(p.resolve())
 
@@ -145,10 +138,7 @@ class Model(ModelInterface):
         df_predictions = pd.DataFrame()
         for label in self.labels:
             df_predictions[label] = (
-                self.model[label]
-                    .predict(h2oframe_test)
-                    .as_data_frame()["True"]
-                    .values
+                self.model[label].predict(h2oframe_test).as_data_frame()["True"].values
             )
 
         # Reattach real index (Lord have mercy)
@@ -163,9 +153,7 @@ class Model(ModelInterface):
             # Select the first model in the directory
             p = str(
                 next(
-                    Path(
-                        self.serialized_model_path_for_target(label)
-                    ).iterdir()
+                    Path(self.serialized_model_path_for_target(label)).iterdir()
                 ).resolve()
             )
             with open(os.devnull, "w") as devnull:
