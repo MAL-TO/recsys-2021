@@ -1,14 +1,12 @@
 import os
 import gc
 
-from constants import ROOT_DIR
+from constants import ROOT_DIR, PATH_PREPROCESSED, PATH_AUXILIARIES
 from data.importer import import_data
-from model.native_xgboost_baseline import Model
+from model.h2o_xgboost_baseline import Model
 from util import Stage
 from create_spark_context import create_spark_context
 
-PATH_PREPROCESSED = os.path.join(ROOT_DIR, "../data/preprocessed")
-PATH_AUXILIARIES = os.path.join(ROOT_DIR, "../data/auxiliary")
 TEST_DIR = "../data/raw/test"
 # TEST_DIR = "../test"
 
@@ -39,8 +37,10 @@ def main():
         with Stage("Assembling dataset..."):
             store = FeatureStore(
                 PATH_PREPROCESSED,
+                None,
                 model.enabled_extractors,
                 PATH_AUXILIARIES,
+                None,
                 model.enabled_auxiliaries,
                 raw_data,
                 is_cluster=False,
