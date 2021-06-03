@@ -83,7 +83,6 @@ class Model(ModelInterface):
 
         # Cast to h2o frames
         train_frame = h2o.H2OFrame(train_data.to_pandas())
-        valid_frame = _valid_data
 
         # TODO: hyperparameter tuning; unbalancement handling?
 
@@ -94,8 +93,7 @@ class Model(ModelInterface):
             model.train(
                 y=label,
                 ignored_columns=list(ignored),
-                training_frame=train_frame,
-                validation_frame=valid_frame,
+                training_frame=train_frame
             )
             model.save_mojo(self.serialized_model_path_for_target(label))
             models[label] = model
