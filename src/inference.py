@@ -1,7 +1,7 @@
 import os
 import gc
 
-from constants import ROOT_DIR, PATH_PREPROCESSED, PATH_AUXILIARIES
+from constants import ROOT_DIR, PATH_PREPROCESSED, PATH_AUXILIARIES, MODEL_SEED
 from data.importer import import_data
 from model.h2o_xgboost_baseline import Model
 from util import Stage
@@ -19,7 +19,7 @@ def main():
     from preprocessor.features_store import FeatureStore
 
     with Stage("Initializing model..."):
-        model = Model(include_targets=False)
+        model = Model(include_targets=False, seed=MODEL_SEED)
         model.load_pretrained()
 
     part_files = [
