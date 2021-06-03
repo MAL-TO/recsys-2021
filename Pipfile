@@ -11,7 +11,6 @@ numpy = "*"
 h2o = "*"
 xgboost = "*"
 scikit-learn = "*"
-transformers = "*"
 
 [dev-packages]
 notebook = "*"
