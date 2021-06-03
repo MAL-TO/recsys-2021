@@ -2,13 +2,9 @@ import argparse
 import os
 
 from data.importer import import_data
-from data.splitter import train_valid_test_split_bounds
-from constants import ROOT_DIR
-from util import pretty_evaluation, Stage, str2bool
+from constants import PATH_PREPROCESSED, PATH_PREPROCESSED_CLUSTER, PATH_AUXILIARIES, PATH_AUXILIARIES_CLUSTER, MODEL_SEED
+from util import Stage, str2bool
 from create_spark_context import create_spark_context
-
-PATH_PREPROCESSED = os.path.join(ROOT_DIR, "../data/preprocessed")
-PATH_AUXILIARIES = os.path.join(ROOT_DIR, "../data/auxiliary")
 
 
 def main(dataset_path, model_name, is_cluster):
@@ -23,11 +19,11 @@ def main(dataset_path, model_name, is_cluster):
         if model_name == "native_xgboost_baseline":
             from model.native_xgboost_baseline import Model
 
-            model = Model()
+            model = Model(seed=MODEL_SEED)
         if model_name == "h2o_xgboost_baseline":
             from model.h2o_xgboost_baseline import Model
 
-            model = Model()
+            model = Model(seed=MODEL_SEED)
 
         assert model is not None, f"cannot find a model with name: {model_name}"
         enabled_extractors = model.enabled_extractors
@@ -39,8 +35,10 @@ def main(dataset_path, model_name, is_cluster):
     with Stage("Assembling dataset..."):
         store = FeatureStore(
             PATH_PREPROCESSED,
+            PATH_PREPROCESSED_CLUSTER,
             enabled_extractors,
             PATH_AUXILIARIES,
+            PATH_AUXILIARIES_CLUSTER,
             enabled_auxiliaries,
             raw_data,
             is_cluster,
@@ -48,25 +46,9 @@ def main(dataset_path, model_name, is_cluster):
         )
         features_union_df = store.get_dataset()
 
-    with Stage("Split dataset"):
-        # Train-valid-test split
-        # TODO (manuele): .iloc with arrays is extremely slow on koalas.
-        # Slicing works best. We should probably either:
-        # i) pre-split data and load already split data in ks (best choice I think)
-        # ii) sort (expensive) and then use slicing to get contiguous rows
-        train_bounds, valid_bounds, test_bounds = train_valid_test_split_bounds(
-            features_union_df
-        )
-        train_df = features_union_df.iloc[train_bounds["start"] : train_bounds["end"]]
-        valid_df = features_union_df.iloc[valid_bounds["start"] : valid_bounds["end"]]
-        test_df = features_union_df.iloc[test_bounds["start"] : test_bounds["end"]]
-
     with Stage("Fitting model"):
         hyperparams = {}
-        model.fit(train_df, valid_df, hyperparams)
-
-    with Stage("Evaluating model"):
-        print(pretty_evaluation(model.evaluate(test_df)))
+        model.fit(features_union_df, None, hyperparams)
 
 
 arg_parser = argparse.ArgumentParser(
