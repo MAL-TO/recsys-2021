@@ -10,6 +10,7 @@ from constants import (
     PATH_AUXILIARIES_CLUSTER,
     MODEL_SEED,
     PATH_DATA,
+    PATH_DATA_CLUSTER,
     FILENAMES_DATA,
 )
 from data.importer import import_data
@@ -28,6 +29,11 @@ def main(is_cluster):
     # graphframes module is only available after creating Spark context
     from preprocessor.features_store import FeatureStore
 
+    if is_cluster:
+        p_data = PATH_DATA_CLUSTER
+    else:
+        p_data = PATH_DATA
+
     for i in range(len(FILENAMES_DATA)):
         print(f"Dataset {i+1}/{len(FILENAMES_DATA)}")
 
@@ -38,7 +44,7 @@ def main(is_cluster):
 
         with Stage("Importing train dataset..."):
             fp_train = FILENAMES_DATA[i]["train"]
-            raw_train_data = import_data(os.path.join(PATH_DATA, fp_train))
+            raw_train_data = import_data(os.path.join(p_data, fp_train))
 
         with Stage("Cleaning feature store..."):
             rm_dir_contents(PATH_PREPROCESSED)
@@ -67,7 +73,7 @@ def main(is_cluster):
 
         with Stage("Importing test dataset..."):
             fp_test = FILENAMES_DATA[i]["test"]
-            raw_test_data = import_data(os.path.join(PATH_DATA, fp_test))
+            raw_test_data = import_data(os.path.join(p_data, fp_test))
 
         with Stage("Cleaning feature store..."):
             # Keep auxiliaries extracted from train set
