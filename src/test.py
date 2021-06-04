@@ -29,6 +29,7 @@ ENABLED_FEATURES = [
     "te_language_hour",
     "word_count",
     "user_activity",
+    "engaging_user_lang",
 
     "binarize_timestamps"
 ]

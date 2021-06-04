@@ -7,6 +7,7 @@ from preprocessor.time.hashtag_popularity import hashtag_popularity
 from preprocessor.time.user_activity import user_activity
 from preprocessor.text.word_count import word_count
 from preprocessor.encoding.te_language_hour import te_language_hour
+from preprocessor.encoding.engaging_user_lang import engaging_user_lang
 
 from preprocessor.targets.binarize_timestamps import binarize_timestamps  # noqa: F401
 # from preprocessor.graph.engaging_user_degree import engaging_user_degree
