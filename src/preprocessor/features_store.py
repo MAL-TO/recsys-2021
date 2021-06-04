@@ -5,9 +5,11 @@ from typing import Dict
 from preprocessor.time.hour_of_day import hour_of_day
 from preprocessor.time.hashtag_popularity import hashtag_popularity
 from preprocessor.time.user_activity import user_activity
-from preprocessor.text.word_count import word_count
+from preprocessor.tweet.word_count import word_count
+from preprocessor.tweet.media_count import media_count
 from preprocessor.encoding.te_language_hour import te_language_hour
 from preprocessor.encoding.engaging_user_lang import engaging_user_lang
+from preprocessor.encoding.tweet_type_word_count import tweet_type_word_count
 
 from preprocessor.targets.binarize_timestamps import binarize_timestamps  # noqa: F401
 # from preprocessor.graph.engaging_user_degree import engaging_user_degree
@@ -214,9 +216,9 @@ class FeatureStore:
 
                 print("Feature added to " + feature_path)
 
-        # Assign feature names to series
-        for k in feature_dict:
-            feature_dict[k].name = k
+            # Assign feature names to series
+            for k in feature_dict:
+                feature_dict[k].name = k
 
         return feature_dict
 

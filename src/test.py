@@ -25,10 +25,15 @@ ENABLED_FEATURES = [
     "engaged_with_user_following_count",
     "engaging_user_follower_count",
     "engaging_user_following_count",
+    # "engaged_with_user_is_verified",
+    # "engaging_user_is_verified",
+    # "engagee_follows_engager",
     "hour_of_day",
     "te_language_hour",
     "word_count",
     "user_activity",
+    # "media_count",
+    "tweet_type_word_count",
     "engaging_user_lang",
 
     "binarize_timestamps"
