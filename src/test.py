@@ -3,22 +3,20 @@ import gc
 import argparse
 import numpy as np
 
-from constants import ROOT_DIR
+from constants import (
+    PATH_PREPROCESSED,
+    PATH_PREPROCESSED_CLUSTER,
+    PATH_AUXILIARIES,
+    PATH_AUXILIARIES_CLUSTER,
+    MODEL_SEED,
+    PATH_DATA,
+    PATH_DATA_CLUSTER,
+    FILENAMES_DATA,
+)
 from data.importer import import_data
-from model.native_xgboost_baseline import Model
+from model.h2o_xgboost_baseline import Model
 from util import Stage, str2bool, rm_dir_contents
 from create_spark_context import create_spark_context
-
-PATH_PREPROCESSED = os.path.join(ROOT_DIR, "../data/preprocessed")
-PATH_AUXILIARIES = os.path.join(ROOT_DIR, "../data/auxiliary")
-
-DATA_DIR = "../data/raw/"
-
-# List of Python dicts, each dict represents a fold with train and test set
-# filenames inside `DATA_DIR`
-DATA_PATHS = [
-    {"train": "", "test": ""},
-]
 
 
 def main(is_cluster):
@@ -31,17 +29,22 @@ def main(is_cluster):
     # graphframes module is only available after creating Spark context
     from preprocessor.features_store import FeatureStore
 
-    for i in range(len(DATA_PATHS)):
-        print(f"Dataset {i+1}/{len(DATA_PATHS)}")
+    if is_cluster:
+        p_data = PATH_DATA_CLUSTER
+    else:
+        p_data = PATH_DATA
+
+    for i in range(len(FILENAMES_DATA)):
+        print(f"Dataset {i+1}/{len(FILENAMES_DATA)}")
 
         with Stage("Initializing model..."):
-            model = Model()
+            model = Model(seed=MODEL_SEED)
             enabled_extractors = model.enabled_extractors
             enabled_auxiliaries = model.enabled_auxiliaries
 
         with Stage("Importing train dataset..."):
-            train_path = DATA_PATHS[i]["train"]
-            raw_train_data = import_data(os.path.join(DATA_DIR, train_path))
+            fp_train = FILENAMES_DATA[i]["train"]
+            raw_train_data = import_data(os.path.join(p_data, fp_train))
 
         with Stage("Cleaning feature store..."):
             rm_dir_contents(PATH_PREPROCESSED)
@@ -50,8 +53,10 @@ def main(is_cluster):
         with Stage("Assembling train dataset..."):
             store = FeatureStore(
                 PATH_PREPROCESSED,
+                PATH_PREPROCESSED_CLUSTER,
                 enabled_extractors,
                 PATH_AUXILIARIES,
+                PATH_AUXILIARIES_CLUSTER,
                 enabled_auxiliaries,
                 raw_train_data,
                 is_cluster,
@@ -67,17 +72,20 @@ def main(is_cluster):
             train_results = model.evaluate(train_features_union_df)
 
         with Stage("Importing test dataset..."):
-            test_path = DATA_PATHS[i]["test"]
-            raw_test_data = import_data(os.path.join(DATA_DIR, test_path))
+            fp_test = FILENAMES_DATA[i]["test"]
+            raw_test_data = import_data(os.path.join(p_data, fp_test))
 
         with Stage("Cleaning feature store..."):
+            # Keep auxiliaries extracted from train set
             rm_dir_contents(PATH_PREPROCESSED)
 
         with Stage("Assembling test dataset..."):
             store = FeatureStore(
                 PATH_PREPROCESSED,
+                PATH_PREPROCESSED_CLUSTER,
                 enabled_extractors,
                 PATH_AUXILIARIES,
+                PATH_AUXILIARIES_CLUSTER,
                 enabled_auxiliaries,
                 raw_test_data,
                 is_cluster,
@@ -93,8 +101,7 @@ def main(is_cluster):
 
         gc.collect()
 
-    # Print results
-    # TODO: Save (richer) results to a log file and maybe de-uglify this code
+    # TODO: Save (richer) results to a log file and maybe de-uglify this part
     for ds in results:
         print(f"### Results on {ds} set ###")
 

@@ -15,8 +15,9 @@ from util import Stage
 
 
 class Model(ModelInterface):
-    def __init__(self, include_targets=True):
+    def __init__(self, include_targets=True, seed=None):
         self.models = {}
+        self.seed = seed
 
         # Specify default and custom features to use in the model
         # Note: you should copy this list manually into self.predict
