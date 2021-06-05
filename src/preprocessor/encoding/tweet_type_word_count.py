@@ -1,10 +1,7 @@
 import databricks.koalas as ks
 
-# Hour of day is not meaningful due to time zones
-# What can be useful instead is hour_of_day target encoded with language
-
-# NOTE(Francesco): cast to pandas and back to koalas is slow but needed..
-# Very slow, 2mins for 200k ==> 1h for 10M
+# Problema: issue with cross validation ==> I am passing the already processed data, which is not good.
+# In fact, validation data in TE see the target, this is why the boost so much
 
 import category_encoders as ce
 

@@ -56,7 +56,7 @@ def main():
             is_cluster=IS_CLUSTER,
             is_inference=False,
         )
-        features_union_df = store.get_dataset()
+        # features_union_df = store.get_dataset()
 
     params = {
         'tree_method': 'hist',
@@ -68,7 +68,7 @@ def main():
         'seed': 42
     }
         
-    cv_models, cv_results_train, cv_results_test = cross_validate(features_union_df, params, num_boost_round=13)
+    cv_models, cv_results_train, cv_results_test = cross_validate(raw_data, store, params, num_boost_round=13)
 
     print("********************* TRAIN *********************")
     for metric_lst in cv_metrics(cv_results_train):

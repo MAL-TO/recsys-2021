@@ -26,7 +26,7 @@ Please, keep a baseline of the results without additional features for immediate
 TODO(Francesco): set up the logging of features, model, scores
 """
 
-def cross_validate(train_kdf, params, num_boost_round):
+def cross_validate(train_kdf, feature_store, params, num_boost_round):
     train_df  = train_kdf.to_pandas()
     tscv = TimeSeriesSplit(n_splits=5)
 
