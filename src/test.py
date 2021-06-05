@@ -1,24 +1,18 @@
 # Script for testing new features
 
 import xgboost as xgb
-# import matplotlib.pyplot as plt
-# import seaborn as sns
 import os
 import numpy as np
 os.environ['ARROW_PRE_0_15_IPC_FORMAT'] = '1'
 os.environ['PYARROW_IGNORE_TIMEZONE'] = '1'
 
 from data.importer import import_data
-from util import pretty_evaluation, Stage
+from util import Stage
 from cross_validate import cross_validate, cv_metrics
-# from metrics import compute_score, just_mAP_mRCE, pretty_evaluation
-from preprocessor.features_store import FeatureStore
 
 
 # Arguments
 DATASET_PATH = "../data/raw/time_sample200k.parquet"
-PATH_PREPROCESSED = "../data/preprocessed"
-PATH_AUXILIARIES = "../data/auxiliary"
 IS_CLUSTER = False
 ENABLED_FEATURES = [
     "engaged_with_user_follower_count",
@@ -28,13 +22,13 @@ ENABLED_FEATURES = [
     # "engaged_with_user_is_verified",
     # "engaging_user_is_verified",
     # "engagee_follows_engager",
-    "hour_of_day",
-    "te_language_hour",
-    "word_count",
-    "user_activity",
+    # "hour_of_day",
+    # "te_language_hour",
+    # "word_count",
+    # "user_activity",
     # "media_count",
-    "tweet_type_word_count",
-    "engaging_user_lang",
+    # "te_tweet_type_word_count",
+    "te_user_lang",
 
     "binarize_timestamps"
 ]
@@ -45,18 +39,6 @@ ENABLED_AUXILIARY = []
 def main():
     with Stage("Importing data..."):
         raw_data = import_data(DATASET_PATH)
-        
-    with Stage("Assembling dataset..."):
-        store = FeatureStore(
-            PATH_PREPROCESSED,
-            ENABLED_FEATURES,
-            PATH_AUXILIARIES,
-            ENABLED_AUXILIARY,
-            raw_data,
-            is_cluster=IS_CLUSTER,
-            is_inference=False,
-        )
-        # features_union_df = store.get_dataset()
 
     params = {
         'tree_method': 'hist',
@@ -68,7 +50,11 @@ def main():
         'seed': 42
     }
         
-    cv_models, cv_results_train, cv_results_test = cross_validate(raw_data, store, params, num_boost_round=13)
+    cv_models, cv_results_train, cv_results_test = cross_validate(
+        raw_data, params,
+        ENABLED_FEATURES, ENABLED_AUXILIARY,
+        num_boost_round=13
+    )
 
     print("********************* TRAIN *********************")
     for metric_lst in cv_metrics(cv_results_train):
