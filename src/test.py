@@ -2,6 +2,8 @@ import os
 import gc
 import argparse
 import numpy as np
+import h2o
+from pysparkling import H2OContext
 
 from constants import (
     PATH_PREPROCESSED,
@@ -18,13 +20,15 @@ from model.h2o_xgboost_baseline import Model
 from util import Stage, str2bool, rm_dir_contents
 from create_spark_context import create_spark_context
 
-
 def main(is_cluster):
     # Initialize dict to store evaluation results
     results = {"train": [], "test": []}
 
     with Stage("Creating Spark context..."):
-        create_spark_context()
+        sc = create_spark_context()
+
+    with Stage("Creating H2O context..."):
+        hc = H2OContext.getOrCreate()
 
     # graphframes module is only available after creating Spark context
     from preprocessor.features_store import FeatureStore
@@ -98,6 +102,10 @@ def main(is_cluster):
 
         results["train"].append(train_results)
         results["test"].append(test_results)
+
+        with Stage("Closing..."):
+            h2o.cluster().shutdown(prompt=False)
+            sc.stop()
 
         gc.collect()
 
