@@ -52,18 +52,22 @@ class Model(ModelInterface):
             "engaged_with_user_following_count",
             "engaging_user_follower_count",
             "engaging_user_following_count",
+            "hour_of_day"
+            "te_language_hour"
         ]
 
         self.labels = ["reply", "retweet", "retweet_with_comment", "like"]
 
         # Specify extractors and auxiliaries required by the enabled features
         self.enabled_auxiliaries = []
+        # WHY AGAIN?
         self.enabled_extractors = [
             "engaged_with_user_follower_count",
             "engaged_with_user_following_count",
             "engaging_user_follower_count",
             "engaging_user_following_count",
-            "binarize_timestamps",
+            "hour_of_day",
+            "te_language_hour"
         ]
         if include_targets:
             self.enabled_extractors.append("binarize_timestamps")

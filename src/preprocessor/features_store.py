@@ -3,7 +3,8 @@ import databricks.koalas as ks
 from typing import Dict
 
 from preprocessor.targets.binarize_timestamps import binarize_timestamps  # noqa: F401
-
+from preprocessor.time.hour_of_day import hour_of_day
+from preprocessor.encoder.te_language_hour import te_language_hour
 
 class FeatureStore:
     """Handle feature configuration"""
@@ -181,7 +182,7 @@ class FeatureStore:
                 print("### Extracting " + feature_name + "...")
                 feature_extractor = globals()[feature_name]
                 extracted = feature_extractor(
-                    self.raw_data, feature_dict, auxiliary_dict
+                    self.raw_data, feature_dict, auxiliary_dict, self.is_inference
                 )
 
                 if isinstance(extracted, dict):  # more than one feature extracted
@@ -215,9 +216,9 @@ class FeatureStore:
 
                 print("Feature added to " + feature_path)
 
-        # Assign feature names to series
-        for k in feature_dict:
-            feature_dict[k].name = k
+            # Assign feature names to series
+            for k in feature_dict:
+                feature_dict[k].name = k
 
         return feature_dict
 

@@ -2,7 +2,7 @@ from pyspark import SparkConf, SparkContext
 import databricks.koalas as ks
 
 
-def create_spark_context(set_memory_conf=True):
+def create_spark_context(set_memory_conf=True, h2o=True):
     # https://spark.apache.org/docs/latest/configuration.html
     conf = SparkConf()
 
@@ -11,6 +11,11 @@ def create_spark_context(set_memory_conf=True):
         conf.set("spark.driver.maxResultSize", "4g")
 
         conf.set("spark.executor.memory", "3g")
+        
+    if h2o:
+        # http://docs.h2o.ai/sparkling-water/2.4/latest-stable/doc/configuration/configuration_properties.html
+        conf.set("spark.dynamicAllocation.enabled", "false")
+        conf.set("spark.ext.h2o.log.level", "WARN")
 
     conf.set("spark.sql.execution.arrow.pyspark.enabled", "true")
     conf.set("spark.sql.execution.arrow.enabled", "true")
