@@ -7,7 +7,7 @@ from constants import ROOT_DIR
 
 PATH_AUXILIARIES = os.path.join(ROOT_DIR, "../data/auxiliary")
 
-def hashtag_popularity(raw_data, features = None, auxiliary_dict = None):
+def hashtag_popularity(raw_data, features, auxiliaries, is_inference):
     """
     Args:
         raw_data (ks.DataFrame): dataset to process for feature extraction

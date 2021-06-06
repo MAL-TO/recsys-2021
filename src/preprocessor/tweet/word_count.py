@@ -2,7 +2,7 @@ import time
 
 # NVIDIA
 # TODO(Francesco): test
-def word_count(raw_data, features = None, auxiliary_dict = None):
+def word_count(raw_data, features, auxiliary_dict, is_inference):
     """
     Count number of words in "text_tokens" field of raw data
     """

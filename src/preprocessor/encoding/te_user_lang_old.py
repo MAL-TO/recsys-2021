@@ -27,3 +27,12 @@ def engaging_user_lang(raw_data, features = None, auxiliary_dict = None):
         print(te_result.describe())
 
     return target_encoded
+
+# ********************* TRAIN *********************                               
+# LB +0.2965 to UB +0.3136 (± 1σ)
+# LB +12.9521 to UB +14.9195 (± 1σ)
+# ********************* TEST *********************
+# LB +0.2472 to UB +0.2661 (± 1σ)
+# LB +9.4952 to UB +11.8348 (± 1σ)
+# ['engaged_with_user_follower_count', 'engaged_with_user_following_count', 'engaging_user_follower_count', 'engaging_user_following_count', 'engaging_user_lang', 'binarize_timestamps']
+# {'tree_method': 'hist', 'objective': 'binary:logistic', 'eval_metric': 'logloss', 'subsample': 0.7, 'min_child_weight': 10, 'max_depth': 6, 'seed': 42}

@@ -1,10 +1,20 @@
 # TODO(Francesco): DO NOT COMMIT; Andrea's made its own one, I am just copying it on this branch
 import h2o
 import xgboost as xgb
+import databricks.koalas as ks
 from h2o.estimators import H2OXGBoostEstimator
 from sklearn.model_selection import TimeSeriesSplit
 
 from metrics import compute_score
+from preprocessor.features_store import FeatureStore
+from util import rm_dir_contents, Stage
+from constants import (
+    PATH_PREPROCESSED,
+    PATH_PREPROCESSED_CLUSTER,
+    PATH_AUXILIARIES,
+    PATH_AUXILIARIES_CLUSTER,
+    MODEL_SEED
+)
 
 """
 Split the dataset into time series
@@ -26,9 +36,15 @@ Please, keep a baseline of the results without additional features for immediate
 TODO(Francesco): set up the logging of features, model, scores
 """
 
-def cross_validate(train_kdf, params, num_boost_round):
-    train_df  = train_kdf.to_pandas()
-    tscv = TimeSeriesSplit(n_splits=5)
+def cross_validate(
+    raw_data,
+    params,
+    enabled_features,
+    enabled_auxiliaries,
+    num_boost_round
+):
+    df  = raw_data.to_pandas()
+    tscv = TimeSeriesSplit(n_splits=3)
 
     targets = [
             "reply",
@@ -37,14 +53,49 @@ def cross_validate(train_kdf, params, num_boost_round):
             "like",
     ]
 
-    features = list(set(train_df.columns) - set(targets))
-
     cv_models = []
     cv_results_train = []
     cv_results_test = []
-    for train_ixs, test_ixs in tscv.split(train_df):
-        train_split_df = train_df.iloc[train_ixs]
-        test_split_df = train_df.iloc[test_ixs]
+    for train_ixs, test_ixs in tscv.split(df):
+        train_raw = df.iloc[train_ixs]
+        test_raw = df.iloc[test_ixs]
+
+        with Stage("Cleaning feature store..."):
+            rm_dir_contents(PATH_PREPROCESSED)
+            rm_dir_contents(PATH_AUXILIARIES)
+
+        with Stage("Assembling train dataset..."):
+            store = FeatureStore(
+                PATH_PREPROCESSED,
+                PATH_PREPROCESSED_CLUSTER,
+                enabled_features,
+                PATH_AUXILIARIES,
+                PATH_AUXILIARIES_CLUSTER,
+                enabled_auxiliaries,
+                ks.from_pandas(train_raw),
+                is_cluster=False,
+                is_inference=False,
+            )
+            train_split_df = store.get_dataset().to_pandas()
+
+        with Stage("Cleaning feature store..."):
+            rm_dir_contents(PATH_PREPROCESSED)
+
+        with Stage("Assembling test dataset..."):
+            store = FeatureStore(
+                PATH_PREPROCESSED,
+                PATH_PREPROCESSED_CLUSTER,
+                enabled_features,
+                PATH_AUXILIARIES,
+                PATH_AUXILIARIES_CLUSTER,
+                enabled_auxiliaries,
+                ks.from_pandas(test_raw),
+                is_cluster=False,
+                is_inference=True,
+            )
+            test_split_df = store.get_dataset().to_pandas()
+
+        features = list(set(train_split_df.columns) - set(targets))
         
         X_train = train_split_df.loc[:, features]
         X_test = test_split_df.loc[:, features]

@@ -1,9 +1,7 @@
 import time
 from constants import ROOT_DIR
 
-PATH_AUXILIARIES = os.path.join(ROOT_DIR, "../data/auxiliary")
-
-def day_of_week(raw_data, features = None, auxiliary_dict = None):
+def day_of_week(raw_data, features, auxiliaries, is_inference):
     """
     Extract day of the week (categorical) from tweet_timestamp. UTC time zone
 

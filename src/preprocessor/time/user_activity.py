@@ -9,7 +9,7 @@ from constants import ROOT_DIR
 
 PATH_AUXILIARIES = os.path.join(ROOT_DIR, "../data/auxiliary")
 
-def user_activity(raw_data, features = None, auxiliary_dict = None):
+def user_activity(raw_data, features, auxiliaries, is_inference):
     """
     Args:
         raw_data (ks.DataFrame): dataset to process for feature extraction
@@ -18,7 +18,7 @@ def user_activity(raw_data, features = None, auxiliary_dict = None):
         (appearences as engaging or engagee) inside one of the specified time windows
     """
     def counter_initialization(windows):
-        return {k:0 for k in WINDOWS}
+        return {k:0 for k in windows}
     
     def clean_window_counter(window_counter, user):
         # Remove user if its counters are all 0

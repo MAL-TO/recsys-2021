@@ -11,6 +11,7 @@ numpy = "*"
 h2o = "*"
 xgboost = "*"
 scikit-learn = "*"
+category-encoders = "*"
 
 [dev-packages]
 notebook = "*"
