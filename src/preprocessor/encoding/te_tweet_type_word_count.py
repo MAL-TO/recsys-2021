@@ -29,13 +29,9 @@ def te_tweet_type_word_count(raw_data, features, auxiliaries, is_inference):
         # Define H2O DataFrame
         h2o_frame = hc.asH2OFrame(df.reset_index(drop=False).to_spark())
 
-        # Deserialize encoders
-        with open(auxiliary_path, 'rb') as f:
-            encoders = pkl.load(f)
-
-        for target in targets:
+        for target, f in zip(targets, os.listdir(auxiliary_path)):
             new_feature = f'TE_tweet_type_word_count{target}'
-            te = encoders[target]
+            te = h2o.load_model(os.path.join(auxiliary_path, f))
 
             new_col_h2o = te.transform(frame=h2o_frame, as_training=True)[:, index_cols + [categorical_feature + "_te"]]
 #             new_col_spark = hc.asDataFrame(new_col_h2o)
@@ -54,7 +50,6 @@ def te_tweet_type_word_count(raw_data, features, auxiliaries, is_inference):
         # Define H2O DataFrame
         h2o_frame = hc.asH2OFrame(df.reset_index(drop=False).to_spark())
 
-        encoders = {}
         ALPHA = 20
         NOISE = 0.01 # In general, the less data you have the more regularization you need
         INFLECTION_POINT = 20 # ?
@@ -82,10 +77,7 @@ def te_tweet_type_word_count(raw_data, features, auxiliaries, is_inference):
             new_col_koalas.name = new_feature
 
             target_encoded[new_feature] = new_col_koalas
-            encoders[target] = te
 
-        # Serialize encoders
-        with open(auxiliary_path, 'wb+') as f:
-            pkl.dump(encoders, f, protocol=pkl.HIGHEST_PROTOCOL)
+            te.download_model(auxiliary_path)
 
     return target_encoded

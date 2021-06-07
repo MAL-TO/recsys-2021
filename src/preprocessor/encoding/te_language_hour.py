@@ -1,15 +1,14 @@
 import os
 import pickle as pkl
-import warnings
 from pysparkling import H2OContext
 import databricks.koalas as ks
+import h2o
 from h2o.estimators import H2OTargetEncoderEstimator
 from constants import PATH_AUXILIARIES
 
 hc = H2OContext.getOrCreate()
 
 def te_language_hour(raw_data, features, auxiliaries, is_inference):
-    warnings.simplefilter(action='ignore', category=FutureWarning)
     
     # auxiliary_path_rw?
     auxiliary_path = os.path.join(PATH_AUXILIARIES, 'te_language_hour')
@@ -31,13 +30,11 @@ def te_language_hour(raw_data, features, auxiliaries, is_inference):
         # Define H2O DataFrame
         h2o_frame = hc.asH2OFrame(df.reset_index(drop=False).to_spark())
 
-        # Deserialize encoders
-        with open(auxiliary_path, 'rb') as f:
-            encoders = pkl.load(f)
-
-        for target in targets:
+        for target, f in zip(targets, os.listdir(auxiliary_path)):
             new_feature = f'TE_language_hour_{target}'
-            te = encoders[target]
+            
+            # Deserialize encoders
+            te = h2o.load_model(os.path.join(auxiliary_path, f))
 
             new_col_h2o = te.transform(frame=h2o_frame, as_training=True)[:, index_cols + [categorical_feature + "_te"]]
 #             new_col_spark = hc.asDataFrame(new_col_h2o)
@@ -45,6 +42,8 @@ def te_language_hour(raw_data, features, auxiliaries, is_inference):
             new_col_pandas = new_col_h2o.as_data_frame()
             new_col_koalas = ks.from_pandas(new_col_pandas).set_index(index_cols).squeeze()
             new_col_koalas.name = new_feature
+            
+            print(new_col_koalas.head())
 
         target_encoded[new_feature] = new_col_koalas
 
@@ -56,7 +55,6 @@ def te_language_hour(raw_data, features, auxiliaries, is_inference):
         # Define H2O DataFrame
         h2o_frame = hc.asH2OFrame(df.reset_index(drop=False).to_spark())
 
-        encoders = {}
         ALPHA = 20
         NOISE = 0.01 # In general, the less data you have the more regularization you need
         INFLECTION_POINT = 20 # ?
@@ -82,12 +80,11 @@ def te_language_hour(raw_data, features, auxiliaries, is_inference):
             new_col_pandas = new_col_h2o.as_data_frame()
             new_col_koalas = ks.from_pandas(new_col_pandas).set_index(index_cols).squeeze()
             new_col_koalas.name = new_feature
+            
+            print(new_col_koalas.head())
 
             target_encoded[new_feature] = new_col_koalas
-            encoders[target] = te
 
-        # Serialize encoders
-        with open(auxiliary_path, 'wb+') as f:
-            pkl.dump(encoders, f, protocol=pkl.HIGHEST_PROTOCOL)
+            te.download_model(auxiliary_path)
 
     return target_encoded
