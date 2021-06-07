@@ -28,7 +28,6 @@ def te_language_hour(raw_data, features, auxiliaries, is_inference):
     if is_inference:
         # Define H2O DataFrame
         h2o_frame = hc.asH2OFrame(df.reset_index(drop=False).to_spark())
-#         h2o_frame = hc.asH2OFrame(df.reset_index(drop=False).to_pandas())
 
         # Deserialize encoders
         with open(auxiliary_path, 'rb') as f:
@@ -54,7 +53,6 @@ def te_language_hour(raw_data, features, auxiliaries, is_inference):
 
         # Define H2O DataFrame
         h2o_frame = hc.asH2OFrame(df.reset_index(drop=False).to_spark())
-#         h2o_frame = hc.asH2OFrame(df.reset_index(drop=False).to_pandas())
 
         encoders = {}
         ALPHA = 20

@@ -20,6 +20,8 @@ from create_spark_context import create_spark_context
 
 
 def main(is_cluster):
+    warnings.simplefilter(action='ignore', category=FutureWarning)
+    
     # Initialize dict to store evaluation results
     results = {"train": [], "test": []}
 
