@@ -34,6 +34,8 @@ class Model(ModelInterface):
 
         self.model = None
         self.seed = seed
+        
+        self.labels = ["reply", "retweet", "retweet_with_comment", "like"]
 
         # Specify default and custom features to use in the model
         self.enabled_features = [
@@ -41,9 +43,7 @@ class Model(ModelInterface):
             "engaged_with_user_following_count",
             "engaging_user_follower_count",
             "engaging_user_following_count",
-        ]
-
-        self.labels = ["reply", "retweet", "retweet_with_comment", "like"]
+        ] + ["TE_user_lang_" + label for label in self.labels]
 
         # Specify extractors and auxiliaries required by the enabled features
         self.enabled_auxiliaries = []
@@ -52,7 +52,8 @@ class Model(ModelInterface):
             "engaged_with_user_following_count",
             "engaging_user_follower_count",
             "engaging_user_following_count",
-            "binarize_timestamps",
+            "te_user_lang",
+            "binarize_timestamps"
         ]
         if include_targets:
             self.enabled_extractors.append("binarize_timestamps")
