@@ -61,9 +61,9 @@ class Model(ModelInterface):
     @staticmethod
     def serialized_model_path_for_target(target: str) -> str:
         p = (
-                Path(ROOT_DIR)
-                / "../serialized_models"
-                / f"h2o_xgboost_pysparkling_{target}.model"
+            Path(ROOT_DIR)
+            / "../serialized_models"
+            / f"h2o_xgboost_pysparkling_{target}.model"
         )
         return str(p.resolve())
 
@@ -85,9 +85,7 @@ class Model(ModelInterface):
             ignored = set(self.labels) - set(label)
 
             model.train(
-                y=label,
-                ignored_columns=list(ignored),
-                training_frame=train_frame
+                y=label, ignored_columns=list(ignored), training_frame=train_frame
             )
 
             model.save_mojo(self.serialized_model_path_for_target(label))
@@ -130,11 +128,13 @@ class Model(ModelInterface):
         predictions_sdf = self.predict(test_kdf)
         predictions_kdf = (
             ks.DataFrame(predictions_sdf)
-                .rename(columns={col: ("predicted_" + col) for col in target_columns})
-                .set_index(keys=["tweet_id", "engaging_user_id"])
+            .rename(columns={col: ("predicted_" + col) for col in target_columns})
+            .set_index(keys=["tweet_id", "engaging_user_id"])
         )
 
-        joined_kdf = predictions_kdf.join(right=test_kdf[target_columns].astype('int32'), how="inner")
+        joined_kdf = predictions_kdf.join(
+            right=test_kdf[target_columns].astype("int32"), how="inner"
+        )
 
         results = {}
         for column in target_columns:
