@@ -29,7 +29,6 @@ def te_tweet_type_word_count(raw_data, features, auxiliaries, is_inference):
     if is_inference:
         # Define H2O DataFrame
         h2o_frame = hc.asH2OFrame(df.reset_index(drop=False).to_spark())
-        h2o_frame[categorical_feature] = h2o_frame[categorical_feature].asfactor()
 
         for target, f in zip(targets, os.listdir(auxiliary_path)):
             new_feature = f'TE_tweet_type_word_count_{target}'
@@ -41,8 +40,6 @@ def te_tweet_type_word_count(raw_data, features, auxiliaries, is_inference):
             new_col_pandas = new_col_h2o.as_data_frame()
             new_col_koalas = ks.from_pandas(new_col_pandas).set_index(index_cols).squeeze()
             new_col_koalas.name = new_feature
-            
-            print(new_col_koalas.head())
 
         target_encoded[new_feature] = new_col_koalas
 
@@ -53,7 +50,6 @@ def te_tweet_type_word_count(raw_data, features, auxiliaries, is_inference):
 
         # Define H2O DataFrame
         h2o_frame = hc.asH2OFrame(df.reset_index(drop=False).to_spark())
-        h2o_frame[categorical_feature] = h2o_frame[categorical_feature].asfactor()
 
         ALPHA = 20
         NOISE = 0.01 # In general, the less data you have the more regularization you need
