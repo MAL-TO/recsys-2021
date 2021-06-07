@@ -187,17 +187,20 @@ class FeatureStore:
                 extracted = feature_extractor(
                     self.raw_data, feature_dict, auxiliary_dict, self.is_inference
                 )
-
+                
                 if isinstance(extracted, dict):  # more than one feature extracted
+                    print("More than one feature")
                     for column in extracted:
                         assert isinstance(extracted[column], ks.Series)
                         feature_dict[column] = extracted[column]
 
                     # Store the new features
+                    print("Concat of multiple features")
                     features_df = ks.concat(
                         list(extracted.values()), axis=1, join="inner"
                     )
                     assert len(features_df) == len(list(extracted.values())[0])
+                    print("to csv of multiple features")
                     features_df.to_csv(
                         feature_path_rw,
                         index_col=["tweet_id", "engaging_user_id"],
