@@ -15,6 +15,9 @@ serialized_models
 # Submission zip file
 submission.zip
 
+# H2O logs
+src/h2ologs
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
