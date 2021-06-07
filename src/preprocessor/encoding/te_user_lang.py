@@ -2,6 +2,7 @@ import os
 import pickle as pkl
 from pysparkling import H2OContext
 import databricks.koalas as ks
+import h2o
 from h2o.estimators import H2OTargetEncoderEstimator
 from constants import PATH_AUXILIARIES
 
@@ -11,7 +12,7 @@ def te_user_lang(raw_data, features, auxiliaries, is_inference):
 
     # auxiliary_path_rw?
     auxiliary_path = os.path.join(PATH_AUXILIARIES, 'te_user_lang')
-
+    
     # Binarized targets
     targets = ["reply", "retweet", "retweet_with_comment", "like"]
     index_cols = ['tweet_id', 'engaging_user_id']
@@ -19,8 +20,8 @@ def te_user_lang(raw_data, features, auxiliaries, is_inference):
     
     # make new column. We need to access index values
     categorical_feature = 'te_user_lang'
-    cols = ["language"] + [target + "_timestamp" for target in targets]
-    df = raw_data[cols]
+#     cols = ["language"] + [target + "_timestamp" for target in targets]
+    df = raw_data
     df[categorical_feature] = df.reset_index(drop=False).\
             apply(lambda row: [row.tweet_id, row.engaging_user_id, row.engaging_user_id + "_" + row.language], axis=1, result_type ='expand').\
             rename({0:'tweet_id', 1:'engaging_user_id', 2: categorical_feature}, axis=1).\
@@ -28,21 +29,29 @@ def te_user_lang(raw_data, features, auxiliaries, is_inference):
 
     # Can encode more than one col: eventually, we want a single encoding function for all TE
     encoded_columns = [categorical_feature] 
-
+    
     if is_inference:
         # Define H2O DataFrame
+        print(df[categorical_feature].head())
         h2o_frame = hc.asH2OFrame(df.reset_index(drop=False).to_spark())
-
+        h2o_frame[categorical_feature] = h2o_frame[categorical_feature].asfactor()
+        
         for target, f in zip(targets, os.listdir(auxiliary_path)):
             new_feature = f'TE_user_lang_{target}'
+            
+            # Deserialize encoders
             te = h2o.load_model(os.path.join(auxiliary_path, f))
 
-            new_col_h2o = te.transform(frame=h2o_frame, as_training=True)[:, index_cols + [categorical_feature + "_te"]]
+            print(te.transform(frame=h2o_frame).head())
+            print(te.transform(frame=h2o_frame).columns)
+            new_col_h2o = te.transform(frame=h2o_frame)[:, index_cols + [categorical_feature + "_te"]]
 #             new_col_spark = hc.asDataFrame(new_col_h2o)
 #             new_col_koalas = ks.DataFrame(new_col_spark).set_index(index_cols).squeeze()
             new_col_pandas = new_col_h2o.as_data_frame()
             new_col_koalas = ks.from_pandas(new_col_pandas).set_index(index_cols).squeeze()
             new_col_koalas.name = new_feature
+            
+            print(new_col_koalas.head())
 
         target_encoded[new_feature] = new_col_koalas
 
@@ -53,6 +62,7 @@ def te_user_lang(raw_data, features, auxiliaries, is_inference):
 
         # Define H2O DataFrame
         h2o_frame = hc.asH2OFrame(df.reset_index(drop=False).to_spark())
+        h2o_frame[categorical_feature] = h2o_frame[categorical_feature].asfactor()
 
         ALPHA = 20
         NOISE = 0.01 # In general, the less data you have the more regularization you need
@@ -81,7 +91,7 @@ def te_user_lang(raw_data, features, auxiliaries, is_inference):
             new_col_koalas.name = new_feature
 
             target_encoded[new_feature] = new_col_koalas
-            
+
             te.download_model(auxiliary_path)
 
     return target_encoded

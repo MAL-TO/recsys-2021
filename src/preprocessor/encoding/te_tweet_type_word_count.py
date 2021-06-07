@@ -2,6 +2,7 @@ import os
 import pickle as pkl
 from pysparkling import H2OContext
 import databricks.koalas as ks
+import h2o
 from h2o.estimators import H2OTargetEncoderEstimator
 from constants import PATH_AUXILIARIES
 
@@ -28,17 +29,20 @@ def te_tweet_type_word_count(raw_data, features, auxiliaries, is_inference):
     if is_inference:
         # Define H2O DataFrame
         h2o_frame = hc.asH2OFrame(df.reset_index(drop=False).to_spark())
+        h2o_frame[categorical_feature] = h2o_frame[categorical_feature].asfactor()
 
         for target, f in zip(targets, os.listdir(auxiliary_path)):
-            new_feature = f'TE_tweet_type_word_count{target}'
+            new_feature = f'TE_tweet_type_word_count_{target}'
             te = h2o.load_model(os.path.join(auxiliary_path, f))
 
-            new_col_h2o = te.transform(frame=h2o_frame, as_training=True)[:, index_cols + [categorical_feature + "_te"]]
+            new_col_h2o = te.transform(frame=h2o_frame)[:, index_cols + [categorical_feature + "_te"]]
 #             new_col_spark = hc.asDataFrame(new_col_h2o)
 #             new_col_koalas = ks.DataFrame(new_col_spark).set_index(index_cols).squeeze()
             new_col_pandas = new_col_h2o.as_data_frame()
             new_col_koalas = ks.from_pandas(new_col_pandas).set_index(index_cols).squeeze()
             new_col_koalas.name = new_feature
+            
+            print(new_col_koalas.head())
 
         target_encoded[new_feature] = new_col_koalas
 
@@ -49,13 +53,14 @@ def te_tweet_type_word_count(raw_data, features, auxiliaries, is_inference):
 
         # Define H2O DataFrame
         h2o_frame = hc.asH2OFrame(df.reset_index(drop=False).to_spark())
+        h2o_frame[categorical_feature] = h2o_frame[categorical_feature].asfactor()
 
         ALPHA = 20
         NOISE = 0.01 # In general, the less data you have the more regularization you need
         INFLECTION_POINT = 20 # ?
 
         for target in targets:
-            new_feature = f'TE_tweet_type_word_count{target}'
+            new_feature = f'TE_tweet_type_word_count_{target}'
 
             te = H2OTargetEncoderEstimator(
                 blending = True,
@@ -75,6 +80,8 @@ def te_tweet_type_word_count(raw_data, features, auxiliaries, is_inference):
             new_col_pandas = new_col_h2o.as_data_frame()
             new_col_koalas = ks.from_pandas(new_col_pandas).set_index(index_cols).squeeze()
             new_col_koalas.name = new_feature
+
+            print(new_col_koalas.head())
 
             target_encoded[new_feature] = new_col_koalas
 

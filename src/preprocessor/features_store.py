@@ -4,7 +4,10 @@ from typing import Dict
 
 from preprocessor.targets.binarize_timestamps import binarize_timestamps  # noqa: F401
 from preprocessor.time.hour_of_day import hour_of_day
+from preprocessor.tweet.word_count import word_count
 from preprocessor.encoding.te_language_hour import te_language_hour
+from preprocessor.encoding.te_tweet_type_word_count import te_tweet_type_word_count
+from preprocessor.encoding.te_user_lang import te_user_lang
 
 class FeatureStore:
     """Handle feature configuration"""

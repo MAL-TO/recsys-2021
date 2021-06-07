@@ -29,6 +29,7 @@ def te_language_hour(raw_data, features, auxiliaries, is_inference):
     if is_inference:
         # Define H2O DataFrame
         h2o_frame = hc.asH2OFrame(df.reset_index(drop=False).to_spark())
+        h2o_frame[categorical_feature] = h2o_frame[categorical_feature].asfactor()
 
         for target, f in zip(targets, os.listdir(auxiliary_path)):
             new_feature = f'TE_language_hour_{target}'
@@ -36,7 +37,7 @@ def te_language_hour(raw_data, features, auxiliaries, is_inference):
             # Deserialize encoders
             te = h2o.load_model(os.path.join(auxiliary_path, f))
 
-            new_col_h2o = te.transform(frame=h2o_frame, as_training=True)[:, index_cols + [categorical_feature + "_te"]]
+            new_col_h2o = te.transform(frame=h2o_frame)[:, index_cols + [categorical_feature + "_te"]]
 #             new_col_spark = hc.asDataFrame(new_col_h2o)
 #             new_col_koalas = ks.DataFrame(new_col_spark).set_index(index_cols).squeeze()
             new_col_pandas = new_col_h2o.as_data_frame()
@@ -54,6 +55,7 @@ def te_language_hour(raw_data, features, auxiliaries, is_inference):
 
         # Define H2O DataFrame
         h2o_frame = hc.asH2OFrame(df.reset_index(drop=False).to_spark())
+        h2o_frame[categorical_feature] = h2o_frame[categorical_feature].asfactor()
 
         ALPHA = 20
         NOISE = 0.01 # In general, the less data you have the more regularization you need
