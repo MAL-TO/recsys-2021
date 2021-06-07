@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b4ecb9a1d1cc381490d7d0ea4dd25430b0be81a10df21f70166c15921b29a146"
+            "sha256": "24eecc06315e90504bb0a3f9583e64e03ccc4f247b3a3e0ee58d6a8a5a011743"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -48,17 +48,17 @@
         },
         "h2o": {
             "hashes": [
-                "sha256:2fa1dcbf648bbf7b801f647aebbcc29d31076d54642796742d6c23e72be6abc5"
+                "sha256:268dae4b6d7da1c86b23aec66aa8129fcbd93db9e7acd5c1f0494f43acbdc42c"
             ],
             "index": "pypi",
-            "version": "==3.32.1.3"
+            "version": "==3.32.1.1"
         },
         "h2o-pysparkling-2.4": {
             "hashes": [
-                "sha256:85978952f24691d05531e2f078d5b0a01285a4167b806a70d46e9d03a9160b0d"
+                "sha256:cf4cd1c333984ee2f869abe6caf5880235561c5916261c053b9f8dd3c423bba1"
             ],
             "index": "pypi",
-            "version": "==3.32.1.3.post1"
+            "version": "==3.32.1.1-1"
         },
         "idna": {
             "hashes": [
