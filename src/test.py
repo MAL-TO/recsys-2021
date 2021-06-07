@@ -16,7 +16,7 @@ from constants import (
     FILENAMES_DATA,
 )
 from data.importer import import_data
-from model.h2o_xgboost_baseline import Model
+from model.h2o_xgboost_pysparkling import Model
 from util import Stage, str2bool, rm_dir_contents
 from create_spark_context import create_spark_context
 
