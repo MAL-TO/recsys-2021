@@ -1,0 +1,296 @@
+WARNING:root:'ARROW_PRE_0_15_IPC_FORMAT' environment variable was not set. It is required to set this environment variable to '1' in both driver and executor sides if you use pyarrow>=0.15 and pyspark<3.0. Koalas will set it for you but it does not work if there is a Spark context already launched.
+WARNING:root:'PYARROW_IGNORE_TIMEZONE' environment variable was not set. It is required to set this environment variable to '1' in both driver and executor sides if you use pyarrow>=2.0.0. Koalas will set it for you but it does not work if there is a Spark context already launched.
+WARNING: User-defined SPARK_HOME (/opt/cloudera/parcels/CDH-6.2.1-1.cdh6.2.1.p0.1425774/lib/spark) overrides detected (/opt/cloudera/parcels/CDH/lib/spark).
+WARNING: Running spark-class from user-defined location.
+Ivy Default Cache set to: /home/bigdata-01QYD/s277596/.ivy2/cache
+The jars for the packages stored in: /home/bigdata-01QYD/s277596/.ivy2/jars
+:: loading settings :: url = jar:file:/opt/cloudera/parcels/CDH-6.2.1-1.cdh6.2.1.p0.1425774/jars/ivy-2.4.0.jar!/org/apache/ivy/core/settings/ivysettings.xml
+graphframes#graphframes added as a dependency
+:: resolving dependencies :: org.apache.spark#spark-submit-parent-126d00a2-7025-445c-ac98-b566e1858988;1.0
+	confs: [default]
+	found graphframes#graphframes;0.7.0-spark2.4-s_2.11 in spark-packages
+	found org.slf4j#slf4j-api;1.7.16 in central
+:: resolution report :: resolve 276ms :: artifacts dl 8ms
+	:: modules in use:
+	graphframes#graphframes;0.7.0-spark2.4-s_2.11 from spark-packages in [default]
+	org.slf4j#slf4j-api;1.7.16 from central in [default]
+	---------------------------------------------------------------------
+	|                  |            modules            ||   artifacts   |
+	|       conf       | number| search|dwnlded|evicted|| number|dwnlded|
+	---------------------------------------------------------------------
+	|      default     |   2   |   0   |   0   |   0   ||   2   |   0   |
+	---------------------------------------------------------------------
+:: retrieving :: org.apache.spark#spark-submit-parent-126d00a2-7025-445c-ac98-b566e1858988
+	confs: [default]
+	0 artifacts copied, 2 already retrieved (0kB/6ms)
+21/06/08 15:38:05 WARN internal.InternalH2OBackend: Increasing 'spark.locality.wait' to value 0 (Infinitive) as we need to ensure we run on the nodes with H2O
+Proxy is defined in the environment: http_proxy. This may interfere with your H2O Connection.
+Proxy is defined in the environment: http_proxy. This may interfere with your H2O Connection.
+[Stage 0:>                                                                                                                   (0 + 1) / 1]                                                                                                                                         pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead.
+[Stage 5:>                                                                                                                (0 + 72) / 200]/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+[Stage 5:=>                                                                                                               (2 + 72) / 200]/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+[Stage 5:====>                                                                                                            (8 + 73) / 200]/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+[Stage 5:===========>                                                                                                    (20 + 72) / 200]/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+[Stage 5:=====================================>                                                                          (67 + 73) / 200]/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+[Stage 5:==============================================================================================================> (197 + 3) / 200][Stage 5:==============================================================================================================> (198 + 2) / 200][Stage 5:===============================================================================================================>(199 + 1) / 200]                                                                                                                                         [Stage 8:==============================================================================================================> (197 + 3) / 200]/opt/anaconda3/envs/bigdatalab/lib/python3.7/site-packages/pyarrow/util.py:39: FutureWarning: pyarrow.open_stream is deprecated as of 0.17.0, please use pyarrow.ipc.open_stream instead
+  warnings.warn(msg, FutureWarning)
+[Stage 8:===============================================================================================================>(199 + 1) / 200]                                                                                                                                         Traceback (most recent call last):
+  File "test.py", line 144, in <module>
+    main(args.is_cluster)
+  File "test.py", line 65, in main
+    train_features_union_df = store.get_dataset()
+  File "/home/bigdata-01QYD/s277596/recsys-2021/src/preprocessor/features_store.py", line 257, in get_dataset
+    feature_dict = self.extract_features()
+  File "/home/bigdata-01QYD/s277596/recsys-2021/src/preprocessor/features_store.py", line 224, in extract_features
+    assert len(features_df) == len(list(extracted.values())[0])
+  File "/home/bigdata-01QYD/s277596/.local/share/virtualenvs/recsys-2021-HLV-XV1u/lib/python3.7/site-packages/databricks/koalas/frame.py", line 11850, in __len__
+    return self._internal.resolved_copy.spark_frame.count()
+  File "/home/bigdata-01QYD/s277596/.local/share/virtualenvs/recsys-2021-HLV-XV1u/lib/python3.7/site-packages/pyspark/sql/dataframe.py", line 522, in count
+    return int(self._jdf.count())
+  File "/home/bigdata-01QYD/s277596/.local/share/virtualenvs/recsys-2021-HLV-XV1u/lib/python3.7/site-packages/py4j/java_gateway.py", line 1257, in __call__
+    answer, self.gateway_client, self.target_id, self.name)
+  File "/home/bigdata-01QYD/s277596/.local/share/virtualenvs/recsys-2021-HLV-XV1u/lib/python3.7/site-packages/pyspark/sql/utils.py", line 63, in deco
+    return f(*a, **kw)
+  File "/home/bigdata-01QYD/s277596/.local/share/virtualenvs/recsys-2021-HLV-XV1u/lib/python3.7/site-packages/py4j/protocol.py", line 328, in get_return_value
+    format(target_id, ".", name), value)
+py4j.protocol.Py4JJavaError: An error occurred while calling o9101.count.
+: org.apache.spark.SparkException: Job aborted due to stage failure: Task 0 in stage 32.0 failed 1 times, most recent failure: Lost task 0.0 in stage 32.0 (TID 449, localhost, executor driver): ai.h2o.sparkling.backend.exceptions.RestApiCommunicationException: H2O node http://10.42.28.4:54321 responded with
+Status code: 400 : Bad Request
+Server error: {"__meta":{"schema_version":3,"schema_name":"H2OErrorV3","schema_type":"H2OError"},"timestamp":1623166726281,"error_url":"/3/Chunk","msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_2_sid_8f04' doesn't exist.\n\n","dev_msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_2_sid_8f04' doesn't exist.\n\n","http_status":400,"values":{},"exception_type":"java.lang.IllegalArgumentException","exception_msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_2_sid_8f04' doesn't exist.\n\n","stacktrace":["java.lang.IllegalArgumentException: A frame with name 'py_2_sid_8f04' doesn't exist.","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet$POSTRequestParameters.validate(ChunkServlet.scala:44)","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet$$anonfun$doPost$1.apply$mcV$sp(ChunkServlet.scala:119)","    ai.h2o.sparkling.extensions.rest.api.ServletBase.processRequest(ServletBase.scala:36)","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet.doPost(ChunkServlet.scala:117)","    javax.servlet.http.HttpServlet.service(HttpServlet.java:707)","    javax.servlet.http.HttpServlet.service(HttpServlet.java:790)","    ai.h2o.org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:865)","    ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:535)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255)","    ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1317)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203)","    ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:473)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201)","    ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1219)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)","    water.webserver.jetty9.Jetty9ServerAdapter$LoginHandler.handle(Jetty9ServerAdapter.java:130)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)","    ai.h2o.org.eclipse.jetty.server.Server.handle(Server.java:531)","    ai.h2o.org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:352)","    ai.h2o.org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:260)","    ai.h2o.org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:281)","    ai.h2o.org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:102)","    ai.h2o.org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:118)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:126)","    ai.h2o.org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:366)","    ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:762)","    ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:680)","    java.lang.Thread.run(Thread.java:748)"]}
+	at ai.h2o.sparkling.backend.utils.RestCommunication$class.checkResponseCode(RestCommunication.scala:412)
+	at ai.h2o.sparkling.backend.H2OChunk$.checkResponseCode(H2OChunk.scala:32)
+	at ai.h2o.sparkling.backend.utils.RestCommunication$class.readURLContent(RestCommunication.scala:386)
+	at ai.h2o.sparkling.backend.H2OChunk$.readURLContent(H2OChunk.scala:32)
+	at ai.h2o.sparkling.backend.H2OChunk$.getChunkAsInputStream(H2OChunk.scala:53)
+	at ai.h2o.sparkling.backend.Reader.<init>(Reader.scala:45)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.reader$lzycompute(H2ODataFrame.scala:66)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.reader(H2ODataFrame.scala:66)
+	at ai.h2o.sparkling.backend.H2OSparkEntity$H2OChunkIterator$class.hasNext(H2OSparkEntity.scala:50)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.hasNext(H2ODataFrame.scala:64)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenExec$$anonfun$11$$anon$1.hasNext(WholeStageCodegenExec.scala:624)
+	at scala.collection.Iterator$$anon$11.hasNext(Iterator.scala:409)
+	at org.apache.spark.shuffle.sort.BypassMergeSortShuffleWriter.write(BypassMergeSortShuffleWriter.java:125)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:99)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:55)
+	at org.apache.spark.scheduler.Task.run(Task.scala:121)
+	at org.apache.spark.executor.Executor$TaskRunner$$anonfun$11.apply(Executor.scala:407)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1408)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:413)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+
+Driver stacktrace:
+	at org.apache.spark.scheduler.DAGScheduler.org$apache$spark$scheduler$DAGScheduler$$failJobAndIndependentStages(DAGScheduler.scala:1890)
+	at org.apache.spark.scheduler.DAGScheduler$$anonfun$abortStage$1.apply(DAGScheduler.scala:1878)
+	at org.apache.spark.scheduler.DAGScheduler$$anonfun$abortStage$1.apply(DAGScheduler.scala:1877)
+	at scala.collection.mutable.ResizableArray$class.foreach(ResizableArray.scala:59)
+	at scala.collection.mutable.ArrayBuffer.foreach(ArrayBuffer.scala:48)
+	at org.apache.spark.scheduler.DAGScheduler.abortStage(DAGScheduler.scala:1877)
+	at org.apache.spark.scheduler.DAGScheduler$$anonfun$handleTaskSetFailed$1.apply(DAGScheduler.scala:929)
+	at org.apache.spark.scheduler.DAGScheduler$$anonfun$handleTaskSetFailed$1.apply(DAGScheduler.scala:929)
+	at scala.Option.foreach(Option.scala:257)
+	at org.apache.spark.scheduler.DAGScheduler.handleTaskSetFailed(DAGScheduler.scala:929)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.doOnReceive(DAGScheduler.scala:2111)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:2060)
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:2049)
+	at org.apache.spark.util.EventLoop$$anon$1.run(EventLoop.scala:49)
+	at org.apache.spark.scheduler.DAGScheduler.runJob(DAGScheduler.scala:740)
+	at org.apache.spark.SparkContext.runJob(SparkContext.scala:2081)
+	at org.apache.spark.SparkContext.runJob(SparkContext.scala:2102)
+	at org.apache.spark.SparkContext.runJob(SparkContext.scala:2121)
+	at org.apache.spark.SparkContext.runJob(SparkContext.scala:2146)
+	at org.apache.spark.rdd.RDD$$anonfun$collect$1.apply(RDD.scala:945)
+	at org.apache.spark.rdd.RDDOperationScope$.withScope(RDDOperationScope.scala:151)
+	at org.apache.spark.rdd.RDDOperationScope$.withScope(RDDOperationScope.scala:112)
+	at org.apache.spark.rdd.RDD.withScope(RDD.scala:363)
+	at org.apache.spark.rdd.RDD.collect(RDD.scala:944)
+	at org.apache.spark.sql.execution.SparkPlan.executeCollect(SparkPlan.scala:299)
+	at org.apache.spark.sql.Dataset$$anonfun$count$1.apply(Dataset.scala:2830)
+	at org.apache.spark.sql.Dataset$$anonfun$count$1.apply(Dataset.scala:2829)
+	at org.apache.spark.sql.Dataset$$anonfun$53.apply(Dataset.scala:3364)
+	at org.apache.spark.sql.execution.SQLExecution$$anonfun$withNewExecutionId$1.apply(SQLExecution.scala:78)
+	at org.apache.spark.sql.execution.SQLExecution$.withSQLConfPropagated(SQLExecution.scala:125)
+	at org.apache.spark.sql.execution.SQLExecution$.withNewExecutionId(SQLExecution.scala:73)
+	at org.apache.spark.sql.Dataset.withAction(Dataset.scala:3363)
+	at org.apache.spark.sql.Dataset.count(Dataset.scala:2829)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at py4j.reflection.MethodInvoker.invoke(MethodInvoker.java:244)
+	at py4j.reflection.ReflectionEngine.invoke(ReflectionEngine.java:357)
+	at py4j.Gateway.invoke(Gateway.java:282)
+	at py4j.commands.AbstractCommand.invokeMethod(AbstractCommand.java:132)
+	at py4j.commands.CallCommand.execute(CallCommand.java:79)
+	at py4j.GatewayConnection.run(GatewayConnection.java:238)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: ai.h2o.sparkling.backend.exceptions.RestApiCommunicationException: H2O node http://10.42.28.4:54321 responded with
+Status code: 400 : Bad Request
+Server error: {"__meta":{"schema_version":3,"schema_name":"H2OErrorV3","schema_type":"H2OError"},"timestamp":1623166726281,"error_url":"/3/Chunk","msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_2_sid_8f04' doesn't exist.\n\n","dev_msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_2_sid_8f04' doesn't exist.\n\n","http_status":400,"values":{},"exception_type":"java.lang.IllegalArgumentException","exception_msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_2_sid_8f04' doesn't exist.\n\n","stacktrace":["java.lang.IllegalArgumentException: A frame with name 'py_2_sid_8f04' doesn't exist.","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet$POSTRequestParameters.validate(ChunkServlet.scala:44)","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet$$anonfun$doPost$1.apply$mcV$sp(ChunkServlet.scala:119)","    ai.h2o.sparkling.extensions.rest.api.ServletBase.processRequest(ServletBase.scala:36)","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet.doPost(ChunkServlet.scala:117)","    javax.servlet.http.HttpServlet.service(HttpServlet.java:707)","    javax.servlet.http.HttpServlet.service(HttpServlet.java:790)","    ai.h2o.org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:865)","    ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:535)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255)","    ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1317)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203)","    ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:473)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201)","    ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1219)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)","    water.webserver.jetty9.Jetty9ServerAdapter$LoginHandler.handle(Jetty9ServerAdapter.java:130)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)","    ai.h2o.org.eclipse.jetty.server.Server.handle(Server.java:531)","    ai.h2o.org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:352)","    ai.h2o.org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:260)","    ai.h2o.org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:281)","    ai.h2o.org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:102)","    ai.h2o.org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:118)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:126)","    ai.h2o.org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:366)","    ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:762)","    ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:680)","    java.lang.Thread.run(Thread.java:748)"]}
+	at ai.h2o.sparkling.backend.utils.RestCommunication$class.checkResponseCode(RestCommunication.scala:412)
+	at ai.h2o.sparkling.backend.H2OChunk$.checkResponseCode(H2OChunk.scala:32)
+	at ai.h2o.sparkling.backend.utils.RestCommunication$class.readURLContent(RestCommunication.scala:386)
+	at ai.h2o.sparkling.backend.H2OChunk$.readURLContent(H2OChunk.scala:32)
+	at ai.h2o.sparkling.backend.H2OChunk$.getChunkAsInputStream(H2OChunk.scala:53)
+	at ai.h2o.sparkling.backend.Reader.<init>(Reader.scala:45)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.reader$lzycompute(H2ODataFrame.scala:66)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.reader(H2ODataFrame.scala:66)
+	at ai.h2o.sparkling.backend.H2OSparkEntity$H2OChunkIterator$class.hasNext(H2OSparkEntity.scala:50)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.hasNext(H2ODataFrame.scala:64)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenExec$$anonfun$11$$anon$1.hasNext(WholeStageCodegenExec.scala:624)
+	at scala.collection.Iterator$$anon$11.hasNext(Iterator.scala:409)
+	at org.apache.spark.shuffle.sort.BypassMergeSortShuffleWriter.write(BypassMergeSortShuffleWriter.java:125)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:99)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:55)
+	at org.apache.spark.scheduler.Task.run(Task.scala:121)
+	at org.apache.spark.executor.Executor$TaskRunner$$anonfun$11.apply(Executor.scala:407)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1408)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:413)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	... 1 more
+

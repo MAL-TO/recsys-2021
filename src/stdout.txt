@@ -1,0 +1,682 @@
+Creating Spark context...
+Done 5.78 seconds
+
+06-08 15:38:07.731 10.42.28.4:54321      #5368    Thread-6  WARN water.default: Flatfile configuration does not include self: /10.42.28.4:54321, but contains []
+Connecting to H2O server at http://jupyter-s277596:54323 ... successful.
+--------------------------  -------------------------------------------------------------------------------------------------------
+H2O_cluster_uptime:         09 secs
+H2O_cluster_timezone:       Etc/UTC
+H2O_data_parsing_timezone:  UTC
+H2O_cluster_version:        3.32.1.3
+H2O_cluster_version_age:    19 days
+H2O_cluster_name:           sparkling-water-s277596_local-1623166683489
+H2O_cluster_total_nodes:    1
+H2O_cluster_free_memory:    6.871 Gb
+H2O_cluster_total_cores:    72
+H2O_cluster_allowed_cores:  72
+H2O_cluster_status:         locked, healthy
+H2O_connection_url:         http://jupyter-s277596:54323
+H2O_connection_proxy:       null
+H2O_internal_security:      False
+H2O_API_Extensions:         XGBoost, Algos, Amazon S3, Sparkling Water REST API Extensions, AutoML, Core V3, TargetEncoder, Core V4
+Python_version:             3.7.9 final
+--------------------------  -------------------------------------------------------------------------------------------------------
+
+Sparkling Water Context:
+ * Sparkling Water Version: 3.32.1.3-1-2.4
+ * H2O name: sparkling-water-s277596_local-1623166683489
+ * cluster size: 1
+ * list of used nodes:
+  (executorId, host, port)
+  ------------------------
+  (0,10.42.28.4,54321)
+  ------------------------
+
+  Open H2O Flow in browser: http://jupyter-s277596:54323 (CMD + click in Mac OSX)
+
+    
+Dataset 1/5
+Initializing model...
+Done 0.06 seconds
+
+Importing train dataset...
+Done 5.54 seconds
+
+Cleaning feature store...
+Done 0.04 seconds
+
+Assembling train dataset...
+### Extracting te_user_lang...
+06-08 15:38:24.301 10.42.28.4:54321      #5368    Thread-6  WARN org.apache.spark.util.Utils: Truncated the string representation of a plan since it was too large. This behavior can be adjusted by setting 'spark.debug.maxToStringFields' in SparkEnv.conf.
+More than one feature
+tweet_id                          engaging_user_id                
+3B983AC0C6A56DF7F6B782FFCA88272E  8D38D03495935DE189294F4020F063F4    0.526095
+6DC4FE7CF9A2EAEAA393A829650A2E7D  C26528D56011287B1FFD3266ACB9102A    0.013597
+F4814C47509975645B7383E9EA92D712  CD25A2CD15EA04CE5997AD90EA44E6F3    0.013597
+DF4EDA1958D1D263172FBBB5EB9D5F8D  7D38DDFAE1374E518ADF4D075CBE9515    0.013597
+AADB76B43323AEDDA5161FE5BCDC2A90  DA8E10D3AD8E83B58FD54B01EF45E599    0.013597
+Name: TE_user_lang_reply, dtype: float64
+tweet_id                          engaging_user_id                
+3B983AC0C6A56DF7F6B782FFCA88272E  8D38D03495935DE189294F4020F063F4    0.042400
+6DC4FE7CF9A2EAEAA393A829650A2E7D  C26528D56011287B1FFD3266ACB9102A    0.554897
+F4814C47509975645B7383E9EA92D712  CD25A2CD15EA04CE5997AD90EA44E6F3    0.042400
+DF4EDA1958D1D263172FBBB5EB9D5F8D  7D38DDFAE1374E518ADF4D075CBE9515    0.042400
+AADB76B43323AEDDA5161FE5BCDC2A90  DA8E10D3AD8E83B58FD54B01EF45E599    0.042400
+Name: TE_user_lang_retweet, dtype: float64
+tweet_id                          engaging_user_id                
+3B983AC0C6A56DF7F6B782FFCA88272E  8D38D03495935DE189294F4020F063F4    0.003119
+6DC4FE7CF9A2EAEAA393A829650A2E7D  C26528D56011287B1FFD3266ACB9102A    0.003119
+F4814C47509975645B7383E9EA92D712  CD25A2CD15EA04CE5997AD90EA44E6F3    0.003119
+DF4EDA1958D1D263172FBBB5EB9D5F8D  7D38DDFAE1374E518ADF4D075CBE9515    0.003119
+AADB76B43323AEDDA5161FE5BCDC2A90  DA8E10D3AD8E83B58FD54B01EF45E599    0.003119
+Name: TE_user_lang_retweet_with_comment, dtype: float64
+tweet_id                          engaging_user_id                
+3B983AC0C6A56DF7F6B782FFCA88272E  8D38D03495935DE189294F4020F063F4    0.701640
+6DC4FE7CF9A2EAEAA393A829650A2E7D  C26528D56011287B1FFD3266ACB9102A    0.189143
+F4814C47509975645B7383E9EA92D712  CD25A2CD15EA04CE5997AD90EA44E6F3    0.189143
+DF4EDA1958D1D263172FBBB5EB9D5F8D  7D38DDFAE1374E518ADF4D075CBE9515    0.189143
+AADB76B43323AEDDA5161FE5BCDC2A90  DA8E10D3AD8E83B58FD54B01EF45E599    0.701640
+Name: TE_user_lang_like, dtype: float64
+Concat of multiple features
+06-08 15:38:46.234 10.42.28.4:54321      #5368  235828-166 ERROR water.default: 
+java.lang.IllegalArgumentException: A frame with name 'py_4_sid_8f04' doesn't exist.
+	at ai.h2o.sparkling.extensions.rest.api.ChunkServlet$POSTRequestParameters.validate(ChunkServlet.scala:44)
+	at ai.h2o.sparkling.extensions.rest.api.ChunkServlet$$anonfun$doPost$1.apply$mcV$sp(ChunkServlet.scala:119)
+	at ai.h2o.sparkling.extensions.rest.api.ServletBase.processRequest(ServletBase.scala:36)
+	at ai.h2o.sparkling.extensions.rest.api.ChunkServlet.doPost(ChunkServlet.scala:117)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:707)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:790)
+	at ai.h2o.org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:865)
+	at ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:535)
+	at ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255)
+	at ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1317)
+	at ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203)
+	at ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:473)
+	at ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201)
+	at ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1219)
+	at ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144)
+	at ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)
+	at ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
+	at water.webserver.jetty9.Jetty9ServerAdapter$LoginHandler.handle(Jetty9ServerAdapter.java:130)
+	at ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)
+	at ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
+	at ai.h2o.org.eclipse.jetty.server.Server.handle(Server.java:531)
+	at ai.h2o.org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:352)
+	at ai.h2o.org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:260)
+	at ai.h2o.org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:281)
+	at ai.h2o.org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:102)
+	at ai.h2o.org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:118)
+	at ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333)
+	at ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310)
+	at ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168)
+	at ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:126)
+	at ai.h2o.org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:366)
+	at ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:762)
+	at ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:680)
+	at java.lang.Thread.run(Thread.java:748)
+06-08 15:38:46.281 10.42.28.4:54321      #5368  235828-186 ERROR water.default: 
+java.lang.IllegalArgumentException: A frame with name 'py_2_sid_8f04' doesn't exist.
+	at ai.h2o.sparkling.extensions.rest.api.ChunkServlet$POSTRequestParameters.validate(ChunkServlet.scala:44)
+	at ai.h2o.sparkling.extensions.rest.api.ChunkServlet$$anonfun$doPost$1.apply$mcV$sp(ChunkServlet.scala:119)
+	at ai.h2o.sparkling.extensions.rest.api.ServletBase.processRequest(ServletBase.scala:36)
+	at ai.h2o.sparkling.extensions.rest.api.ChunkServlet.doPost(ChunkServlet.scala:117)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:707)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:790)
+	at ai.h2o.org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:865)
+	at ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:535)
+	at ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255)
+	at ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1317)
+	at ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203)
+	at ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:473)
+	at ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201)
+	at ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1219)
+	at ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144)
+	at ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)
+	at ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
+	at water.webserver.jetty9.Jetty9ServerAdapter$LoginHandler.handle(Jetty9ServerAdapter.java:130)
+	at ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)
+	at ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
+	at ai.h2o.org.eclipse.jetty.server.Server.handle(Server.java:531)
+	at ai.h2o.org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:352)
+	at ai.h2o.org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:260)
+	at ai.h2o.org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:281)
+	at ai.h2o.org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:102)
+	at ai.h2o.org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:118)
+	at ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333)
+	at ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310)
+	at ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168)
+	at ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:126)
+	at ai.h2o.org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:366)
+	at ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:762)
+	at ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:680)
+	at java.lang.Thread.run(Thread.java:748)
+06-08 15:38:46.250 10.42.28.4:54321      #5368  235828-229 ERROR water.default: 
+java.lang.IllegalArgumentException: A frame with name 'py_3_sid_8f04' doesn't exist.
+	at ai.h2o.sparkling.extensions.rest.api.ChunkServlet$POSTRequestParameters.validate(ChunkServlet.scala:44)
+	at ai.h2o.sparkling.extensions.rest.api.ChunkServlet$$anonfun$doPost$1.apply$mcV$sp(ChunkServlet.scala:119)
+	at ai.h2o.sparkling.extensions.rest.api.ServletBase.processRequest(ServletBase.scala:36)
+	at ai.h2o.sparkling.extensions.rest.api.ChunkServlet.doPost(ChunkServlet.scala:117)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:707)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:790)
+	at ai.h2o.org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:865)
+	at ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:535)
+	at ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255)
+	at ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1317)
+	at ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203)
+	at ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:473)
+	at ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201)
+	at ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1219)
+	at ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144)
+	at ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)
+	at ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
+	at water.webserver.jetty9.Jetty9ServerAdapter$LoginHandler.handle(Jetty9ServerAdapter.java:130)
+	at ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)
+	at ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
+	at ai.h2o.org.eclipse.jetty.server.Server.handle(Server.java:531)
+	at ai.h2o.org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:352)
+	at ai.h2o.org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:260)
+	at ai.h2o.org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:281)
+	at ai.h2o.org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:102)
+	at ai.h2o.org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:118)
+	at ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333)
+	at ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310)
+	at ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168)
+	at ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:126)
+	at ai.h2o.org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:366)
+	at ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:762)
+	at ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:680)
+	at java.lang.Thread.run(Thread.java:748)
+06-08 15:38:46.234 10.42.28.4:54321      #5368  235828-163 ERROR water.default: 
+java.lang.IllegalArgumentException: A frame with name 'py_4_sid_8f04' doesn't exist.
+	at ai.h2o.sparkling.extensions.rest.api.ChunkServlet$POSTRequestParameters.validate(ChunkServlet.scala:44)
+	at ai.h2o.sparkling.extensions.rest.api.ChunkServlet$$anonfun$doPost$1.apply$mcV$sp(ChunkServlet.scala:119)
+	at ai.h2o.sparkling.extensions.rest.api.ServletBase.processRequest(ServletBase.scala:36)
+	at ai.h2o.sparkling.extensions.rest.api.ChunkServlet.doPost(ChunkServlet.scala:117)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:707)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:790)
+	at ai.h2o.org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:865)
+	at ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:535)
+	at ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255)
+	at ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1317)
+	at ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203)
+	at ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:473)
+	at ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201)
+	at ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1219)
+	at ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144)
+	at ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)
+	at ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
+	at water.webserver.jetty9.Jetty9ServerAdapter$LoginHandler.handle(Jetty9ServerAdapter.java:130)
+	at ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)
+	at ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
+	at ai.h2o.org.eclipse.jetty.server.Server.handle(Server.java:531)
+	at ai.h2o.org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:352)
+	at ai.h2o.org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:260)
+	at ai.h2o.org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:281)
+	at ai.h2o.org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:102)
+	at ai.h2o.org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:118)
+	at ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333)
+	at ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310)
+	at ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168)
+	at ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:126)
+	at ai.h2o.org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:366)
+	at ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:762)
+	at ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:680)
+	at java.lang.Thread.run(Thread.java:748)
+06-08 15:38:46.234 10.42.28.4:54321      #5368  235828-172 ERROR water.default: 
+java.lang.IllegalArgumentException: A frame with name 'py_3_sid_8f04' doesn't exist.
+	at ai.h2o.sparkling.extensions.rest.api.ChunkServlet$POSTRequestParameters.validate(ChunkServlet.scala:44)
+	at ai.h2o.sparkling.extensions.rest.api.ChunkServlet$$anonfun$doPost$1.apply$mcV$sp(ChunkServlet.scala:119)
+	at ai.h2o.sparkling.extensions.rest.api.ServletBase.processRequest(ServletBase.scala:36)
+	at ai.h2o.sparkling.extensions.rest.api.ChunkServlet.doPost(ChunkServlet.scala:117)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:707)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:790)
+	at ai.h2o.org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:865)
+	at ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:535)
+	at ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255)
+	at ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1317)
+	at ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203)
+	at ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:473)
+	at ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201)
+	at ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1219)
+	at ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144)
+	at ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)
+	at ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
+	at water.webserver.jetty9.Jetty9ServerAdapter$LoginHandler.handle(Jetty9ServerAdapter.java:130)
+	at ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)
+	at ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
+	at ai.h2o.org.eclipse.jetty.server.Server.handle(Server.java:531)
+	at ai.h2o.org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:352)
+	at ai.h2o.org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:260)
+	at ai.h2o.org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:281)
+	at ai.h2o.org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:102)
+	at ai.h2o.org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:118)
+	at ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333)
+	at ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310)
+	at ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168)
+	at ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:126)
+	at ai.h2o.org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:366)
+	at ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:762)
+	at ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:680)
+	at java.lang.Thread.run(Thread.java:748)
+06-08 15:38:46.292 10.42.28.4:54321      #5368  235828-163  WARN water.default: Caught exception: 
+06-08 15:38:46.290 10.42.28.4:54321      #5368  235828-229  WARN water.default: Caught exception: 
+06-08 15:38:46.288 10.42.28.4:54321      #5368  235828-186  WARN water.default: Caught exception: 
+06-08 15:38:46.287 10.42.28.4:54321      #5368  235828-166  WARN water.default: Caught exception: 
+06-08 15:38:46.281 10.42.28.4:54321      #5368  235828-183 ERROR water.default: 
+java.lang.IllegalArgumentException: A frame with name 'py_2_sid_8f04' doesn't exist.
+	at ai.h2o.sparkling.extensions.rest.api.ChunkServlet$POSTRequestParameters.validate(ChunkServlet.scala:44)
+	at ai.h2o.sparkling.extensions.rest.api.ChunkServlet$$anonfun$doPost$1.apply$mcV$sp(ChunkServlet.scala:119)
+	at ai.h2o.sparkling.extensions.rest.api.ServletBase.processRequest(ServletBase.scala:36)
+	at ai.h2o.sparkling.extensions.rest.api.ChunkServlet.doPost(ChunkServlet.scala:117)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:707)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:790)
+	at ai.h2o.org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:865)
+	at ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:535)
+	at ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255)
+	at ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1317)
+	at ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203)
+	at ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:473)
+	at ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201)
+	at ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1219)
+	at ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144)
+	at ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)
+	at ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
+	at water.webserver.jetty9.Jetty9ServerAdapter$LoginHandler.handle(Jetty9ServerAdapter.java:130)
+	at ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)
+	at ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)
+	at ai.h2o.org.eclipse.jetty.server.Server.handle(Server.java:531)
+	at ai.h2o.org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:352)
+	at ai.h2o.org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:260)
+	at ai.h2o.org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:281)
+	at ai.h2o.org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:102)
+	at ai.h2o.org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:118)
+	at ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333)
+	at ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310)
+	at ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168)
+	at ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:126)
+	at ai.h2o.org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:366)
+	at ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:762)
+	at ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:680)
+	at java.lang.Thread.run(Thread.java:748)
+06-08 15:38:46.295 10.42.28.4:54321      #5368  235828-166  WARN water.default: 
+06-08 15:38:46.294 10.42.28.4:54321      #5368  235828-186  WARN water.default: 
+06-08 15:38:46.294 10.42.28.4:54321      #5368  235828-229  WARN water.default: 
+06-08 15:38:46.293 10.42.28.4:54321      #5368  235828-163  WARN water.default: 
+06-08 15:38:46.293 10.42.28.4:54321      #5368  235828-172  WARN water.default: Caught exception: 
+06-08 15:38:46.297 10.42.28.4:54321      #5368  235828-163  WARN water.default: ERROR MESSAGE:
+06-08 15:38:46.297 10.42.28.4:54321      #5368  235828-229  WARN water.default: ERROR MESSAGE:
+06-08 15:38:46.297 10.42.28.4:54321      #5368  235828-186  WARN water.default: ERROR MESSAGE:
+06-08 15:38:46.296 10.42.28.4:54321      #5368  235828-166  WARN water.default: ERROR MESSAGE:
+06-08 15:38:46.296 10.42.28.4:54321      #5368  235828-183  WARN water.default: Caught exception: 
+06-08 15:38:46.300 10.42.28.4:54321      #5368  235828-166  WARN water.default: 
+06-08 15:38:46.299 10.42.28.4:54321      #5368  235828-186  WARN water.default: 
+06-08 15:38:46.298 10.42.28.4:54321      #5368  235828-229  WARN water.default: 
+06-08 15:38:46.298 10.42.28.4:54321      #5368  235828-163  WARN water.default: 
+06-08 15:38:46.298 10.42.28.4:54321      #5368  235828-172  WARN water.default: 
+06-08 15:38:46.302 10.42.28.4:54321      #5368  235828-163  WARN water.default: A frame with name 'py_4_sid_8f04' doesn't exist.
+06-08 15:38:46.302 10.42.28.4:54321      #5368  235828-229  WARN water.default: A frame with name 'py_3_sid_8f04' doesn't exist.
+06-08 15:38:46.301 10.42.28.4:54321      #5368  235828-186  WARN water.default: A frame with name 'py_2_sid_8f04' doesn't exist.
+06-08 15:38:46.300 10.42.28.4:54321      #5368  235828-166  WARN water.default: A frame with name 'py_4_sid_8f04' doesn't exist.
+06-08 15:38:46.304 10.42.28.4:54321      #5368  235828-166  WARN water.default: 
+06-08 15:38:46.300 10.42.28.4:54321      #5368  235828-183  WARN water.default: 
+06-08 15:38:46.304 10.42.28.4:54321      #5368  235828-166  WARN water.default: ; Stacktrace: [java.lang.IllegalArgumentException: A frame with name 'py_4_sid_8f04' doesn't exist.,     ai.h2o.sparkling.extensions.rest.api.ChunkServlet$POSTRequestParameters.validate(ChunkServlet.scala:44),     ai.h2o.sparkling.extensions.rest.api.ChunkServlet$$anonfun$doPost$1.apply$mcV$sp(ChunkServlet.scala:119),     ai.h2o.sparkling.extensions.rest.api.ServletBase.processRequest(ServletBase.scala:36),     ai.h2o.sparkling.extensions.rest.api.ChunkServlet.doPost(ChunkServlet.scala:117),     javax.servlet.http.HttpServlet.service(HttpServlet.java:707),     javax.servlet.http.HttpServlet.service(HttpServlet.java:790),     ai.h2o.org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:865),     ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:535),     ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255),     ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1317),     ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203),     ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:473),     ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201),     ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1219),     ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144),     ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126),     ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132),     water.webserver.jetty9.Jetty9ServerAdapter$LoginHandler.handle(Jetty9ServerAdapter.java:130),     ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126),     ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132),     ai.h2o.org.eclipse.jetty.server.Server.handle(Server.java:531),     ai.h2o.org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:352),     ai.h2o.org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:260),     ai.h2o.org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:281),     ai.h2o.org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:102),     ai.h2o.org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:118),     ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333),     ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310),     ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168),     ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:126),     ai.h2o.org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:366),     ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:762),     ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:680),     java.lang.Thread.run(Thread.java:748)]
+06-08 15:38:46.304 10.42.28.4:54321      #5368  235828-186  WARN water.default: 
+06-08 15:38:46.303 10.42.28.4:54321      #5368  235828-229  WARN water.default: 
+06-08 15:38:46.303 10.42.28.4:54321      #5368  235828-163  WARN water.default: 
+06-08 15:38:46.303 10.42.28.4:54321      #5368  235828-172  WARN water.default: ERROR MESSAGE:
+06-08 15:38:46.311 10.42.28.4:54321      #5368  235828-163  WARN water.default: ; Stacktrace: [java.lang.IllegalArgumentException: A frame with name 'py_4_sid_8f04' doesn't exist.,     ai.h2o.sparkling.extensions.rest.api.ChunkServlet$POSTRequestParameters.validate(ChunkServlet.scala:44),     ai.h2o.sparkling.extensions.rest.api.ChunkServlet$$anonfun$doPost$1.apply$mcV$sp(ChunkServlet.scala:119),     ai.h2o.sparkling.extensions.rest.api.ServletBase.processRequest(ServletBase.scala:36),     ai.h2o.sparkling.extensions.rest.api.ChunkServlet.doPost(ChunkServlet.scala:117),     javax.servlet.http.HttpServlet.service(HttpServlet.java:707),     javax.servlet.http.HttpServlet.service(HttpServlet.java:790),     ai.h2o.org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:865),     ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:535),     ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255),     ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1317),     ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203),     ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:473),     ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201),     ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1219),     ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144),     ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126),     ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132),     water.webserver.jetty9.Jetty9ServerAdapter$LoginHandler.handle(Jetty9ServerAdapter.java:130),     ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126),     ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132),     ai.h2o.org.eclipse.jetty.server.Server.handle(Server.java:531),     ai.h2o.org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:352),     ai.h2o.org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:260),     ai.h2o.org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:281),     ai.h2o.org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:102),     ai.h2o.org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:118),     ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333),     ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310),     ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168),     ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:126),     ai.h2o.org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:366),     ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:762),     ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:680),     java.lang.Thread.run(Thread.java:748)]
+06-08 15:38:46.310 10.42.28.4:54321      #5368  235828-229  WARN water.default: ; Stacktrace: [java.lang.IllegalArgumentException: A frame with name 'py_3_sid_8f04' doesn't exist.,     ai.h2o.sparkling.extensions.rest.api.ChunkServlet$POSTRequestParameters.validate(ChunkServlet.scala:44),     ai.h2o.sparkling.extensions.rest.api.ChunkServlet$$anonfun$doPost$1.apply$mcV$sp(ChunkServlet.scala:119),     ai.h2o.sparkling.extensions.rest.api.ServletBase.processRequest(ServletBase.scala:36),     ai.h2o.sparkling.extensions.rest.api.ChunkServlet.doPost(ChunkServlet.scala:117),     javax.servlet.http.HttpServlet.service(HttpServlet.java:707),     javax.servlet.http.HttpServlet.service(HttpServlet.java:790),     ai.h2o.org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:865),     ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:535),     ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255),     ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1317),     ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203),     ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:473),     ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201),     ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1219),     ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144),     ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126),     ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132),     water.webserver.jetty9.Jetty9ServerAdapter$LoginHandler.handle(Jetty9ServerAdapter.java:130),     ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126),     ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132),     ai.h2o.org.eclipse.jetty.server.Server.handle(Server.java:531),     ai.h2o.org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:352),     ai.h2o.org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:260),     ai.h2o.org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:281),     ai.h2o.org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:102),     ai.h2o.org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:118),     ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333),     ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310),     ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168),     ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:126),     ai.h2o.org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:366),     ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:762),     ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:680),     java.lang.Thread.run(Thread.java:748)]
+06-08 15:38:46.308 10.42.28.4:54321      #5368  235828-186  WARN water.default: ; Stacktrace: [java.lang.IllegalArgumentException: A frame with name 'py_2_sid_8f04' doesn't exist.,     ai.h2o.sparkling.extensions.rest.api.ChunkServlet$POSTRequestParameters.validate(ChunkServlet.scala:44),     ai.h2o.sparkling.extensions.rest.api.ChunkServlet$$anonfun$doPost$1.apply$mcV$sp(ChunkServlet.scala:119),     ai.h2o.sparkling.extensions.rest.api.ServletBase.processRequest(ServletBase.scala:36),     ai.h2o.sparkling.extensions.rest.api.ChunkServlet.doPost(ChunkServlet.scala:117),     javax.servlet.http.HttpServlet.service(HttpServlet.java:707),     javax.servlet.http.HttpServlet.service(HttpServlet.java:790),     ai.h2o.org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:865),     ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:535),     ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255),     ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1317),     ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203),     ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:473),     ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201),     ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1219),     ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144),     ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126),     ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132),     water.webserver.jetty9.Jetty9ServerAdapter$LoginHandler.handle(Jetty9ServerAdapter.java:130),     ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126),     ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132),     ai.h2o.org.eclipse.jetty.server.Server.handle(Server.java:531),     ai.h2o.org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:352),     ai.h2o.org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:260),     ai.h2o.org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:281),     ai.h2o.org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:102),     ai.h2o.org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:118),     ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333),     ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310),     ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168),     ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:126),     ai.h2o.org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:366),     ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:762),     ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:680),     java.lang.Thread.run(Thread.java:748)]
+06-08 15:38:46.305 10.42.28.4:54321      #5368  235828-183  WARN water.default: ERROR MESSAGE:
+06-08 15:38:46.311 10.42.28.4:54321      #5368  235828-172  WARN water.default: 
+06-08 15:38:46.322 10.42.28.4:54321      #5368  235828-183  WARN water.default: 
+06-08 15:38:46.325 10.42.28.4:54321      #5368  235828-172  WARN water.default: A frame with name 'py_3_sid_8f04' doesn't exist.
+06-08 15:38:46.326 10.42.28.4:54321      #5368  235828-183  WARN water.default: A frame with name 'py_2_sid_8f04' doesn't exist.
+06-08 15:38:46.327 10.42.28.4:54321      #5368  235828-172  WARN water.default: 
+06-08 15:38:46.327 10.42.28.4:54321      #5368  235828-183  WARN water.default: 
+06-08 15:38:46.328 10.42.28.4:54321      #5368  235828-172  WARN water.default: ; Stacktrace: [java.lang.IllegalArgumentException: A frame with name 'py_3_sid_8f04' doesn't exist.,     ai.h2o.sparkling.extensions.rest.api.ChunkServlet$POSTRequestParameters.validate(ChunkServlet.scala:44),     ai.h2o.sparkling.extensions.rest.api.ChunkServlet$$anonfun$doPost$1.apply$mcV$sp(ChunkServlet.scala:119),     ai.h2o.sparkling.extensions.rest.api.ServletBase.processRequest(ServletBase.scala:36),     ai.h2o.sparkling.extensions.rest.api.ChunkServlet.doPost(ChunkServlet.scala:117),     javax.servlet.http.HttpServlet.service(HttpServlet.java:707),     javax.servlet.http.HttpServlet.service(HttpServlet.java:790),     ai.h2o.org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:865),     ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:535),     ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255),     ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1317),     ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203),     ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:473),     ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201),     ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1219),     ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144),     ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126),     ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132),     water.webserver.jetty9.Jetty9ServerAdapter$LoginHandler.handle(Jetty9ServerAdapter.java:130),     ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126),     ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132),     ai.h2o.org.eclipse.jetty.server.Server.handle(Server.java:531),     ai.h2o.org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:352),     ai.h2o.org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:260),     ai.h2o.org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:281),     ai.h2o.org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:102),     ai.h2o.org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:118),     ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333),     ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310),     ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168),     ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:126),     ai.h2o.org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:366),     ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:762),     ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:680),     java.lang.Thread.run(Thread.java:748)]
+06-08 15:38:46.328 10.42.28.4:54321      #5368  235828-183  WARN water.default: ; Stacktrace: [java.lang.IllegalArgumentException: A frame with name 'py_2_sid_8f04' doesn't exist.,     ai.h2o.sparkling.extensions.rest.api.ChunkServlet$POSTRequestParameters.validate(ChunkServlet.scala:44),     ai.h2o.sparkling.extensions.rest.api.ChunkServlet$$anonfun$doPost$1.apply$mcV$sp(ChunkServlet.scala:119),     ai.h2o.sparkling.extensions.rest.api.ServletBase.processRequest(ServletBase.scala:36),     ai.h2o.sparkling.extensions.rest.api.ChunkServlet.doPost(ChunkServlet.scala:117),     javax.servlet.http.HttpServlet.service(HttpServlet.java:707),     javax.servlet.http.HttpServlet.service(HttpServlet.java:790),     ai.h2o.org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:865),     ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:535),     ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255),     ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1317),     ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203),     ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:473),     ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201),     ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1219),     ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144),     ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126),     ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132),     water.webserver.jetty9.Jetty9ServerAdapter$LoginHandler.handle(Jetty9ServerAdapter.java:130),     ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126),     ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132),     ai.h2o.org.eclipse.jetty.server.Server.handle(Server.java:531),     ai.h2o.org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:352),     ai.h2o.org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:260),     ai.h2o.org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:281),     ai.h2o.org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:102),     ai.h2o.org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:118),     ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333),     ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310),     ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168),     ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:126),     ai.h2o.org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:366),     ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:762),     ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:680),     java.lang.Thread.run(Thread.java:748)]
+06-08 15:38:46.344 10.42.28.4:54321      #5368  r task 449 ERROR org.apache.spark.executor.Executor: Exception in task 0.0 in stage 32.0 (TID 449)
+ai.h2o.sparkling.backend.exceptions.RestApiCommunicationException: H2O node http://10.42.28.4:54321 responded with
+Status code: 400 : Bad Request
+Server error: {"__meta":{"schema_version":3,"schema_name":"H2OErrorV3","schema_type":"H2OError"},"timestamp":1623166726281,"error_url":"/3/Chunk","msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_2_sid_8f04' doesn't exist.\n\n","dev_msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_2_sid_8f04' doesn't exist.\n\n","http_status":400,"values":{},"exception_type":"java.lang.IllegalArgumentException","exception_msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_2_sid_8f04' doesn't exist.\n\n","stacktrace":["java.lang.IllegalArgumentException: A frame with name 'py_2_sid_8f04' doesn't exist.","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet$POSTRequestParameters.validate(ChunkServlet.scala:44)","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet$$anonfun$doPost$1.apply$mcV$sp(ChunkServlet.scala:119)","    ai.h2o.sparkling.extensions.rest.api.ServletBase.processRequest(ServletBase.scala:36)","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet.doPost(ChunkServlet.scala:117)","    javax.servlet.http.HttpServlet.service(HttpServlet.java:707)","    javax.servlet.http.HttpServlet.service(HttpServlet.java:790)","    ai.h2o.org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:865)","    ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:535)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255)","    ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1317)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203)","    ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:473)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201)","    ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1219)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)","    water.webserver.jetty9.Jetty9ServerAdapter$LoginHandler.handle(Jetty9ServerAdapter.java:130)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)","    ai.h2o.org.eclipse.jetty.server.Server.handle(Server.java:531)","    ai.h2o.org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:352)","    ai.h2o.org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:260)","    ai.h2o.org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:281)","    ai.h2o.org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:102)","    ai.h2o.org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:118)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:126)","    ai.h2o.org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:366)","    ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:762)","    ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:680)","    java.lang.Thread.run(Thread.java:748)"]}
+	at ai.h2o.sparkling.backend.utils.RestCommunication$class.checkResponseCode(RestCommunication.scala:412)
+	at ai.h2o.sparkling.backend.H2OChunk$.checkResponseCode(H2OChunk.scala:32)
+	at ai.h2o.sparkling.backend.utils.RestCommunication$class.readURLContent(RestCommunication.scala:386)
+	at ai.h2o.sparkling.backend.H2OChunk$.readURLContent(H2OChunk.scala:32)
+	at ai.h2o.sparkling.backend.H2OChunk$.getChunkAsInputStream(H2OChunk.scala:53)
+	at ai.h2o.sparkling.backend.Reader.<init>(Reader.scala:45)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.reader$lzycompute(H2ODataFrame.scala:66)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.reader(H2ODataFrame.scala:66)
+	at ai.h2o.sparkling.backend.H2OSparkEntity$H2OChunkIterator$class.hasNext(H2OSparkEntity.scala:50)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.hasNext(H2ODataFrame.scala:64)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenExec$$anonfun$11$$anon$1.hasNext(WholeStageCodegenExec.scala:624)
+	at scala.collection.Iterator$$anon$11.hasNext(Iterator.scala:409)
+	at org.apache.spark.shuffle.sort.BypassMergeSortShuffleWriter.write(BypassMergeSortShuffleWriter.java:125)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:99)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:55)
+	at org.apache.spark.scheduler.Task.run(Task.scala:121)
+	at org.apache.spark.executor.Executor$TaskRunner$$anonfun$11.apply(Executor.scala:407)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1408)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:413)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+06-08 15:38:46.341 10.42.28.4:54321      #5368  r task 447 ERROR org.apache.spark.executor.Executor: Exception in task 0.0 in stage 31.0 (TID 447)
+ai.h2o.sparkling.backend.exceptions.RestApiCommunicationException: H2O node http://10.42.28.4:54321 responded with
+Status code: 400 : Bad Request
+Server error: {"__meta":{"schema_version":3,"schema_name":"H2OErrorV3","schema_type":"H2OError"},"timestamp":1623166726233,"error_url":"/3/Chunk","msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_3_sid_8f04' doesn't exist.\n\n","dev_msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_3_sid_8f04' doesn't exist.\n\n","http_status":400,"values":{},"exception_type":"java.lang.IllegalArgumentException","exception_msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_3_sid_8f04' doesn't exist.\n\n","stacktrace":["java.lang.IllegalArgumentException: A frame with name 'py_3_sid_8f04' doesn't exist.","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet$POSTRequestParameters.validate(ChunkServlet.scala:44)","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet$$anonfun$doPost$1.apply$mcV$sp(ChunkServlet.scala:119)","    ai.h2o.sparkling.extensions.rest.api.ServletBase.processRequest(ServletBase.scala:36)","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet.doPost(ChunkServlet.scala:117)","    javax.servlet.http.HttpServlet.service(HttpServlet.java:707)","    javax.servlet.http.HttpServlet.service(HttpServlet.java:790)","    ai.h2o.org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:865)","    ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:535)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255)","    ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1317)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203)","    ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:473)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201)","    ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1219)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)","    water.webserver.jetty9.Jetty9ServerAdapter$LoginHandler.handle(Jetty9ServerAdapter.java:130)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)","    ai.h2o.org.eclipse.jetty.server.Server.handle(Server.java:531)","    ai.h2o.org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:352)","    ai.h2o.org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:260)","    ai.h2o.org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:281)","    ai.h2o.org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:102)","    ai.h2o.org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:118)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:126)","    ai.h2o.org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:366)","    ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:762)","    ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:680)","    java.lang.Thread.run(Thread.java:748)"]}
+	at ai.h2o.sparkling.backend.utils.RestCommunication$class.checkResponseCode(RestCommunication.scala:412)
+	at ai.h2o.sparkling.backend.H2OChunk$.checkResponseCode(H2OChunk.scala:32)
+	at ai.h2o.sparkling.backend.utils.RestCommunication$class.readURLContent(RestCommunication.scala:386)
+	at ai.h2o.sparkling.backend.H2OChunk$.readURLContent(H2OChunk.scala:32)
+	at ai.h2o.sparkling.backend.H2OChunk$.getChunkAsInputStream(H2OChunk.scala:53)
+	at ai.h2o.sparkling.backend.Reader.<init>(Reader.scala:45)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.reader$lzycompute(H2ODataFrame.scala:66)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.reader(H2ODataFrame.scala:66)
+	at ai.h2o.sparkling.backend.H2OSparkEntity$H2OChunkIterator$class.hasNext(H2OSparkEntity.scala:50)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.hasNext(H2ODataFrame.scala:64)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage3.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenExec$$anonfun$11$$anon$1.hasNext(WholeStageCodegenExec.scala:624)
+	at scala.collection.Iterator$$anon$11.hasNext(Iterator.scala:409)
+	at org.apache.spark.shuffle.sort.BypassMergeSortShuffleWriter.write(BypassMergeSortShuffleWriter.java:125)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:99)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:55)
+	at org.apache.spark.scheduler.Task.run(Task.scala:121)
+	at org.apache.spark.executor.Executor$TaskRunner$$anonfun$11.apply(Executor.scala:407)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1408)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:413)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+06-08 15:38:46.341 10.42.28.4:54321      #5368  r task 445 ERROR org.apache.spark.executor.Executor: Exception in task 0.0 in stage 34.0 (TID 445)
+ai.h2o.sparkling.backend.exceptions.RestApiCommunicationException: H2O node http://10.42.28.4:54321 responded with
+Status code: 400 : Bad Request
+Server error: {"__meta":{"schema_version":3,"schema_name":"H2OErrorV3","schema_type":"H2OError"},"timestamp":1623166726234,"error_url":"/3/Chunk","msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_4_sid_8f04' doesn't exist.\n\n","dev_msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_4_sid_8f04' doesn't exist.\n\n","http_status":400,"values":{},"exception_type":"java.lang.IllegalArgumentException","exception_msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_4_sid_8f04' doesn't exist.\n\n","stacktrace":["java.lang.IllegalArgumentException: A frame with name 'py_4_sid_8f04' doesn't exist.","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet$POSTRequestParameters.validate(ChunkServlet.scala:44)","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet$$anonfun$doPost$1.apply$mcV$sp(ChunkServlet.scala:119)","    ai.h2o.sparkling.extensions.rest.api.ServletBase.processRequest(ServletBase.scala:36)","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet.doPost(ChunkServlet.scala:117)","    javax.servlet.http.HttpServlet.service(HttpServlet.java:707)","    javax.servlet.http.HttpServlet.service(HttpServlet.java:790)","    ai.h2o.org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:865)","    ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:535)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255)","    ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1317)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203)","    ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:473)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201)","    ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1219)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)","    water.webserver.jetty9.Jetty9ServerAdapter$LoginHandler.handle(Jetty9ServerAdapter.java:130)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)","    ai.h2o.org.eclipse.jetty.server.Server.handle(Server.java:531)","    ai.h2o.org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:352)","    ai.h2o.org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:260)","    ai.h2o.org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:281)","    ai.h2o.org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:102)","    ai.h2o.org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:118)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:126)","    ai.h2o.org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:366)","    ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:762)","    ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:680)","    java.lang.Thread.run(Thread.java:748)"]}
+	at ai.h2o.sparkling.backend.utils.RestCommunication$class.checkResponseCode(RestCommunication.scala:412)
+	at ai.h2o.sparkling.backend.H2OChunk$.checkResponseCode(H2OChunk.scala:32)
+	at ai.h2o.sparkling.backend.utils.RestCommunication$class.readURLContent(RestCommunication.scala:386)
+	at ai.h2o.sparkling.backend.H2OChunk$.readURLContent(H2OChunk.scala:32)
+	at ai.h2o.sparkling.backend.H2OChunk$.getChunkAsInputStream(H2OChunk.scala:53)
+	at ai.h2o.sparkling.backend.Reader.<init>(Reader.scala:45)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.reader$lzycompute(H2ODataFrame.scala:66)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.reader(H2ODataFrame.scala:66)
+	at ai.h2o.sparkling.backend.H2OSparkEntity$H2OChunkIterator$class.hasNext(H2OSparkEntity.scala:50)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.hasNext(H2ODataFrame.scala:64)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage7.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenExec$$anonfun$11$$anon$1.hasNext(WholeStageCodegenExec.scala:624)
+	at scala.collection.Iterator$$anon$11.hasNext(Iterator.scala:409)
+	at org.apache.spark.shuffle.sort.BypassMergeSortShuffleWriter.write(BypassMergeSortShuffleWriter.java:125)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:99)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:55)
+	at org.apache.spark.scheduler.Task.run(Task.scala:121)
+	at org.apache.spark.executor.Executor$TaskRunner$$anonfun$11.apply(Executor.scala:407)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1408)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:413)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+06-08 15:38:46.341 10.42.28.4:54321      #5368  r task 448 ERROR org.apache.spark.executor.Executor: Exception in task 1.0 in stage 31.0 (TID 448)
+ai.h2o.sparkling.backend.exceptions.RestApiCommunicationException: H2O node http://10.42.28.4:54321 responded with
+Status code: 400 : Bad Request
+Server error: {"__meta":{"schema_version":3,"schema_name":"H2OErrorV3","schema_type":"H2OError"},"timestamp":1623166726250,"error_url":"/3/Chunk","msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_3_sid_8f04' doesn't exist.\n\n","dev_msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_3_sid_8f04' doesn't exist.\n\n","http_status":400,"values":{},"exception_type":"java.lang.IllegalArgumentException","exception_msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_3_sid_8f04' doesn't exist.\n\n","stacktrace":["java.lang.IllegalArgumentException: A frame with name 'py_3_sid_8f04' doesn't exist.","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet$POSTRequestParameters.validate(ChunkServlet.scala:44)","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet$$anonfun$doPost$1.apply$mcV$sp(ChunkServlet.scala:119)","    ai.h2o.sparkling.extensions.rest.api.ServletBase.processRequest(ServletBase.scala:36)","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet.doPost(ChunkServlet.scala:117)","    javax.servlet.http.HttpServlet.service(HttpServlet.java:707)","    javax.servlet.http.HttpServlet.service(HttpServlet.java:790)","    ai.h2o.org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:865)","    ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:535)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255)","    ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1317)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203)","    ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:473)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201)","    ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1219)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)","    water.webserver.jetty9.Jetty9ServerAdapter$LoginHandler.handle(Jetty9ServerAdapter.java:130)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)","    ai.h2o.org.eclipse.jetty.server.Server.handle(Server.java:531)","    ai.h2o.org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:352)","    ai.h2o.org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:260)","    ai.h2o.org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:281)","    ai.h2o.org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:102)","    ai.h2o.org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:118)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:126)","    ai.h2o.org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:366)","    ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:762)","    ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:680)","    java.lang.Thread.run(Thread.java:748)"]}
+	at ai.h2o.sparkling.backend.utils.RestCommunication$class.checkResponseCode(RestCommunication.scala:412)
+	at ai.h2o.sparkling.backend.H2OChunk$.checkResponseCode(H2OChunk.scala:32)
+	at ai.h2o.sparkling.backend.utils.RestCommunication$class.readURLContent(RestCommunication.scala:386)
+	at ai.h2o.sparkling.backend.H2OChunk$.readURLContent(H2OChunk.scala:32)
+	at ai.h2o.sparkling.backend.H2OChunk$.getChunkAsInputStream(H2OChunk.scala:53)
+	at ai.h2o.sparkling.backend.Reader.<init>(Reader.scala:45)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.reader$lzycompute(H2ODataFrame.scala:66)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.reader(H2ODataFrame.scala:66)
+	at ai.h2o.sparkling.backend.H2OSparkEntity$H2OChunkIterator$class.hasNext(H2OSparkEntity.scala:50)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.hasNext(H2ODataFrame.scala:64)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage3.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenExec$$anonfun$11$$anon$1.hasNext(WholeStageCodegenExec.scala:624)
+	at scala.collection.Iterator$$anon$11.hasNext(Iterator.scala:409)
+	at org.apache.spark.shuffle.sort.BypassMergeSortShuffleWriter.write(BypassMergeSortShuffleWriter.java:125)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:99)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:55)
+	at org.apache.spark.scheduler.Task.run(Task.scala:121)
+	at org.apache.spark.executor.Executor$TaskRunner$$anonfun$11.apply(Executor.scala:407)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1408)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:413)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+06-08 15:38:46.341 10.42.28.4:54321      #5368  r task 450 ERROR org.apache.spark.executor.Executor: Exception in task 1.0 in stage 32.0 (TID 450)
+ai.h2o.sparkling.backend.exceptions.RestApiCommunicationException: H2O node http://10.42.28.4:54321 responded with
+Status code: 400 : Bad Request
+Server error: {"__meta":{"schema_version":3,"schema_name":"H2OErrorV3","schema_type":"H2OError"},"timestamp":1623166726281,"error_url":"/3/Chunk","msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_2_sid_8f04' doesn't exist.\n\n","dev_msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_2_sid_8f04' doesn't exist.\n\n","http_status":400,"values":{},"exception_type":"java.lang.IllegalArgumentException","exception_msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_2_sid_8f04' doesn't exist.\n\n","stacktrace":["java.lang.IllegalArgumentException: A frame with name 'py_2_sid_8f04' doesn't exist.","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet$POSTRequestParameters.validate(ChunkServlet.scala:44)","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet$$anonfun$doPost$1.apply$mcV$sp(ChunkServlet.scala:119)","    ai.h2o.sparkling.extensions.rest.api.ServletBase.processRequest(ServletBase.scala:36)","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet.doPost(ChunkServlet.scala:117)","    javax.servlet.http.HttpServlet.service(HttpServlet.java:707)","    javax.servlet.http.HttpServlet.service(HttpServlet.java:790)","    ai.h2o.org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:865)","    ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:535)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255)","    ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1317)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203)","    ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:473)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201)","    ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1219)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)","    water.webserver.jetty9.Jetty9ServerAdapter$LoginHandler.handle(Jetty9ServerAdapter.java:130)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)","    ai.h2o.org.eclipse.jetty.server.Server.handle(Server.java:531)","    ai.h2o.org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:352)","    ai.h2o.org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:260)","    ai.h2o.org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:281)","    ai.h2o.org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:102)","    ai.h2o.org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:118)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:126)","    ai.h2o.org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:366)","    ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:762)","    ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:680)","    java.lang.Thread.run(Thread.java:748)"]}
+	at ai.h2o.sparkling.backend.utils.RestCommunication$class.checkResponseCode(RestCommunication.scala:412)
+	at ai.h2o.sparkling.backend.H2OChunk$.checkResponseCode(H2OChunk.scala:32)
+	at ai.h2o.sparkling.backend.utils.RestCommunication$class.readURLContent(RestCommunication.scala:386)
+	at ai.h2o.sparkling.backend.H2OChunk$.readURLContent(H2OChunk.scala:32)
+	at ai.h2o.sparkling.backend.H2OChunk$.getChunkAsInputStream(H2OChunk.scala:53)
+	at ai.h2o.sparkling.backend.Reader.<init>(Reader.scala:45)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.reader$lzycompute(H2ODataFrame.scala:66)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.reader(H2ODataFrame.scala:66)
+	at ai.h2o.sparkling.backend.H2OSparkEntity$H2OChunkIterator$class.hasNext(H2OSparkEntity.scala:50)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.hasNext(H2ODataFrame.scala:64)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenExec$$anonfun$11$$anon$1.hasNext(WholeStageCodegenExec.scala:624)
+	at scala.collection.Iterator$$anon$11.hasNext(Iterator.scala:409)
+	at org.apache.spark.shuffle.sort.BypassMergeSortShuffleWriter.write(BypassMergeSortShuffleWriter.java:125)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:99)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:55)
+	at org.apache.spark.scheduler.Task.run(Task.scala:121)
+	at org.apache.spark.executor.Executor$TaskRunner$$anonfun$11.apply(Executor.scala:407)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1408)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:413)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+06-08 15:38:46.341 10.42.28.4:54321      #5368  r task 446 ERROR org.apache.spark.executor.Executor: Exception in task 1.0 in stage 34.0 (TID 446)
+ai.h2o.sparkling.backend.exceptions.RestApiCommunicationException: H2O node http://10.42.28.4:54321 responded with
+Status code: 400 : Bad Request
+Server error: {"__meta":{"schema_version":3,"schema_name":"H2OErrorV3","schema_type":"H2OError"},"timestamp":1623166726233,"error_url":"/3/Chunk","msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_4_sid_8f04' doesn't exist.\n\n","dev_msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_4_sid_8f04' doesn't exist.\n\n","http_status":400,"values":{},"exception_type":"java.lang.IllegalArgumentException","exception_msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_4_sid_8f04' doesn't exist.\n\n","stacktrace":["java.lang.IllegalArgumentException: A frame with name 'py_4_sid_8f04' doesn't exist.","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet$POSTRequestParameters.validate(ChunkServlet.scala:44)","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet$$anonfun$doPost$1.apply$mcV$sp(ChunkServlet.scala:119)","    ai.h2o.sparkling.extensions.rest.api.ServletBase.processRequest(ServletBase.scala:36)","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet.doPost(ChunkServlet.scala:117)","    javax.servlet.http.HttpServlet.service(HttpServlet.java:707)","    javax.servlet.http.HttpServlet.service(HttpServlet.java:790)","    ai.h2o.org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:865)","    ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:535)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255)","    ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1317)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203)","    ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:473)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201)","    ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1219)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)","    water.webserver.jetty9.Jetty9ServerAdapter$LoginHandler.handle(Jetty9ServerAdapter.java:130)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)","    ai.h2o.org.eclipse.jetty.server.Server.handle(Server.java:531)","    ai.h2o.org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:352)","    ai.h2o.org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:260)","    ai.h2o.org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:281)","    ai.h2o.org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:102)","    ai.h2o.org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:118)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:126)","    ai.h2o.org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:366)","    ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:762)","    ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:680)","    java.lang.Thread.run(Thread.java:748)"]}
+	at ai.h2o.sparkling.backend.utils.RestCommunication$class.checkResponseCode(RestCommunication.scala:412)
+	at ai.h2o.sparkling.backend.H2OChunk$.checkResponseCode(H2OChunk.scala:32)
+	at ai.h2o.sparkling.backend.utils.RestCommunication$class.readURLContent(RestCommunication.scala:386)
+	at ai.h2o.sparkling.backend.H2OChunk$.readURLContent(H2OChunk.scala:32)
+	at ai.h2o.sparkling.backend.H2OChunk$.getChunkAsInputStream(H2OChunk.scala:53)
+	at ai.h2o.sparkling.backend.Reader.<init>(Reader.scala:45)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.reader$lzycompute(H2ODataFrame.scala:66)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.reader(H2ODataFrame.scala:66)
+	at ai.h2o.sparkling.backend.H2OSparkEntity$H2OChunkIterator$class.hasNext(H2OSparkEntity.scala:50)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.hasNext(H2ODataFrame.scala:64)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage7.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenExec$$anonfun$11$$anon$1.hasNext(WholeStageCodegenExec.scala:624)
+	at scala.collection.Iterator$$anon$11.hasNext(Iterator.scala:409)
+	at org.apache.spark.shuffle.sort.BypassMergeSortShuffleWriter.write(BypassMergeSortShuffleWriter.java:125)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:99)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:55)
+	at org.apache.spark.scheduler.Task.run(Task.scala:121)
+	at org.apache.spark.executor.Executor$TaskRunner$$anonfun$11.apply(Executor.scala:407)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1408)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:413)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+06-08 15:38:46.379 10.42.28.4:54321      #5368  t-getter-3  WARN org.apache.spark.scheduler.TaskSetManager: Lost task 0.0 in stage 32.0 (TID 449, localhost, executor driver): ai.h2o.sparkling.backend.exceptions.RestApiCommunicationException: H2O node http://10.42.28.4:54321 responded with
+Status code: 400 : Bad Request
+Server error: {"__meta":{"schema_version":3,"schema_name":"H2OErrorV3","schema_type":"H2OError"},"timestamp":1623166726281,"error_url":"/3/Chunk","msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_2_sid_8f04' doesn't exist.\n\n","dev_msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_2_sid_8f04' doesn't exist.\n\n","http_status":400,"values":{},"exception_type":"java.lang.IllegalArgumentException","exception_msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_2_sid_8f04' doesn't exist.\n\n","stacktrace":["java.lang.IllegalArgumentException: A frame with name 'py_2_sid_8f04' doesn't exist.","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet$POSTRequestParameters.validate(ChunkServlet.scala:44)","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet$$anonfun$doPost$1.apply$mcV$sp(ChunkServlet.scala:119)","    ai.h2o.sparkling.extensions.rest.api.ServletBase.processRequest(ServletBase.scala:36)","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet.doPost(ChunkServlet.scala:117)","    javax.servlet.http.HttpServlet.service(HttpServlet.java:707)","    javax.servlet.http.HttpServlet.service(HttpServlet.java:790)","    ai.h2o.org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:865)","    ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:535)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255)","    ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1317)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203)","    ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:473)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201)","    ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1219)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)","    water.webserver.jetty9.Jetty9ServerAdapter$LoginHandler.handle(Jetty9ServerAdapter.java:130)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)","    ai.h2o.org.eclipse.jetty.server.Server.handle(Server.java:531)","    ai.h2o.org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:352)","    ai.h2o.org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:260)","    ai.h2o.org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:281)","    ai.h2o.org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:102)","    ai.h2o.org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:118)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:126)","    ai.h2o.org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:366)","    ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:762)","    ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:680)","    java.lang.Thread.run(Thread.java:748)"]}
+	at ai.h2o.sparkling.backend.utils.RestCommunication$class.checkResponseCode(RestCommunication.scala:412)
+	at ai.h2o.sparkling.backend.H2OChunk$.checkResponseCode(H2OChunk.scala:32)
+	at ai.h2o.sparkling.backend.utils.RestCommunication$class.readURLContent(RestCommunication.scala:386)
+	at ai.h2o.sparkling.backend.H2OChunk$.readURLContent(H2OChunk.scala:32)
+	at ai.h2o.sparkling.backend.H2OChunk$.getChunkAsInputStream(H2OChunk.scala:53)
+	at ai.h2o.sparkling.backend.Reader.<init>(Reader.scala:45)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.reader$lzycompute(H2ODataFrame.scala:66)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.reader(H2ODataFrame.scala:66)
+	at ai.h2o.sparkling.backend.H2OSparkEntity$H2OChunkIterator$class.hasNext(H2OSparkEntity.scala:50)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.hasNext(H2ODataFrame.scala:64)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage1.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenExec$$anonfun$11$$anon$1.hasNext(WholeStageCodegenExec.scala:624)
+	at scala.collection.Iterator$$anon$11.hasNext(Iterator.scala:409)
+	at org.apache.spark.shuffle.sort.BypassMergeSortShuffleWriter.write(BypassMergeSortShuffleWriter.java:125)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:99)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:55)
+	at org.apache.spark.scheduler.Task.run(Task.scala:121)
+	at org.apache.spark.executor.Executor$TaskRunner$$anonfun$11.apply(Executor.scala:407)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1408)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:413)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+
+06-08 15:38:46.381 10.42.28.4:54321      #5368  t-getter-3 ERROR org.apache.spark.scheduler.TaskSetManager: Task 0 in stage 32.0 failed 1 times; aborting job
+06-08 15:38:46.383 10.42.28.4:54321      #5368  t-getter-0  WARN org.apache.spark.scheduler.TaskSetManager: Lost task 0.0 in stage 34.0 (TID 445, localhost, executor driver): ai.h2o.sparkling.backend.exceptions.RestApiCommunicationException: H2O node http://10.42.28.4:54321 responded with
+Status code: 400 : Bad Request
+Server error: {"__meta":{"schema_version":3,"schema_name":"H2OErrorV3","schema_type":"H2OError"},"timestamp":1623166726234,"error_url":"/3/Chunk","msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_4_sid_8f04' doesn't exist.\n\n","dev_msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_4_sid_8f04' doesn't exist.\n\n","http_status":400,"values":{},"exception_type":"java.lang.IllegalArgumentException","exception_msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_4_sid_8f04' doesn't exist.\n\n","stacktrace":["java.lang.IllegalArgumentException: A frame with name 'py_4_sid_8f04' doesn't exist.","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet$POSTRequestParameters.validate(ChunkServlet.scala:44)","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet$$anonfun$doPost$1.apply$mcV$sp(ChunkServlet.scala:119)","    ai.h2o.sparkling.extensions.rest.api.ServletBase.processRequest(ServletBase.scala:36)","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet.doPost(ChunkServlet.scala:117)","    javax.servlet.http.HttpServlet.service(HttpServlet.java:707)","    javax.servlet.http.HttpServlet.service(HttpServlet.java:790)","    ai.h2o.org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:865)","    ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:535)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255)","    ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1317)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203)","    ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:473)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201)","    ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1219)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)","    water.webserver.jetty9.Jetty9ServerAdapter$LoginHandler.handle(Jetty9ServerAdapter.java:130)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)","    ai.h2o.org.eclipse.jetty.server.Server.handle(Server.java:531)","    ai.h2o.org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:352)","    ai.h2o.org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:260)","    ai.h2o.org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:281)","    ai.h2o.org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:102)","    ai.h2o.org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:118)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:126)","    ai.h2o.org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:366)","    ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:762)","    ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:680)","    java.lang.Thread.run(Thread.java:748)"]}
+	at ai.h2o.sparkling.backend.utils.RestCommunication$class.checkResponseCode(RestCommunication.scala:412)
+	at ai.h2o.sparkling.backend.H2OChunk$.checkResponseCode(H2OChunk.scala:32)
+	at ai.h2o.sparkling.backend.utils.RestCommunication$class.readURLContent(RestCommunication.scala:386)
+	at ai.h2o.sparkling.backend.H2OChunk$.readURLContent(H2OChunk.scala:32)
+	at ai.h2o.sparkling.backend.H2OChunk$.getChunkAsInputStream(H2OChunk.scala:53)
+	at ai.h2o.sparkling.backend.Reader.<init>(Reader.scala:45)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.reader$lzycompute(H2ODataFrame.scala:66)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.reader(H2ODataFrame.scala:66)
+	at ai.h2o.sparkling.backend.H2OSparkEntity$H2OChunkIterator$class.hasNext(H2OSparkEntity.scala:50)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.hasNext(H2ODataFrame.scala:64)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage7.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenExec$$anonfun$11$$anon$1.hasNext(WholeStageCodegenExec.scala:624)
+	at scala.collection.Iterator$$anon$11.hasNext(Iterator.scala:409)
+	at org.apache.spark.shuffle.sort.BypassMergeSortShuffleWriter.write(BypassMergeSortShuffleWriter.java:125)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:99)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:55)
+	at org.apache.spark.scheduler.Task.run(Task.scala:121)
+	at org.apache.spark.executor.Executor$TaskRunner$$anonfun$11.apply(Executor.scala:407)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1408)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:413)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+
+06-08 15:38:46.386 10.42.28.4:54321      #5368  t-getter-0 ERROR org.apache.spark.scheduler.TaskSetManager: Task 0 in stage 34.0 failed 1 times; aborting job
+06-08 15:38:46.387 10.42.28.4:54321      #5368  t-getter-2  WARN org.apache.spark.scheduler.TaskSetManager: Lost task 0.0 in stage 31.0 (TID 447, localhost, executor driver): ai.h2o.sparkling.backend.exceptions.RestApiCommunicationException: H2O node http://10.42.28.4:54321 responded with
+Status code: 400 : Bad Request
+Server error: {"__meta":{"schema_version":3,"schema_name":"H2OErrorV3","schema_type":"H2OError"},"timestamp":1623166726233,"error_url":"/3/Chunk","msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_3_sid_8f04' doesn't exist.\n\n","dev_msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_3_sid_8f04' doesn't exist.\n\n","http_status":400,"values":{},"exception_type":"java.lang.IllegalArgumentException","exception_msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_3_sid_8f04' doesn't exist.\n\n","stacktrace":["java.lang.IllegalArgumentException: A frame with name 'py_3_sid_8f04' doesn't exist.","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet$POSTRequestParameters.validate(ChunkServlet.scala:44)","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet$$anonfun$doPost$1.apply$mcV$sp(ChunkServlet.scala:119)","    ai.h2o.sparkling.extensions.rest.api.ServletBase.processRequest(ServletBase.scala:36)","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet.doPost(ChunkServlet.scala:117)","    javax.servlet.http.HttpServlet.service(HttpServlet.java:707)","    javax.servlet.http.HttpServlet.service(HttpServlet.java:790)","    ai.h2o.org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:865)","    ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:535)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255)","    ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1317)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203)","    ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:473)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201)","    ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1219)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)","    water.webserver.jetty9.Jetty9ServerAdapter$LoginHandler.handle(Jetty9ServerAdapter.java:130)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)","    ai.h2o.org.eclipse.jetty.server.Server.handle(Server.java:531)","    ai.h2o.org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:352)","    ai.h2o.org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:260)","    ai.h2o.org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:281)","    ai.h2o.org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:102)","    ai.h2o.org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:118)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:126)","    ai.h2o.org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:366)","    ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:762)","    ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:680)","    java.lang.Thread.run(Thread.java:748)"]}
+	at ai.h2o.sparkling.backend.utils.RestCommunication$class.checkResponseCode(RestCommunication.scala:412)
+	at ai.h2o.sparkling.backend.H2OChunk$.checkResponseCode(H2OChunk.scala:32)
+	at ai.h2o.sparkling.backend.utils.RestCommunication$class.readURLContent(RestCommunication.scala:386)
+	at ai.h2o.sparkling.backend.H2OChunk$.readURLContent(H2OChunk.scala:32)
+	at ai.h2o.sparkling.backend.H2OChunk$.getChunkAsInputStream(H2OChunk.scala:53)
+	at ai.h2o.sparkling.backend.Reader.<init>(Reader.scala:45)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.reader$lzycompute(H2ODataFrame.scala:66)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.reader(H2ODataFrame.scala:66)
+	at ai.h2o.sparkling.backend.H2OSparkEntity$H2OChunkIterator$class.hasNext(H2OSparkEntity.scala:50)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.hasNext(H2ODataFrame.scala:64)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage3.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenExec$$anonfun$11$$anon$1.hasNext(WholeStageCodegenExec.scala:624)
+	at scala.collection.Iterator$$anon$11.hasNext(Iterator.scala:409)
+	at org.apache.spark.shuffle.sort.BypassMergeSortShuffleWriter.write(BypassMergeSortShuffleWriter.java:125)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:99)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:55)
+	at org.apache.spark.scheduler.Task.run(Task.scala:121)
+	at org.apache.spark.executor.Executor$TaskRunner$$anonfun$11.apply(Executor.scala:407)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1408)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:413)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+
+06-08 15:38:46.389 10.42.28.4:54321      #5368  t-getter-2 ERROR org.apache.spark.scheduler.TaskSetManager: Task 0 in stage 31.0 failed 1 times; aborting job
+06-08 15:38:46.391 10.42.28.4:54321      #5368  t-getter-0  WARN org.apache.spark.scheduler.TaskSetManager: Lost task 1.0 in stage 34.0 (TID 446, localhost, executor driver): ai.h2o.sparkling.backend.exceptions.RestApiCommunicationException: H2O node http://10.42.28.4:54321 responded with
+Status code: 400 : Bad Request
+Server error: {"__meta":{"schema_version":3,"schema_name":"H2OErrorV3","schema_type":"H2OError"},"timestamp":1623166726233,"error_url":"/3/Chunk","msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_4_sid_8f04' doesn't exist.\n\n","dev_msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_4_sid_8f04' doesn't exist.\n\n","http_status":400,"values":{},"exception_type":"java.lang.IllegalArgumentException","exception_msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_4_sid_8f04' doesn't exist.\n\n","stacktrace":["java.lang.IllegalArgumentException: A frame with name 'py_4_sid_8f04' doesn't exist.","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet$POSTRequestParameters.validate(ChunkServlet.scala:44)","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet$$anonfun$doPost$1.apply$mcV$sp(ChunkServlet.scala:119)","    ai.h2o.sparkling.extensions.rest.api.ServletBase.processRequest(ServletBase.scala:36)","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet.doPost(ChunkServlet.scala:117)","    javax.servlet.http.HttpServlet.service(HttpServlet.java:707)","    javax.servlet.http.HttpServlet.service(HttpServlet.java:790)","    ai.h2o.org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:865)","    ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:535)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255)","    ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1317)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203)","    ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:473)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201)","    ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1219)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)","    water.webserver.jetty9.Jetty9ServerAdapter$LoginHandler.handle(Jetty9ServerAdapter.java:130)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)","    ai.h2o.org.eclipse.jetty.server.Server.handle(Server.java:531)","    ai.h2o.org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:352)","    ai.h2o.org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:260)","    ai.h2o.org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:281)","    ai.h2o.org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:102)","    ai.h2o.org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:118)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:126)","    ai.h2o.org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:366)","    ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:762)","    ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:680)","    java.lang.Thread.run(Thread.java:748)"]}
+	at ai.h2o.sparkling.backend.utils.RestCommunication$class.checkResponseCode(RestCommunication.scala:412)
+	at ai.h2o.sparkling.backend.H2OChunk$.checkResponseCode(H2OChunk.scala:32)
+	at ai.h2o.sparkling.backend.utils.RestCommunication$class.readURLContent(RestCommunication.scala:386)
+	at ai.h2o.sparkling.backend.H2OChunk$.readURLContent(H2OChunk.scala:32)
+	at ai.h2o.sparkling.backend.H2OChunk$.getChunkAsInputStream(H2OChunk.scala:53)
+	at ai.h2o.sparkling.backend.Reader.<init>(Reader.scala:45)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.reader$lzycompute(H2ODataFrame.scala:66)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.reader(H2ODataFrame.scala:66)
+	at ai.h2o.sparkling.backend.H2OSparkEntity$H2OChunkIterator$class.hasNext(H2OSparkEntity.scala:50)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.hasNext(H2ODataFrame.scala:64)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage7.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenExec$$anonfun$11$$anon$1.hasNext(WholeStageCodegenExec.scala:624)
+	at scala.collection.Iterator$$anon$11.hasNext(Iterator.scala:409)
+	at org.apache.spark.shuffle.sort.BypassMergeSortShuffleWriter.write(BypassMergeSortShuffleWriter.java:125)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:99)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:55)
+	at org.apache.spark.scheduler.Task.run(Task.scala:121)
+	at org.apache.spark.executor.Executor$TaskRunner$$anonfun$11.apply(Executor.scala:407)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1408)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:413)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+
+06-08 15:38:46.392 10.42.28.4:54321      #5368  t-getter-3  WARN org.apache.spark.scheduler.TaskSetManager: Lost task 1.0 in stage 31.0 (TID 448, localhost, executor driver): ai.h2o.sparkling.backend.exceptions.RestApiCommunicationException: H2O node http://10.42.28.4:54321 responded with
+Status code: 400 : Bad Request
+Server error: {"__meta":{"schema_version":3,"schema_name":"H2OErrorV3","schema_type":"H2OError"},"timestamp":1623166726250,"error_url":"/3/Chunk","msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_3_sid_8f04' doesn't exist.\n\n","dev_msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_3_sid_8f04' doesn't exist.\n\n","http_status":400,"values":{},"exception_type":"java.lang.IllegalArgumentException","exception_msg":"\n\nERROR MESSAGE:\n\nA frame with name 'py_3_sid_8f04' doesn't exist.\n\n","stacktrace":["java.lang.IllegalArgumentException: A frame with name 'py_3_sid_8f04' doesn't exist.","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet$POSTRequestParameters.validate(ChunkServlet.scala:44)","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet$$anonfun$doPost$1.apply$mcV$sp(ChunkServlet.scala:119)","    ai.h2o.sparkling.extensions.rest.api.ServletBase.processRequest(ServletBase.scala:36)","    ai.h2o.sparkling.extensions.rest.api.ChunkServlet.doPost(ChunkServlet.scala:117)","    javax.servlet.http.HttpServlet.service(HttpServlet.java:707)","    javax.servlet.http.HttpServlet.service(HttpServlet.java:790)","    ai.h2o.org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:865)","    ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:535)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:255)","    ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1317)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:203)","    ai.h2o.org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:473)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:201)","    ai.h2o.org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1219)","    ai.h2o.org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:144)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)","    water.webserver.jetty9.Jetty9ServerAdapter$LoginHandler.handle(Jetty9ServerAdapter.java:130)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerCollection.handle(HandlerCollection.java:126)","    ai.h2o.org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:132)","    ai.h2o.org.eclipse.jetty.server.Server.handle(Server.java:531)","    ai.h2o.org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:352)","    ai.h2o.org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:260)","    ai.h2o.org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:281)","    ai.h2o.org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:102)","    ai.h2o.org.eclipse.jetty.io.ChannelEndPoint$2.run(ChannelEndPoint.java:118)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.runTask(EatWhatYouKill.java:333)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.doProduce(EatWhatYouKill.java:310)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.tryProduce(EatWhatYouKill.java:168)","    ai.h2o.org.eclipse.jetty.util.thread.strategy.EatWhatYouKill.run(EatWhatYouKill.java:126)","    ai.h2o.org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:366)","    ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:762)","    ai.h2o.org.eclipse.jetty.util.thread.QueuedThreadPool$2.run(QueuedThreadPool.java:680)","    java.lang.Thread.run(Thread.java:748)"]}
+	at ai.h2o.sparkling.backend.utils.RestCommunication$class.checkResponseCode(RestCommunication.scala:412)
+	at ai.h2o.sparkling.backend.H2OChunk$.checkResponseCode(H2OChunk.scala:32)
+	at ai.h2o.sparkling.backend.utils.RestCommunication$class.readURLContent(RestCommunication.scala:386)
+	at ai.h2o.sparkling.backend.H2OChunk$.readURLContent(H2OChunk.scala:32)
+	at ai.h2o.sparkling.backend.H2OChunk$.getChunkAsInputStream(H2OChunk.scala:53)
+	at ai.h2o.sparkling.backend.Reader.<init>(Reader.scala:45)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.reader$lzycompute(H2ODataFrame.scala:66)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.reader(H2ODataFrame.scala:66)
+	at ai.h2o.sparkling.backend.H2OSparkEntity$H2OChunkIterator$class.hasNext(H2OSparkEntity.scala:50)
+	at ai.h2o.sparkling.backend.H2ODataFrame$$anon$1.hasNext(H2ODataFrame.scala:64)
+	at org.apache.spark.sql.catalyst.expressions.GeneratedClass$GeneratedIteratorForCodegenStage3.processNext(Unknown Source)
+	at org.apache.spark.sql.execution.BufferedRowIterator.hasNext(BufferedRowIterator.java:43)
+	at org.apache.spark.sql.execution.WholeStageCodegenExec$$anonfun$11$$anon$1.hasNext(WholeStageCodegenExec.scala:624)
+	at scala.collection.Iterator$$anon$11.hasNext(Iterator.scala:409)
+	at org.apache.spark.shuffle.sort.BypassMergeSortShuffleWriter.write(BypassMergeSortShuffleWriter.java:125)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:99)
+	at org.apache.spark.scheduler.ShuffleMapTask.runTask(ShuffleMapTask.scala:55)
+	at org.apache.spark.scheduler.Task.run(Task.scala:121)
+	at org.apache.spark.executor.Executor$TaskRunner$$anonfun$11.apply(Executor.scala:407)
+	at org.apache.spark.util.Utils$.tryWithSafeFinally(Utils.scala:1408)
+	at org.apache.spark.executor.Executor$TaskRunner.run(Executor.scala:413)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+
+Done 23.02 seconds
+
+Closing connection _sid_8f04 at exit
+H2O session _sid_8f04 closed.
+06-08 15:38:46.656 10.42.28.4:54321      #5368  own-hook-0 ERROR org.apache.spark.util.Utils: Uncaught exception in thread shutdown-hook-0
+java.lang.NullPointerException
+	at org.apache.spark.util.logging.DriverLogger$$anonfun$stop$1.apply$mcV$sp(DriverLogger.scala:80)
+	at org.apache.spark.util.Utils$.tryLogNonFatalError(Utils.scala:1388)
+	at org.apache.spark.util.logging.DriverLogger.stop(DriverLogger.scala:80)
+	at org.apache.spark.SparkContext$$anonfun$stop$2$$anonfun$apply$mcV$sp$3.apply(SparkContext.scala:1945)
+	at org.apache.spark.SparkContext$$anonfun$stop$2$$anonfun$apply$mcV$sp$3.apply(SparkContext.scala:1945)
+	at scala.Option.foreach(Option.scala:257)
+	at org.apache.spark.SparkContext$$anonfun$stop$2.apply$mcV$sp(SparkContext.scala:1945)
+	at org.apache.spark.util.Utils$.tryLogNonFatalError(Utils.scala:1388)
+	at org.apache.spark.SparkContext.stop(SparkContext.scala:1944)
+	at org.apache.spark.SparkContext$$anonfun$3.apply$mcV$sp(SparkContext.scala:586)
+	at org.apache.spark.util.SparkShutdownHook.run(ShutdownHookManager.scala:216)
+	at org.apache.spark.util.SparkShutdownHookManager$$anonfun$runAll$1$$anonfun$apply$mcV$sp$1.apply$mcV$sp(ShutdownHookManager.scala:188)
+	at org.apache.spark.util.SparkShutdownHookManager$$anonfun$runAll$1$$anonfun$apply$mcV$sp$1.apply(ShutdownHookManager.scala:188)
+	at org.apache.spark.util.SparkShutdownHookManager$$anonfun$runAll$1$$anonfun$apply$mcV$sp$1.apply(ShutdownHookManager.scala:188)
+	at org.apache.spark.util.Utils$.logUncaughtExceptions(Utils.scala:1993)
+	at org.apache.spark.util.SparkShutdownHookManager$$anonfun$runAll$1.apply$mcV$sp(ShutdownHookManager.scala:188)
+	at org.apache.spark.util.SparkShutdownHookManager$$anonfun$runAll$1.apply(ShutdownHookManager.scala:188)
+	at org.apache.spark.util.SparkShutdownHookManager$$anonfun$runAll$1.apply(ShutdownHookManager.scala:188)
+	at scala.util.Try$.apply(Try.scala:192)
+	at org.apache.spark.util.SparkShutdownHookManager.runAll(ShutdownHookManager.scala:188)
+	at org.apache.spark.util.SparkShutdownHookManager$$anon$2.run(ShutdownHookManager.scala:178)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:748)
+06-08 15:38:46.969 10.42.28.4:54321      #5368  own-hook-0  WARN ai.h2o.sparkling.H2OContext: Spark shutdown hook called, stopping H2OContext!

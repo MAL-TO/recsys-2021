@@ -54,8 +54,8 @@ def te_user_lang(raw_data, features, auxiliaries, is_inference) -> Dict[str, h2o
         h2o_frame[categorical_feature] = h2o_frame[categorical_feature].asfactor()
 
         ALPHA = 20
-        NOISE = 0.01 # In general, the less data you have the more regularization you need
-        INFLECTION_POINT = 20 # ?
+        NOISE = 0.0 # In general, the less data you have the more regularization you need
+        INFLECTION_POINT = 0 # ?
 
         for target in targets:
             new_feature = f'TE_user_lang_{target}'

@@ -1,4 +1,4 @@
-def binarize_timestamps(raw_data, features, auxiliaries):
+def binarize_timestamps(raw_data, features, auxiliaries, is_inference):
     return {
         "reply": raw_data["reply_timestamp"].notna(),
         "retweet": raw_data["retweet_timestamp"].notna(),
