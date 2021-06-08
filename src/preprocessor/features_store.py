@@ -199,7 +199,6 @@ class FeatureStore:
                     # Convert H2OFrames in ks.Series
                     for key, new_col in extracted.items():
                         if isinstance(new_col, h2o.H2OFrame):
-                            print("It is instance!")
                             # 1. Broken version: H2O -> sparl -> koalas
                             new_col_spark = hc.asSparkFrame(new_col)
                             new_col_koalas = ks.DataFrame(new_col_spark).set_index(index_cols).squeeze()
