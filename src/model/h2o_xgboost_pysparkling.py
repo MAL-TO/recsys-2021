@@ -14,6 +14,7 @@ import h2o
 from h2o.estimators import H2OXGBoostEstimator
 from pysparkling import H2OContext
 
+from metrics import compute_score
 from model.interface import ModelInterface
 
 from pathlib import Path
@@ -63,7 +64,7 @@ class Model(ModelInterface):
         p = (
             Path(ROOT_DIR)
             / "../serialized_models"
-            / f"h2o_xgboost_baseline_{target}.model"
+            / f"h2o_xgboost_pysparkling_{target}.model"
         )
         return str(p.resolve())
 
@@ -72,21 +73,22 @@ class Model(ModelInterface):
         Returns the best model found in validation."""
 
         hc = H2OContext.getOrCreate()
-        sdf_train_data = train_data.to_spark()
 
-        train_frame = hc.asH2OFrame(sdf_train_data)
+        # to_spark() drops the index
+        train_frame = hc.asH2OFrame(train_data.to_spark())
 
         # TODO: hyperparameter tuning; unbalancement handling?
 
         models = dict()
         for label in self.labels:
-            ignored = set(self.labels) - set(label)
             model = H2OXGBoostEstimator(seed=self.seed)
+
+            ignored = set(self.labels) - set(label)
+
             model.train(
-                y=label,
-                ignored_columns=list(ignored),
-                training_frame=train_frame
+                y=label, ignored_columns=list(ignored), training_frame=train_frame
             )
+
             model.save_mojo(self.serialized_model_path_for_target(label))
             models[label] = model
 
@@ -97,45 +99,54 @@ class Model(ModelInterface):
 
     def predict(self, test_data):
         """Predict test data. Returns predictions."""
-        schema = StructType(
-            [
-                StructField("reply", FloatType(), False),
-                StructField("retweet", FloatType(), False),
-                StructField("retweet_with_comment", FloatType(), False),
-                StructField("like", FloatType(), False),
-                StructField("tweet_id", StringType(), False),
-                StructField("engaging_user_id", StringType(), False),
-            ]
-        )
+        hc = H2OContext.getOrCreate()
 
-        # DataFrame.to_pandas() drops the index, so we need to save it
-        # separately and reattach it later.
+        index_col = ["tweet_id", "engaging_user_id"]
 
-        # H2OFrame does not provide an index like pandas, but rather appears
-        # to have an internal numerical index to preserve ordering.
-        # https://docs.h2o.ai/h2o/latest-stable/h2o-py/docs/frame.html#h2oframe
+        # H2O guarantees same row ordering
+        # https://github.com/h2oai/sparkling-water/issues/194
+        sdf_test_data = test_data.to_spark(index_col=index_col)
+        test_frame = hc.asH2OFrame(sdf_test_data)
+        test_predictions = test_frame[:, ["tweet_id", "engaging_user_id"]]
 
-        # So we trust that H2O keeps everything in order and drop our custom
-        # index ["tweet_id", "engaging_user_id"] in favour of a "standard"
-        # numerical index such as 0, 1, 2, ..., only to reattach it later
-        # when returning the predictions DataFrame.
-
-        ks_test_data_index = test_data.reset_index(drop=False)
-        ks_index = ks_test_data_index[["tweet_id", "engaging_user_id"]]
-
-        h2oframe_test = h2o.H2OFrame(test_data.to_pandas())
-
-        df_predictions = pd.DataFrame()
         for label in self.labels:
-            df_predictions[label] = (
-                self.model[label].predict(h2oframe_test).as_data_frame()["True"].values
+            test_predictions = test_predictions.cbind(
+                self.model[label].predict(test_frame).rename(columns={"predict": label})
             )
 
-        # Reattach real index (Lord have mercy)
-        df_predictions = df_predictions.join(ks_index.to_pandas())
-        ks_predictions = ks.DataFrame(df_predictions)
+        return hc.asSparkFrame(test_predictions)
 
-        return ks_predictions.to_spark()
+    def evaluate(self, test_kdf):
+        """Predict test data and evaluate the model on metrics.
+        Returns the metrics."""
+        target_columns = [
+            "reply",
+            "retweet",
+            "retweet_with_comment",
+            "like",
+        ]
+
+        predictions_sdf = self.predict(test_kdf)
+        predictions_kdf = (
+            ks.DataFrame(predictions_sdf)
+            .rename(columns={col: ("predicted_" + col) for col in target_columns})
+            .set_index(keys=["tweet_id", "engaging_user_id"])
+        )
+
+        joined_kdf = predictions_kdf.join(
+            right=test_kdf[target_columns].astype("int32"), how="inner"
+        )
+
+        results = {}
+        for column in target_columns:
+            AP, RCE = compute_score(
+                joined_kdf[column].to_numpy(),
+                joined_kdf["predicted_" + column].to_numpy(),
+            )
+            results[f"{column}_AP"] = AP
+            results[f"{column}_RCE"] = RCE
+
+        return results
 
     def load_pretrained(self):
         self.model = {}

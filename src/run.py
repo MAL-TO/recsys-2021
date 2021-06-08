@@ -30,6 +30,10 @@ def main(dataset_path, model_name, is_cluster):
             from model.h2o_xgboost_baseline import Model
 
             model = Model(seed=MODEL_SEED)
+        if model_name == "h2o_xgboost_pysparkling":
+            from model.h2o_xgboost_pysparkling import Model
+
+            model = Model(seed=MODEL_SEED)
 
         assert model is not None, f"cannot find a model with name: {model_name}"
         enabled_extractors = model.enabled_extractors
