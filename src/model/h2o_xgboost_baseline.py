@@ -63,6 +63,7 @@ class Model(ModelInterface):
             "engaged_with_user_following_count",
             "engaging_user_follower_count",
             "engaging_user_following_count",
+            "te_user_lang",
             "binarize_timestamps",
         ]
         if include_targets:

@@ -1,9 +1,18 @@
 import os
+import h2o
 import databricks.koalas as ks
 from typing import Dict
 
 from preprocessor.targets.binarize_timestamps import binarize_timestamps  # noqa: F401
+from preprocessor.time.hour_of_day import hour_of_day
+from preprocessor.tweet.word_count import word_count
+from preprocessor.encoding.te_language_hour import te_language_hour
+from preprocessor.encoding.te_tweet_type_word_count import te_tweet_type_word_count
+from preprocessor.encoding.te_user_lang import te_user_lang
 
+from pysparkling import H2OContext
+hc = H2OContext.getOrCreate()
+index_cols = ['tweet_id', 'engaging_user_id']
 
 class FeatureStore:
     """Handle feature configuration"""
@@ -181,19 +190,41 @@ class FeatureStore:
                 print("### Extracting " + feature_name + "...")
                 feature_extractor = globals()[feature_name]
                 extracted = feature_extractor(
-                    self.raw_data, feature_dict, auxiliary_dict
+                    self.raw_data, feature_dict, auxiliary_dict, self.is_inference
                 )
-
+                
                 if isinstance(extracted, dict):  # more than one feature extracted
+                    print("More than one feature")
+                    
+                    # Convert H2OFrames in ks.Series
+                    for key, new_col in extracted.items():
+                        if isinstance(new_col, h2o.H2OFrame):
+                            print("It is instance!")
+                            # 1. Broken version: H2O -> sparl -> koalas
+                            new_col_spark = hc.asSparkFrame(new_col)
+                            new_col_koalas = ks.DataFrame(new_col_spark).set_index(index_cols).squeeze()
+
+                            # 2. Working version: H2O -> pandas -> koalas
+#                             new_col_pandas =new_col.as_data_frame()
+#                             new_col_koalas = ks.DataFrame(new_col_pandas).set_index(index_cols).squeeze()
+                            new_col_koalas.name = key
+                            extracted[key] = new_col_koalas
+                            
+                            print(extracted[key].head())
+                
                     for column in extracted:
                         assert isinstance(extracted[column], ks.Series)
                         feature_dict[column] = extracted[column]
 
                     # Store the new features
+                    print("Concat of multiple features")
                     features_df = ks.concat(
                         list(extracted.values()), axis=1, join="inner"
                     )
+                    
                     assert len(features_df) == len(list(extracted.values())[0])
+                    
+                    print("to csv of multiple features")
                     features_df.to_csv(
                         feature_path_rw,
                         index_col=["tweet_id", "engaging_user_id"],
@@ -215,9 +246,9 @@ class FeatureStore:
 
                 print("Feature added to " + feature_path)
 
-        # Assign feature names to series
-        for k in feature_dict:
-            feature_dict[k].name = k
+            # Assign feature names to series
+            for k in feature_dict:
+                feature_dict[k].name = k
 
         return feature_dict
 

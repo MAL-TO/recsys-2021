@@ -7,7 +7,7 @@ def create_spark_context(set_memory_conf=True, h2o=True):
     conf = SparkConf()
 
     if set_memory_conf:
-        conf.set("spark.driver.memory", "4g")
+        conf.set("spark.driver.memory", "8g")
         conf.set("spark.driver.maxResultSize", "4g")
 
         conf.set("spark.executor.memory", "3g")
