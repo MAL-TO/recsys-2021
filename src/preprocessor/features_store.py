@@ -1,4 +1,5 @@
 import os
+import h2o
 import databricks.koalas as ks
 from typing import Dict
 
@@ -8,6 +9,10 @@ from preprocessor.tweet.word_count import word_count
 from preprocessor.encoding.te_language_hour import te_language_hour
 from preprocessor.encoding.te_tweet_type_word_count import te_tweet_type_word_count
 from preprocessor.encoding.te_user_lang import te_user_lang
+
+from pysparkling import H2OContext
+hc = H2OContext.getOrCreate()
+index_cols = ['tweet_id', 'engaging_user_id']
 
 class FeatureStore:
     """Handle feature configuration"""
@@ -190,6 +195,21 @@ class FeatureStore:
                 
                 if isinstance(extracted, dict):  # more than one feature extracted
                     print("More than one feature")
+                    
+                    # Convert H2OFrames in ks.Series
+                    for key, new_col in extracted.items():
+                        if isinstance(new_col, h2o.H2OFrame):
+                            print("It is instance!")
+#                             new_col_spark = hc.asSparkFrame(new_col)
+#                             new_col_koalas = new_col_spark.to_koalas().set_index(index_cols).squeeze()
+
+                            new_col_pandas =new_col.as_data_frame()
+                            new_col_koalas = ks.DataFrame(new_col_pandas).set_index(index_cols).squeeze()
+                            new_col_koalas.name = key
+                            extracted[key] = new_col_koalas
+                            
+                        print(extracted[key].head())
+                
                     for column in extracted:
                         assert isinstance(extracted[column], ks.Series)
                         feature_dict[column] = extracted[column]
@@ -199,7 +219,9 @@ class FeatureStore:
                     features_df = ks.concat(
                         list(extracted.values()), axis=1, join="inner"
                     )
-                    assert len(features_df) == len(list(extracted.values())[0])
+                    
+                    assert len(features_df) == len(list(extracted.values())[0]), f"Unmatching lengths, expected {len(features_df)} but got {len(list(extracted.values())[0])}"
+                    
                     print("to csv of multiple features")
                     features_df.to_csv(
                         feature_path_rw,

@@ -2,14 +2,16 @@ import os
 import h2o
 import gc
 import pickle as pkl
+
 from pysparkling import H2OContext
-import databricks.koalas as ks
 from h2o.estimators import H2OTargetEncoderEstimator
+from typing import Dict
+
 from constants import PATH_AUXILIARIES
 
 hc = H2OContext.getOrCreate()
 
-def te_user_lang(raw_data, features, auxiliaries, is_inference):
+def te_user_lang(raw_data, features, auxiliaries, is_inference) -> Dict[str, h2o.H2OFrame]:
 
     # auxiliary_path_rw?
     auxiliary_path = os.path.join(PATH_AUXILIARIES, 'te_user_lang')
@@ -39,17 +41,8 @@ def te_user_lang(raw_data, features, auxiliaries, is_inference):
             
             # Deserialize encoders
             te = h2o.load_model(os.path.join(auxiliary_path, f))
-#             new_col_koalas = ks.DataFrame(hc.asSparkFrame(te.transform(frame=h2o_frame, as_training=True)\
-#                                                           [:, index_cols + [categorical_feature + "_te"]])).set_index(index_cols).squeeze()
-            gc.collect()
             new_col_h2o = te.transform(frame=h2o_frame, as_training=True)[:, index_cols + [categorical_feature + "_te"]]
-            new_col_pandas = new_col_h2o.as_data_frame()
-            new_col_koalas = ks.from_pandas(new_col_pandas).set_index(index_cols).squeeze()
-            new_col_koalas.name = new_feature
-            
-            print(new_col_koalas.head())
-
-        target_encoded[new_feature] = new_col_koalas
+            target_encoded[new_feature] = new_col_h2o
 
     else:
         # Add binary targets to df
@@ -77,30 +70,13 @@ def te_user_lang(raw_data, features, auxiliaries, is_inference):
             te.train(x=encoded_columns,
                  y=target,
                  training_frame=h2o_frame)
-
-            # Slicing: indexing columns, new_feature column
-            # 1. 
-#             new_col_koalas = ks.DataFrame(hc.asSparkFrame(te.transform(frame=h2o_frame, as_training=True)\
-#                                                           [:, index_cols + [categorical_feature + "_te"]])).set_index(index_cols).squeeze()
-            
-            # 2.
+        
             new_col_h2o = te.transform(frame=h2o_frame, as_training=True)[:, index_cols + [categorical_feature + "_te"]]
-            new_col_spark = hc.asSparkFrame(new_col_h2o)
-            new_col_koalas = ks.DataFrame(new_col_spark).set_index(index_cols).squeeze()
-            
-            # 3. With Pandas
-#             new_col_h2o = te.transform(frame=h2o_frame, as_training=True)[:, index_cols + [categorical_feature + "_te"]]
-#             new_col_pandas = new_col_h2o.as_data_frame()
-#             new_col_koalas = ks.from_pandas(new_col_pandas).set_index(index_cols).squeeze()
 
-            gc.collect()
-            new_col_koalas.name = new_feature
-
-            target_encoded[new_feature] = new_col_koalas
+            target_encoded[new_feature] = new_col_h2o
 
             te.download_model(auxiliary_path)
             
-    print(target_encoded[new_feature].head())
     return target_encoded
 
 

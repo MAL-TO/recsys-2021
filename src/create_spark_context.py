@@ -7,7 +7,7 @@ def create_spark_context(set_memory_conf=True, h2o=True):
     conf = SparkConf()
 
     if set_memory_conf:
-        conf.set("spark.driver.memory", "4g")
+        conf.set("spark.driver.memory", "100g")
         conf.set("spark.driver.maxResultSize", "4g")
 
         conf.set("spark.executor.memory", "3g")
@@ -18,6 +18,8 @@ def create_spark_context(set_memory_conf=True, h2o=True):
 
     conf.set("spark.jars.spark.jars.repositories", "https://repos.spark-packages.org/")
     conf.set("spark.jars.packages", "graphframes:graphframes:0.7.0-spark2.4-s_2.11")
+    
+    conf.set("spark.debug.maxToStringFields", "100")
 
     if h2o:
         # http://docs.h2o.ai/sparkling-water/2.4/latest-stable/doc/configuration/configuration_properties.html
