@@ -103,12 +103,6 @@ def main(is_cluster):
         results["train"].append(train_results)
         results["test"].append(test_results)
 
-        with Stage("Closing..."):
-            h2o.cluster().shutdown(prompt=False)
-            sc.stop()
-
-        gc.collect()
-
     # TODO: Save (richer) results to a log file and maybe de-uglify this part
     for ds in results:
         print(f"### Results on {ds} set ###")
@@ -137,6 +131,10 @@ def main(is_cluster):
         print(f"mRCE\t LB {(all_RCE.mean() - all_RCE.std()):+.4f} to UB {(all_RCE.mean() + all_RCE.std()):+.4f} (± 1σ)".expandtabs(30))
         print("------------------------------------")
         print()
+    
+    with Stage("Closing..."):
+        h2o.cluster().shutdown(prompt=False)
+        sc.stop()
 
 
 arg_parser = argparse.ArgumentParser(
