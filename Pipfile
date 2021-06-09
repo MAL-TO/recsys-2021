@@ -8,9 +8,10 @@ koalas = "*"
 pyspark = "==2.4.0"
 pandas = "*"
 numpy = "*"
-h2o = "*"
 xgboost = "*"
 scikit-learn = "*"
+h2o = "==3.32.1.1"
+"h2o-pysparkling-2.4" = "==3.32.1.1-1"
 
 [dev-packages]
 notebook = "*"

@@ -3,7 +3,7 @@ import gc
 
 from constants import ROOT_DIR, PATH_PREPROCESSED, PATH_AUXILIARIES, MODEL_SEED
 from data.importer import import_data
-from model.h2o_xgboost_baseline import Model
+from model.h2o_xgboost_pysparkling import Model
 from util import Stage
 from create_spark_context import create_spark_context
 
