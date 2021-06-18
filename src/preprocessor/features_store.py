@@ -2,7 +2,9 @@ import os
 import databricks.koalas as ks
 from typing import Dict
 
-from preprocessor.targets.binarize_timestamps import binarize_timestamps  # noqa: F401
+from preprocessor.targets.binarize_timestamps import binarize_timestamps  # noqa
+from preprocessor.graph.auxiliary_engagement_graph import auxiliary_engagement_graph  # noqa
+from preprocessor.graph.engaging_user_interaction_degree import engaging_user_interaction_degree  # noqa
 
 
 class FeatureStore:
