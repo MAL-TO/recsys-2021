@@ -2,6 +2,8 @@ import os
 import gc
 import argparse
 import numpy as np
+import h2o
+from pysparkling import H2OContext
 
 from constants import (
     PATH_PREPROCESSED,
@@ -14,17 +16,19 @@ from constants import (
     FILENAMES_DATA,
 )
 from data.importer import import_data
-from model.h2o_xgboost_baseline import Model
+from model.h2o_xgboost_pysparkling import Model
 from util import Stage, str2bool, rm_dir_contents
 from create_spark_context import create_spark_context
-
 
 def main(is_cluster):
     # Initialize dict to store evaluation results
     results = {"train": [], "test": []}
 
     with Stage("Creating Spark context..."):
-        create_spark_context()
+        sc = create_spark_context()
+
+    with Stage("Creating H2O context..."):
+        hc = H2OContext.getOrCreate()
 
     # graphframes module is only available after creating Spark context
     from preprocessor.features_store import FeatureStore
@@ -99,8 +103,6 @@ def main(is_cluster):
         results["train"].append(train_results)
         results["test"].append(test_results)
 
-        gc.collect()
-
     # TODO: Save (richer) results to a log file and maybe de-uglify this part
     for ds in results:
         print(f"### Results on {ds} set ###")
@@ -129,6 +131,10 @@ def main(is_cluster):
         print(f"mRCE\t LB {(all_RCE.mean() - all_RCE.std()):+.4f} to UB {(all_RCE.mean() + all_RCE.std()):+.4f} (± 1σ)".expandtabs(30))
         print("------------------------------------")
         print()
+    
+    with Stage("Closing..."):
+        h2o.cluster().shutdown(prompt=False)
+        sc.stop()
 
 
 arg_parser = argparse.ArgumentParser(
