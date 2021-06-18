@@ -11,7 +11,7 @@ def auxiliary_engagement_graph(raw_data, auxiliary_train=None):
     An edge (u_i, u_j) corresponds to an engagement: user u_i engaged with (or
     did not engage with) user u_j's tweet in some way.
 
-    There exists one multigraph for positive interactions, and one multigraph
+    There exists one multigraph per interaction type, including one multigraph
     for negative samples (edge src->dst exists if src did not engage with dst
     in any way).
 
@@ -27,8 +27,8 @@ def auxiliary_engagement_graph(raw_data, auxiliary_train=None):
     """
 
     if auxiliary_train is None:  # Training time: targets are available
-        index_col = ["engaging_user_id", "tweet_id"]
-        sdf_raw_data = raw_data.to_spark(index_col=index_col)
+        # Reset index is required not to lose `engaging_user_id` and `tweet_id` cols
+        sdf_raw_data = raw_data.reset_index(drop=False).to_spark()
 
         # Extract user (nodes) DataFrame
         sdf_engaged_with_users = sdf_raw_data.selectExpr(
@@ -49,10 +49,24 @@ def auxiliary_engagement_graph(raw_data, auxiliary_train=None):
         ]
 
         # Positive samples (interactions)
-        sdf_interactions = (
+        sdf_reply_interactions = (
             sdf_raw_data.selectExpr(*engagements_attributes)
-                .where("LENGTH(reply_timestamp)>0 OR LENGTH(retweet_timestamp)>0 OR "
-                       "LENGTH(retweet_with_comment_timestamp)>0 OR LENGTH(like_timestamp)>0")
+            .where("LENGTH(reply_timestamp) > 0")
+        )
+
+        sdf_retweet_interactions = (
+            sdf_raw_data.selectExpr(*engagements_attributes)
+            .where("LENGTH(retweet_timestamp) > 0")
+        )
+
+        sdf_retweet_with_comment_interactions = (
+            sdf_raw_data.selectExpr(*engagements_attributes)
+            .where("LENGTH(retweet_with_comment_timestamp) > 0")
+        )
+
+        sdf_like_interactions = (
+            sdf_raw_data.selectExpr(*engagements_attributes)
+            .where("LENGTH(like_timestamp) > 0")
         )
 
         # Negative samples (no interactions)
@@ -64,21 +78,33 @@ def auxiliary_engagement_graph(raw_data, auxiliary_train=None):
 
         # Convert to koalas DataFrame
         ks_users = sdf_users.to_koalas()
-        ks_interactions = sdf_interactions.to_koalas()
+        ks_reply = sdf_reply_interactions.to_koalas()
+        ks_retweet = sdf_retweet_interactions.to_koalas()
+        ks_retweet_with_comment = sdf_retweet_with_comment_interactions.to_koalas()
+        ks_like = sdf_like_interactions.to_koalas()
         ks_no_interactions = sdf_no_interactions.to_koalas()
 
     else:  # Inference time: targets are unavailable, raw_data is test data
         # We do not extend anything. XGBoost will handle sparsity for us
         ks_users_train = auxiliary_train["engagement_graph_vertices"]
-        ks_interactions_train = auxiliary_train["engagement_graph_edges_interactions"]
+        ks_reply_train = auxiliary_train["engagement_graph_edges_reply"]
+        ks_retweet_train = auxiliary_train["engagement_graph_edges_retweet"]
+        ks_retweet_with_comment_train = auxiliary_train["engagement_graph_edges_retweet_with_comment"]
+        ks_like_train = auxiliary_train["engagement_graph_edges_like"]
         ks_no_interactions_train = auxiliary_train["engagement_graph_edges_no_interactions"]
 
         ks_users = ks_users_train
-        ks_interactions = ks_interactions_train
+        ks_reply = ks_reply_train
+        ks_retweet = ks_retweet_train
+        ks_retweet_with_comment = ks_retweet_with_comment_train
+        ks_like = ks_like_train
         ks_no_interactions = ks_no_interactions_train
 
     return {
         "engagement_graph_vertices": ks_users,
-        "engagement_graph_edges_interactions": ks_interactions,
+        "engagement_graph_edges_reply": ks_reply,
+        "engagement_graph_edges_retweet": ks_retweet,
+        "engagement_graph_edges_retweet_with_comment": ks_retweet_with_comment,
+        "engagement_graph_edges_like": ks_like,
         "engagement_graph_edges_no_interactions": ks_no_interactions,
     }
