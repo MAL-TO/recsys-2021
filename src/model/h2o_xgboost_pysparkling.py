@@ -42,17 +42,22 @@ class Model(ModelInterface):
             "engaged_with_user_following_count",
             "engaging_user_follower_count",
             "engaging_user_following_count",
+            "engaging_user_interaction_in_degree",
+            "engaging_user_interaction_out_degree",
         ]
 
         self.labels = ["reply", "retweet", "retweet_with_comment", "like"]
 
         # Specify extractors and auxiliaries required by the enabled features
-        self.enabled_auxiliaries = []
+        self.enabled_auxiliaries = [
+            "auxiliary_engagement_graph"
+        ]
         self.enabled_extractors = [
             "engaged_with_user_follower_count",
             "engaged_with_user_following_count",
             "engaging_user_follower_count",
             "engaging_user_following_count",
+            "engaging_user_interaction_degree",
         ]
         if include_targets:
             self.enabled_extractors.append("binarize_timestamps")
@@ -76,10 +81,14 @@ class Model(ModelInterface):
         train_frame = hc.asH2OFrame(train_data.to_spark())
 
         # TODO: hyperparameter tuning; unbalancement handling?
+        
+        hyperparams = {
+            
+        }
 
         models = dict()
         for label in self.labels:
-            model = H2OXGBoostEstimator(seed=self.seed)
+            model = H2OXGBoostEstimator(seed=self.seed, *hyperparams)
 
             ignored = set(self.labels) - set(label)
 

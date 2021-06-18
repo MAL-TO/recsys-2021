@@ -27,7 +27,7 @@ def auxiliary_engagement_graph(raw_data, auxiliary_train=None):
     """
 
     if auxiliary_train is None:  # Training time: targets are available
-        index_col = ["engaging_user_id", "tweet_id"]
+        index_col = ["tweet_id", "engaging_user_id"]
         sdf_raw_data = raw_data.to_spark(index_col=index_col)
 
         # Extract user (nodes) DataFrame

@@ -2,7 +2,7 @@ import graphframes
 
 
 def engaging_user_interaction_degree(raw_data, features, auxiliaries):
-    index_col = ["engaging_user_id", "tweet_id"]
+    index_col = ["tweet_id", "engaging_user_id"]
 
     # Get vertices and edges of the engagement graphs
     # sdf_vertices schema: ["id"]
