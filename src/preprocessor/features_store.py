@@ -236,11 +236,7 @@ class FeatureStore:
             )
         ks.set_option("compute.ops_on_diff_frames", False)
 
-        # NOTE: the .sort_index is useful for having the rows always in the same
-        # order. In this way the train_valid_test_split, which depends on the row's
-        # order is the same regardless of how we joined. This allows for better
-        # reproducibility and mental health.
-        return features_dataset.sort_index()
+        return features_dataset
 
     @staticmethod
     def get_subdir_list(path):
