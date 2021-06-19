@@ -1,12 +1,12 @@
 import graphframes
 
 
-def engaging_user_interaction_degree(raw_data, features, auxiliaries):
+def engaged_with_user_interaction_degree(raw_data, features, auxiliaries):
     index_col = ["tweet_id", "engaging_user_id"]
 
     # Extract index from raw data
     sdf_raw_data = raw_data.to_spark(index_col=index_col)
-    sdf_raw_data_index = sdf_raw_data.selectExpr("tweet_id", "engaging_user_id AS id")
+    sdf_raw_data_index = sdf_raw_data.selectExpr("tweet_id", "engaging_user_id", "engaged_with_user_id AS id")
 
     # Get vertices and edges of the engagement graphs
     # sdf_vertices schema: ["id"]
@@ -28,27 +28,27 @@ def engaging_user_interaction_degree(raw_data, features, auxiliaries):
     sdf_all_user_out_degree = sdf_all_user_out_degree.fillna(0)
 
     # Join to index
-    sdf_engaging_user_in_degree = sdf_raw_data_index.join(sdf_all_user_in_degree, on="id", how="left_outer")
-    sdf_engaging_user_out_degree = sdf_raw_data_index.join(sdf_all_user_out_degree, on="id", how="left_outer")
+    sdf_engaged_user_in_degree = sdf_raw_data_index.join(sdf_all_user_in_degree, on="id", how="left_outer")
+    sdf_engaged_user_out_degree = sdf_raw_data_index.join(sdf_all_user_out_degree, on="id", how="left_outer")
 
     # Create feature
-    kdf_engaging_user_in_degree = sdf_engaging_user_in_degree.withColumnRenamed("id", "engaging_user_id").to_koalas()
-    kdf_engaging_user_out_degree = sdf_engaging_user_out_degree.withColumnRenamed("id", "engaging_user_id").to_koalas()
+    kdf_engaged_user_in_degree = sdf_engaged_user_in_degree.to_koalas()
+    kdf_engaged_user_out_degree = sdf_engaged_user_out_degree.to_koalas()
 
-    ks_engaging_user_interaction_in_degree = (
-        kdf_engaging_user_in_degree
+    ks_engaged_with_user_interaction_in_degree = (
+        kdf_engaged_user_in_degree
         .set_index(index_col)
         ["inDegree"]
         .rename("engaging_user_interaction_in_degree")
     )
-    ks_engaging_user_interaction_out_degree = (
-        kdf_engaging_user_out_degree
+    ks_engaged_with_user_interaction_out_degree = (
+        kdf_engaged_user_out_degree
         .set_index(index_col)
         ["outDegree"]
         .rename("engaging_user_interaction_out_degree")
     )
 
     return {
-        "engaging_user_interaction_in_degree": ks_engaging_user_interaction_in_degree,
-        "engaging_user_interaction_out_degree": ks_engaging_user_interaction_out_degree,
+        "engaged_with_user_interaction_in_degree": ks_engaged_with_user_interaction_in_degree,
+        "engaged_with_user_interaction_out_degree": ks_engaged_with_user_interaction_out_degree,
     }
