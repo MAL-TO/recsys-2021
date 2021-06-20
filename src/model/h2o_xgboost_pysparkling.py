@@ -42,10 +42,7 @@ class Model(ModelInterface):
             "engaged_with_user_following_count",
             "engaging_user_follower_count",
             "engaging_user_following_count",
-            "engaging_user_interaction_in_degree",
-            "engaging_user_interaction_out_degree",
-            "engaged_with_user_interaction_in_degree",
-            "engaged_with_user_interaction_in_degree",
+            "engaging_user_pagerank"
         ]
 
         self.labels = ["reply", "retweet", "retweet_with_comment", "like"]
@@ -59,8 +56,7 @@ class Model(ModelInterface):
             "engaged_with_user_following_count",
             "engaging_user_follower_count",
             "engaging_user_following_count",
-            "engaging_user_interaction_degree",
-            "engaged_with_user_interaction_degree",
+            "user_pagerank",
         ]
         if include_targets:
             self.enabled_extractors.append("binarize_timestamps")
