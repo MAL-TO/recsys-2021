@@ -1,4 +1,5 @@
 import graphframes
+from pyspark.ml.feature import QuantileDiscretizer
 
 
 def engaging_user_interaction_degree(raw_data, features, auxiliaries):
@@ -31,6 +32,14 @@ def engaging_user_interaction_degree(raw_data, features, auxiliaries):
     sdf_engaging_user_in_degree = sdf_raw_data_index.join(sdf_all_user_in_degree, on="id", how="left_outer")
     sdf_engaging_user_out_degree = sdf_raw_data_index.join(sdf_all_user_out_degree, on="id", how="left_outer")
 
+    qds = QuantileDiscretizer(numBuckets=5, relativeError=0.01, handleInvalid="error")
+    qds.setInputCol("inDegree")
+    qds.setOutputCol("inDegreeQuantized")
+    sdf_engaging_user_in_degree = qds.fit(sdf_engaging_user_in_degree).transform(sdf_engaging_user_in_degree)
+    qds.setInputCol("outDegree")
+    qds.setOutputCol("outDegreeQuantized")
+    sdf_engaging_user_out_degree = qds.fit(sdf_engaging_user_out_degree).transform(sdf_engaging_user_out_degree)
+
     # Create feature
     kdf_engaging_user_in_degree = sdf_engaging_user_in_degree.withColumnRenamed("id", "engaging_user_id").to_koalas()
     kdf_engaging_user_out_degree = sdf_engaging_user_out_degree.withColumnRenamed("id", "engaging_user_id").to_koalas()
@@ -38,14 +47,14 @@ def engaging_user_interaction_degree(raw_data, features, auxiliaries):
     ks_engaging_user_interaction_in_degree = (
         kdf_engaging_user_in_degree
         .set_index(index_col)
-        ["inDegree"]
+        ["inDegreeQuantized"]
         .rename("engaging_user_interaction_in_degree")
         .astype("float")
     )
     ks_engaging_user_interaction_out_degree = (
         kdf_engaging_user_out_degree
         .set_index(index_col)
-        ["outDegree"]
+        ["outDegreeQuantized"]
         .rename("engaging_user_interaction_out_degree")
         .astype("float")
     )
