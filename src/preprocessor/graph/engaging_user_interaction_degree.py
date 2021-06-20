@@ -40,12 +40,14 @@ def engaging_user_interaction_degree(raw_data, features, auxiliaries):
         .set_index(index_col)
         ["inDegree"]
         .rename("engaging_user_interaction_in_degree")
+        .astype("float")
     )
     ks_engaging_user_interaction_out_degree = (
         kdf_engaging_user_out_degree
         .set_index(index_col)
         ["outDegree"]
         .rename("engaging_user_interaction_out_degree")
+        .astype("float")
     )
 
     return {

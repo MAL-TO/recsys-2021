@@ -5,6 +5,7 @@ from typing import Dict
 from preprocessor.targets.binarize_timestamps import binarize_timestamps  # noqa
 from preprocessor.graph.auxiliary_engagement_graph import auxiliary_engagement_graph  # noqa
 from preprocessor.graph.engaging_user_interaction_degree import engaging_user_interaction_degree  # noqa
+from preprocessor.graph.engaged_with_user_interaction_degree import engaged_with_user_interaction_degree  # noqa
 
 
 class FeatureStore:

@@ -44,6 +44,8 @@ class Model(ModelInterface):
             "engaging_user_following_count",
             "engaging_user_interaction_in_degree",
             "engaging_user_interaction_out_degree",
+            "engaged_with_user_interaction_in_degree",
+            "engaged_with_user_interaction_in_degree",
         ]
 
         self.labels = ["reply", "retweet", "retweet_with_comment", "like"]
@@ -58,6 +60,7 @@ class Model(ModelInterface):
             "engaging_user_follower_count",
             "engaging_user_following_count",
             "engaging_user_interaction_degree",
+            "engaged_with_user_interaction_degree",
         ]
         if include_targets:
             self.enabled_extractors.append("binarize_timestamps")
@@ -79,16 +82,22 @@ class Model(ModelInterface):
 
         # to_spark() drops the index
         train_frame = hc.asH2OFrame(train_data.to_spark())
+        
+        train_frame.show(20)
 
         # TODO: hyperparameter tuning; unbalancement handling?
         
         hyperparams = {
-            
+            'seed': self.seed,
+            'tree_method': 'hist',
+            'subsample': 0.7,
+            'min_child_weight': 20, # increase if train-test-gap is large. More conservative but less overfitting
+            'max_depth': 6,
         }
 
         models = dict()
         for label in self.labels:
-            model = H2OXGBoostEstimator(seed=self.seed, *hyperparams)
+            model = H2OXGBoostEstimator(**hyperparams)
 
             ignored = set(self.labels) - set(label)
 
