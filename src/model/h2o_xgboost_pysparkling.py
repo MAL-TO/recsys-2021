@@ -42,7 +42,8 @@ class Model(ModelInterface):
             "engaged_with_user_following_count",
             "engaging_user_follower_count",
             "engaging_user_following_count",
-            "engaging_user_pagerank"
+            "engaging_user_pagerank",
+            "engaged_with_user_pagerank",
         ]
 
         self.labels = ["reply", "retweet", "retweet_with_comment", "like"]
