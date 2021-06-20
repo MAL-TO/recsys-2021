@@ -78,7 +78,8 @@ class Model(ModelInterface):
 
         # to_spark() drops the index
         train_frame = hc.asH2OFrame(train_data.to_spark())
-        
+
+        print(train_frame.types)
         train_frame.show(20)
 
         # TODO: hyperparameter tuning; unbalancement handling?
@@ -89,6 +90,7 @@ class Model(ModelInterface):
             'subsample': 0.7,
             'min_child_weight': 20, # increase if train-test-gap is large. More conservative but less overfitting
             'max_depth': 6,
+            'min_split_improvement': 1e-5,
         }
 
         models = dict()
